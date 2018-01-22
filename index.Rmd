@@ -2,7 +2,7 @@
 title: "A Gentle Guide to the Grammar of Graphics<br>with `ggplot2`"
 subtitle: "Tampa R Users Meetup"
 author: "Garrick Aden-Buie<br>@grrrck"
-date: "2018-01-23"
+date: "2018-01-23<br><br>Follow along: **bit.ly/trug-ggplot2**"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -78,6 +78,24 @@ The transferrable skills from ggplot2 are not the idiosyncracies of plotting syn
 - Easy to .hl[iterate]
 
 - Easy to be .hl[consistent]
+
+---
+layout: false
+
+# What are we getting into?
+
+`ggplot2` is a huge package: philosophy + functions
+<br>...but it's very well organized
+
+--
+
+*Lots* of examples of not-so-great plots in these slides
+<br>...but that's okay
+
+--
+
+Going to throw a lot at you
+<br>...but you'll know *where* and *what* to look for
 
 --
 
