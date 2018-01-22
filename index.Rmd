@@ -38,7 +38,7 @@ knitr::opts_hooks$set(fig.callout = function(options) {
 hook_source <- knitr::knit_hooks$get('source')
 knitr::knit_hooks$set(source = function(x, options) {
   if (!is.null(options$hiline) && options$hiline) {
-    x <- stringr::str_replace(x, "^ (.+)\\s?#<<", "*\\1")
+    x <- stringr::str_replace(x, "^ ?(.+)\\s?#<<", "*\\1")
   }
   hook_source(x, options)
 })
