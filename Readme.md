@@ -16,7 +16,7 @@ Just clone this repo and run
 
 ```bash
 # Build container image
-docker build -t trug-ggplot2
+docker build -t trug-ggplot2 ./
 
 # Run image
 docker run -d -p 8787:8787 trug-ggplot2
