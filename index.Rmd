@@ -84,16 +84,19 @@ layout: false
 
 # What are we getting into?
 
+<br>
 `ggplot2` is a huge package: philosophy + functions
 <br>...but it's very well organized
 
 --
 
+<br><br>
 *Lots* of examples of not-so-great plots in these slides
 <br>...but that's okay
 
 --
 
+<br><br>
 Going to throw a lot at you
 <br>...but you'll know *where* and *what* to look for
 
