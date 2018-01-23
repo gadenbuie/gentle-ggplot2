@@ -1100,7 +1100,7 @@ ggplot(tips) +
 ggplot(tips) +
   aes(x = day,
       y = percent,
-      color = smoker) +
+      color = sex) +
   geom_jitter(width = 0.25) +
   facet_grid(time ~ smoker) #<<
 ```
@@ -1126,7 +1126,7 @@ tips <- mutate(tips,
 ggplot(tips) +
   aes(x = day,
       y = percent,
-      color = smoker) +
+      color = sex) +
   geom_jitter(width = 0.25) +
   facet_grid(time ~ smoker)
 ```
