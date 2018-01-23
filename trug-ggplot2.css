@@ -3,7 +3,7 @@ body {
 }
 
 .title-slide {
-  background-image: url(https://d33wubrfki0l68.cloudfront.net/0ab849ed51b0b866ef6895c253d3899f4926d397/dbf0f/images/hex-ggplot2.png);
+  background-image: url(images/hex-ggplot2.png);
   background-size: 25%;
   background-position: 88% 70%;
 }
