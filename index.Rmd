@@ -1552,19 +1552,26 @@ layout: true
 ---
 layout: false
 
-# ggplot2 Extensions
+# ggplot2 Extensions: ggplot2-exts.org
 
-### Extending ggplot2
+![](images/ggplot2-exts-gallery.png)
 
-- ggplot2 extensions gallery: <http://www.ggplot2-exts.org/gallery/>
+---
+# ggplot2 and beyond
 
 ### Learn more
 
-- ggplot2 docs: <http://ggplot2.tidyverse.org/>
+- **ggplot2 docs:** <http://ggplot2.tidyverse.org/>
 
-- R4DS - Data visualization: <http://r4ds.had.co.nz/data-visualisation.html>
+- **R4DS - Data visualization:** <http://r4ds.had.co.nz/data-visualisation.html>
 
-- Hadley Wickham's ggplot2 book: <https://www.amazon.com/dp/0387981403/>
+- **Hadley Wickham's ggplot2 book:** <https://www.amazon.com/dp/0387981403/>
+
+### Noteworthy RStudio Add-Ins
+
+- [ggplotThemeAssist](https://github.com/calligross/ggthemeassist): Customize your ggplot theme interactively
+
+- [ggedit](https://github.com/metrumresearchgroup/ggedit): Layer, scale, and theme editing
 
 ---
 
