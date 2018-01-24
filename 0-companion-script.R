@@ -13,10 +13,15 @@
 # └─────────────────────────────────────────────────────────────┘
 
 # ---- setup ----
+# Uncomment below to install any of the packages you need
+# install.packages("tidyverse")
+# install.packages("reshape2")
+# install.packages("babynames")
+
 library(tidyverse)
-library(lubridate)       # tidyverse
-library(reshape2)        # install.packages("reshape2")
-library(babynames)       # install.packages("babynames")
+library(lubridate)       # in tidyverse, but not loaded by default
+library(reshape2)        # for the `tips` data (part 2)
+library(babynames)       # for the `babynames` data (part 3)
 
 # ---- tidy-messy-example ----
 pop_simple <- population %>% 
