@@ -1,12 +1,13 @@
 ---
 title: "A Gentle Guide to the Grammar of Graphics<br>with `ggplot2`"
-subtitle: "Tampa R Users Meetup"
+subtitle: ""
 author: "Garrick Aden-Buie<br>@grrrck"
-date: "2018-01-23<br><br>Follow along: **bit.ly/trug-ggplot2**"
+date: "Follow along: **bit.ly/gentle-ggplot2**"
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: ["default", "metropolis", "metropolis-fonts", "trug-ggplot2.css"]
+    css: ["default", "metropolis", "metropolis-fonts", "gentle-ggplot2.css"]
+    df_print: kable
     nature:
       ratio: 16:9
       highlightStyle: github
@@ -26,6 +27,7 @@ background-image: url("images/letter-g.jpg")
 knitr::opts_chunk$set(fig.width=4.25, fig.height=3.5, fig.retina=3,
                       message=FALSE, warning=FALSE, cache = TRUE, 
                       autodep = TRUE, hiline=TRUE)
+
 knitr::opts_hooks$set(fig.callout = function(options) {
   if (options$fig.callout) {
     options$echo <- FALSE
@@ -35,14 +37,13 @@ knitr::opts_hooks$set(fig.callout = function(options) {
   }
   options
 })
-hook_source <- knitr::knit_hooks$get('source')
-knitr::knit_hooks$set(source = function(x, options) {
-  if (!is.null(options$hiline) && options$hiline) {
-    x <- stringr::str_replace(x, "^ ?(.+)\\s?#<<", "*\\1")
-  }
-  hook_source(x, options)
-})
-options(htmltools.dir.version = FALSE, width = 90)
+
+options(
+  htmltools.dir.version = FALSE, 
+  width = 90,
+  knitr.table.format = "html"
+)
+
 as_table <- function(...) knitr::kable(..., format='html', digits = 3)
 ```
 
