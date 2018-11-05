@@ -25,6 +25,7 @@ background-image: url("images/letter-g.jpg")
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(fig.width=4.25, fig.height=3.5, fig.retina=3,
+                      out.width = "100%",
                       message=FALSE, warning=FALSE, cache = TRUE, 
                       autodep = TRUE, hiline=TRUE)
 
@@ -143,7 +144,108 @@ library(tidyverse)
 ```
 
 ---
+layout: false
+class: inverse center middle text-white
 
+.font200[gg is for<br>Grammar of Graphics]
+
+---
+layout: true
+# Guess the data behind this plot?
+
+.pull-left[
+### MPG Ratings of Cars
+
+- Manufacturer
+- Model
+- City MPG
+- Highway MPG
+]
+
+---
+
+.pull-right[
+```{r guess-data-from-plot, echo=FALSE}
+df_mpg <- mpg %>% 
+  filter(class %in% c("compact", "suv")) %>% 
+  filter(manufacturer %in% c("toyota", "ford", "audi")) %>% 
+  filter(year == 2008) %>% 
+  group_by(manufacturer, model) %>% 
+  sample_n(1)
+
+g <- ggplot(df_mpg) +
+  aes(x = cty, y = hwy, color = class, shape = manufacturer) +
+  geom_point(size = 4) +
+  labs(x = NULL, y = NULL, shape = NULL, color = NULL) +
+  theme_minimal() +
+  theme(
+    panel.grid = element_blank()
+  )
+
+g + 
+  guides(color = FALSE, shape = FALSE) +
+  theme(axis.text = element_blank())
+```
+]
+
+---
+
+.pull-right[
+```{r echo=FALSE}
+g + guides(color = FALSE, shape = FALSE)
+```
+]
+
+---
+
+.pull-right[
+```{r echo=FALSE}
+g + guides(color = FALSE)
+```
+]
+
+---
+
+.pull-right[
+```{r echo=FALSE}
+g
+```
+]
+
+---
+
+.pull-right[
+```{r echo=FALSE}
+g + theme(panel.grid.major = element_line(color = "grey90"))
+```
+]
+
+---
+
+.pull-right[
+```{r echo=FALSE}
+g + 
+  ggtitle("MPG Ratings") +
+  labs(x = "City", y = "Highway", shape = "Manufacturer", color = "Model") +
+  theme(
+    panel.border = element_rect(fill = NA, color = "grey85"),
+    panel.grid.major = element_line(color = "grey90")
+  )
+```
+]
+
+---
+
+.pull-right[
+```{r echo=FALSE, results='asis'}
+df_mpg %>% 
+  select(manufacturer, class, cty, hwy) %>% 
+  knitr::kable()
+```
+]
+
+---
+layout: false
 ## Other packages you'll need for this adventure
 
 ```{r library-extra, message=FALSE}
