@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 
 # A Gentle Guide to the Grammar of Graphics<br>with <code>ggplot2</code>
 ### Garrick Aden-Buie<br><span class="citation">@grrrck</span>
-### Follow along: <strong>bit.ly/gentle-ggplot2</strong>
+### Slides and code: <strong>bit.ly/gentle-ggplot2</strong>
 
 ---
 
@@ -124,18 +124,18 @@ library(tidyverse)
 ```
 
 ```
-## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+## ── Attaching packages ─────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
 ```
 
 ```
-## ✔ ggplot2 3.1.0     ✔ purrr   0.2.5
+## ✔ ggplot2 3.0.0     ✔ purrr   0.2.5
 ## ✔ tibble  1.4.2     ✔ dplyr   0.7.7
 ## ✔ tidyr   0.8.1     ✔ stringr 1.3.1
 ## ✔ readr   1.1.1     ✔ forcats 0.3.0
 ```
 
 ```
-## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ── Conflicts ────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()
 ```
@@ -143,16 +143,13 @@ library(tidyverse)
 ---
 ## Other packages you'll need for this adventure
 
-We'll be using an excerpt of the [gapminder](http://www.gapminder.org/data/) dataset provided by the [`gapminder` package](https://github.com/jennybc/gapminder) by Jenny Bryan.
+We'll use an excerpt of the [gapminder](http://www.gapminder.org/data/) dataset provided by the [`gapminder` package](https://github.com/jennybc/gapminder) by Jenny Bryan.
 
 &lt;https://github.com/jennybc/gapminder&gt;
 
-```r
-install.packages("gapminder")
-```
-
 
 ```r
+## install.packages("gapminder")
 library(gapminder)
 ```
 
@@ -230,7 +227,7 @@ layout: true
 
 ---
 
-.right-code[
+.right-plot[
 &lt;table&gt;
  &lt;thead&gt;
   &lt;tr&gt;
@@ -245,15 +242,15 @@ layout: true
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; audi &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; compact &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; a4 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; audi &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; compact &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 25 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; a4 quattro &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
@@ -280,15 +277,15 @@ layout: true
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; toyota &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; compact &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; camry solara &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; toyota &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; compact &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 26 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 35 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; corolla &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
@@ -301,6 +298,45 @@ layout: true
 &lt;/tbody&gt;
 &lt;/table&gt;
 ]
+
+---
+layout: false
+# How do we express visuals in words?
+
+.font120[
+- **Data** to be visualized
+]
+
+--
+.font120[
+- **.hlb[Geom]etric objects** that appear on the plot
+]
+
+--
+.font120[
+- **.hlb[Aes]thetic mappings** from data to visual component
+]
+
+--
+.font120[
+- **.hlb[Stat]istics** transform data on the way to visualization
+]
+
+--
+.font120[
+- **.hlb[Coord]inates** organize location of geometric objects
+]
+
+--
+.font120[
+- **.hlb[Scale]s** define the range of values for aesthetics
+]
+
+--
+.font120[
+- **.hlb[Facet]s** group into subplots
+]
+
 
 ---
 layout: true
@@ -505,9 +541,19 @@ layout: true
 
 ---
 
-Geometric objects displayed on the plot:
+.right-column[
+Geometric objects displayed on the plot
 
-.font80[
+.center[
+&lt;img src="index_files/figure-html/geom_demo-1.png" width="450px" /&gt;
+]]
+
+---
+
+.right-column[
+Here are the [some of the most widely used geoms](https://eric.netlify.com/2017/08/10/most-popular-ggplot2-geoms/)
+
+.font70.center[
 | Type | Function |
 |:----:|:--------:|
 | Point | `geom_point()` |
@@ -520,16 +566,17 @@ Geometric objects displayed on the plot:
 | Vert./Horiz. Line | `geom_{vh}line()` |
 | Count | `geom_count()` |
 | Density | `geom_density()` |
+
+&lt;https://eric.netlify.com/2017/08/10/most-popular-ggplot2-geoms/&gt;
 ]
+]
+
 
 ---
 
 .right-column[
-Those are just the [top 10 most popular geoms](https://eric.netlify.com/2017/08/10/most-popular-ggplot2-geoms/)&lt;sup&gt;1&lt;/sup&gt;
 
 See &lt;http://ggplot2.tidyverse.org/reference/&gt; for many more options
-
-Or just start typing `geom_` in RStudio
 
 .font70[
 
@@ -543,13 +590,19 @@ Or just start typing `geom_` in RStudio
 ## [25] "geom_linerange"  "geom_map"        "geom_path"       "geom_point"     
 ## [29] "geom_pointrange" "geom_polygon"    "geom_qq"         "geom_qq_line"   
 ## [33] "geom_quantile"   "geom_raster"     "geom_rect"       "geom_ribbon"    
-## [37] "geom_rug"        "geom_segment"    "geom_sf"         "geom_sf_label"  
-## [41] "geom_sf_text"    "geom_smooth"     "geom_spoke"      "geom_step"      
-## [45] "geom_text"       "geom_tile"       "geom_violin"     "geom_vline"
+## [37] "geom_rug"        "geom_segment"    "geom_sf"         "geom_smooth"    
+## [41] "geom_spoke"      "geom_step"       "geom_text"       "geom_tile"      
+## [45] "geom_violin"     "geom_vline"
 ```
-]]
+]
+]
+--
 
-.footnote[[1] &lt;https://eric.netlify.com/2017/08/10/most-popular-ggplot2-geoms/&gt;]
+.right-column[
+&lt;img src="images/geom.gif" width="200px" style="float: right; margin-right: 100px; margin-top: -25px;"&gt;
+Or just start typing `geom_` in RStudio
+]
+
 
 ---
 layout: true
@@ -661,6 +714,28 @@ ggplot(tidy_pop) +
 ]
 
 ---
+
+
+.left-code[
+
+```r
+g &lt;- ggplot(tidy_pop) +
+  aes(x = year,
+      y = pop,
+      color = country) +
+  geom_point() +
+  geom_line(
+    aes(group = country))
+
+g
+```
+]
+
+.right-plot[
+&lt;img src="index_files/figure-html/first-plot3-out-1.png" width="100%" /&gt;
+]
+
+---
 layout: true
 # gg is for Grammar of Graphics
 
@@ -670,7 +745,7 @@ layout: true
 ### Geoms
 
 ```r
-g + geom_*()
++ geom_*()
 ```
 ]
 ---
@@ -708,688 +783,6 @@ geom_*(mapping, data, stat, position)
 
 ---
 layout: true
-# Example: Stat and Position
----
-
-.pull-left[
-#### Star Wars Characters
-
-.font90[
-
-```r
-sw_chars &lt;- starwars %&gt;% 
-  mutate(
-    n_movies = map_int(films, length), 
-    gender = ifelse(
-      !gender %in% c('female', 'male'), 
-      'other', gender)
-  ) %&gt;% 
-  select(name, gender, n_movies)
-```
-]]
-
-.pull-right[
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt; name &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; gender &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; n_movies &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Luke Skywalker &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; C-3PO &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; other &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; R2-D2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; other &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Darth Vader &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Leia Organa &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Owen Lars &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Beru Whitesun lars &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; R5-D4 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; other &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Biggs Darklighter &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Obi-Wan Kenobi &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Anakin Skywalker &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Wilhuff Tarkin &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Chewbacca &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Han Solo &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Greedo &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Jabba Desilijic Tiure &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; other &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Wedge Antilles &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Jek Tono Porkins &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Yoda &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Palpatine &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Boba Fett &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; IG-88 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; other &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Bossk &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Lando Calrissian &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Lobot &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Ackbar &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Mon Mothma &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Arvel Crynyd &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Wicket Systri Warrick &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Nien Nunb &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Qui-Gon Jinn &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Nute Gunray &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Finis Valorum &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Jar Jar Binks &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Roos Tarpals &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Rugor Nass &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Ric Olié &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Watto &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Sebulba &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Quarsh Panaka &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Shmi Skywalker &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Darth Maul &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Bib Fortuna &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Ayla Secura &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Dud Bolt &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Gasgano &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Ben Quadinaros &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Mace Windu &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Ki-Adi-Mundi &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Kit Fisto &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Eeth Koth &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Adi Gallia &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Saesee Tiin &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Yarael Poof &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Plo Koon &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Mas Amedda &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Gregar Typho &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Cordé &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Cliegg Lars &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Poggle the Lesser &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Luminara Unduli &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Barriss Offee &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Dormé &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Dooku &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Bail Prestor Organa &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Jango Fett &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Zam Wesell &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Dexter Jettster &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Lama Su &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Taun We &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Jocasta Nu &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Ratts Tyerell &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; R4-P17 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Wat Tambor &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; San Hill &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Shaak Ti &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Grievous &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Tarfful &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Raymus Antilles &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Sly Moore &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Tion Medon &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Finn &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Rey &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Poe Dameron &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; BB8 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; other &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Captain Phasma &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Padmé Amidala &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-]
-
----
-
-.left-code[
-
-```r
-ggplot(sw_chars) +
-  aes(x = n_movies) +
-  geom_bar(stat = "count")
-```
-]
-
-.right-plot[
-&lt;img src="index_files/figure-html/stat-example-out-1.png" width="100%" /&gt;
-]
-
-
----
-
-.left-code[
-
-```r
-ggplot(sw_chars) +
-  aes(x = n_movies,
-*     fill = gender) +
-  geom_bar(stat = "count")
-```
-]
-
-.right-plot[
-&lt;img src="index_files/figure-html/stat-example2-out-1.png" width="100%" /&gt;
-]
-
-
----
-
-.pull-left[.font90[
-
-```r
-sw_chars_id &lt;- sw_chars %&gt;% 
-  group_by(n_movies, gender) %&gt;% 
-  tally
-```
-]]
-
-.pull-right[
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:right;"&gt; n_movies &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; gender &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; n &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; other &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 12 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; other &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; other &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; other &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-]
-
----
-
-.left-code[
-
-```r
-ggplot(sw_chars_id) +
-  aes(x = n_movies,
-      y = n,
-      fill = gender) +
-* geom_bar(stat = 'identity')
-```
-
-.font80[Note: `geom_col()` is alias for &lt;br&gt;`geom_bar(stat = 'identity')` ]
-]
-
-.right-plot[
-&lt;img src="index_files/figure-html/stat-example4-out-1.png" width="100%" /&gt;
-]
-
----
-
-.left-code[
-
-```r
-ggplot(sw_chars_id) +
-  aes(x = n_movies,
-      y = n,
-      fill = gender) +
-* geom_col(position = "fill")
-```
-]
-
-.right-plot[
-&lt;img src="index_files/figure-html/stat-example5-out-1.png" width="100%" /&gt;
-]
-
----
-
-.left-code[
-
-```r
-ggplot(sw_chars_id) +
-  aes(x = n_movies,
-      y = n,
-      fill = gender) +
-* geom_col(position = "dodge")
-```
-]
-
-.right-plot[
-&lt;img src="index_files/figure-html/stat-example3-out-1.png" width="100%" /&gt;
-]
-
----
-layout: false
-exclude: true
-# Stat and position are functions too
-
-#### Stat transformations
-
-
-```
-##  [1] "stat_bin"            "stat_bin_2d"         "stat_bin_hex"       
-##  [4] "stat_bin2d"          "stat_binhex"         "stat_boxplot"       
-##  [7] "stat_contour"        "stat_count"          "stat_density"       
-## [10] "stat_density_2d"     "stat_density2d"      "stat_ecdf"          
-## [13] "stat_ellipse"        "stat_function"       "stat_identity"      
-## [16] "stat_qq"             "stat_qq_line"        "stat_quantile"      
-## [19] "stat_sf"             "stat_sf_coordinates" "stat_smooth"        
-## [22] "stat_spoke"          "stat_sum"            "stat_summary"       
-## [25] "stat_summary_2d"     "stat_summary_bin"    "stat_summary_hex"   
-## [28] "stat_summary2d"      "stat_unique"         "stat_ydensity"
-```
-
-#### Position transformations
-
-
-```
-## [1] "position_dodge"       "position_dodge2"      "position_fill"       
-## [4] "position_identity"    "position_jitter"      "position_jitterdodge"
-## [7] "position_nudge"       "position_stack"
-```
-
----
-layout: true
 # gg is for Grammar of Graphics
 
 .left-column[
@@ -1399,9 +792,9 @@ layout: true
 ### Facet
 
 ```r
-g+facet_wrap() 
++facet_wrap() 
 
-g+facet_grid()
++facet_grid()
 ```
 ]
 ---
@@ -1411,11 +804,10 @@ g+facet_grid()
 .right-column[
 
 ```r
-g &lt;- ggplot(sw_chars) +
-  aes(x = n_movies,
-      fill = gender) +
-  geom_bar()
+g + facet_wrap(~ country)
 ```
+
+&lt;img src="index_files/figure-html/geom_facet-1.png" width="90%" /&gt;
 ]
 
 ---
@@ -1423,32 +815,10 @@ g &lt;- ggplot(sw_chars) +
 .right-column[
 
 ```r
-g + facet_wrap(~ gender)
+g + facet_grid(continent ~ country)
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-3-1.png" width="75%" /&gt;
-]
-
----
-
-.right-column[
-
-```r
-g + facet_grid(gender ~ hair_color)
-```
-
-&lt;img src="index_files/figure-html/unnamed-chunk-4-1.png" width="75%" /&gt;
-]
-
----
-
-.right-column[
-
-```r
-g + facet_grid(gender ~ hair_color, scales = 'free_y')
-```
-
-&lt;img src="index_files/figure-html/unnamed-chunk-5-1.png" width="75%" /&gt;
+&lt;img src="index_files/figure-html/geom_grid-1.png" width="90%" /&gt;
 ]
 
 ---
@@ -1463,30 +833,18 @@ layout: true
 ### Labels
 
 ```r
-g + labs()
++ labs()
 ```
 ]
-
 ---
 
 .right-column[
 
 ```r
-g &lt;- g + 
-  labs(
-    x = "Film Appearances",
-    y = "Count of Characters",
-    title = "Recurring Star Wars Characters",
-    subtitle = "How often do characters appear?",
-    fill = "Gender"
-  )
+g + labs(x = "Year", y = "Population")
 ```
-]
 
----
-
-.right-column[
-&lt;img src="index_files/figure-html/unnamed-chunk-7-1.png" width="90%" /&gt;
+&lt;img src="index_files/figure-html/labs-ex-1.png" width="90%" /&gt;
 ]
 
 ---
@@ -1499,10 +857,49 @@ layout: true
 ### Geoms
 ### Facet
 ### Labels
+### Coords
+
+```r
++ coord_*()
+```
+]
+---
+
+.right-column[
+
+```r
+g + coord_flip()
+```
+
+&lt;img src="index_files/figure-html/coord-ex-1.png" width="90%" /&gt;
+]
+
+---
+
+.right-column[
+
+```r
+g + coord_polar()
+```
+
+&lt;img src="index_files/figure-html/coord-ex2-1.png" width="90%" /&gt;
+]
+
+---
+layout: true
+# gg is for Grammar of Graphics
+
+.left-column[
+### Data
+### Aesthetics
+### Geoms
+### Facet
+### Labels
+### Coords
 ### Scales
 
 ```r
-g + scale_*_*()
++ scale_*_*()
 ```
 ]
 ---
@@ -1514,7 +911,7 @@ What parameter do you want to adjust? → `&lt;aes&gt;` &lt;br&gt;
 What type is the parameter? → `&lt;type&gt;`
 
 - I want to change my discrete x-axis&lt;br&gt;`scale_x_discrete()`
-- I want to change point size from continuous variable&lt;br&gt;`scale_size_continuous()`
+- I want to change range of point sizes from continuous variable&lt;br&gt;`scale_size_continuous()`
 - I want to rescale y-axis as log&lt;br&gt;`scale_y_log10()`
 - I want to use a different color palette&lt;br&gt;`scale_fill_discrete()`&lt;br&gt;`scale_color_manual()`
 ]
@@ -1524,12 +921,32 @@ What type is the parameter? → `&lt;type&gt;`
 .right-column[
 
 ```r
-g &lt;- g + scale_fill_brewer(palette = 'Set1')
+g + scale_color_manual(values = c("peru", "pink", "plum"))
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-9-1.png" width="90%" /&gt;
+&lt;img src="index_files/figure-html/scale_ex1-1.png" width="90%" /&gt;
+]
 
+---
 
+.right-column[
+
+```r
+g + scale_y_log10()
+```
+
+&lt;img src="index_files/figure-html/scale_ex2-1.png" width="90%" /&gt;
+]
+
+---
+
+.right-column[
+
+```r
+g + scale_x_discrete(labels = c("MCMXCVII", "MMII", "MMVII"))
+```
+
+&lt;img src="index_files/figure-html/scale_ex4-1.png" width="90%" /&gt;
 ]
 
 ---
@@ -1542,11 +959,12 @@ layout: true
 ### Geoms
 ### Facet
 ### Labels
+### Coords
 ### Scales
 ### Theme
 
 ```r
-g + theme()
++ theme()
 ```
 ]
 
@@ -1597,7 +1015,7 @@ Theme options are supported by helper functions:
 g + theme_bw()
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-10-1.png" width="90%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-1-1.png" width="90%" /&gt;
 ]
 
 ---
@@ -1609,7 +1027,7 @@ g + theme_bw()
 g + theme_minimal() + theme(text = element_text(family = "Palatino"))
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-11-1.png" width="90%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-2-1.png" width="90%" /&gt;
 ]
 ]
 
@@ -1629,6 +1047,8 @@ my_theme &lt;- theme_bw() +
 
 theme_set(my_theme)
 ```
+
+All plots will now use this theme!
 ]
 
 ---
@@ -1639,7 +1059,7 @@ theme_set(my_theme)
 g
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-12-1.png" width="90%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-3-1.png" width="90%" /&gt;
 ]
 
 ---
@@ -1650,8 +1070,26 @@ g
 g + theme(legend.position = 'bottom')
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-13-1.png" width="90%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-4-1.png" width="90%" /&gt;
 ]
+
+---
+layout: false
+# Save Your Work
+
+To save your plot, use **ggsave**
+
+
+```r
+ggsave(
+  filename = "my_plot.png",
+  plot = my_plot,
+  width = 10,
+  height = 8,
+  dpi = 100,
+  device = "png"
+)
+```
 
 ---
 layout: false
@@ -1668,174 +1106,120 @@ class: inverse, center, middle
 
 
 ```r
-data(tips, package = "reshape2")
+library(gapminder)
 ```
 
+
+
 ---
-# head(tips)
+# head(gapminder)
+
+&lt;div class="kable-table"&gt;
 
 &lt;table&gt;
  &lt;thead&gt;
   &lt;tr&gt;
-   &lt;th style="text-align:right;"&gt; total_bill &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; tip &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; sex &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; smoker &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; day &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; time &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; size &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; country &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; continent &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; year &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; lifeExp &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; pop &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; gdpPercap &lt;/th&gt;
   &lt;/tr&gt;
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 16.99 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.01 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Female &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; No &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Sun &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Dinner &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Afghanistan &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Asia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1952 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 28.801 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8425333 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 779.4453 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 10.34 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.66 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Male &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; No &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Sun &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Dinner &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Afghanistan &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Asia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1957 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30.332 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9240934 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 820.8530 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 21.01 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.50 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Male &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; No &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Sun &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Dinner &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Afghanistan &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Asia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1962 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31.997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10267083 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 853.1007 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 23.68 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.31 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Male &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; No &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Sun &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Dinner &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Afghanistan &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Asia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1967 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 34.020 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11537966 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 836.1971 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 24.59 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.61 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Female &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; No &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Sun &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Dinner &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Afghanistan &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Asia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1972 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.088 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13079460 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 739.9811 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 25.29 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 4.71 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Male &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; No &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Sun &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Dinner &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 8.77 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2.00 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Male &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; No &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Sun &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Dinner &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 26.88 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.12 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Male &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; No &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Sun &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Dinner &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 15.04 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.96 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Male &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; No &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Sun &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Dinner &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 14.78 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.23 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Male &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; No &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Sun &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Dinner &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Afghanistan &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Asia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1977 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.438 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14880372 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 786.1134 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 
+&lt;/div&gt;
+
 ---
-# tips: tip histogram
+# summary(gapminder)
 
 
-.left-code[
-
-```r
-ggplot(tips) +
-  aes(x = tip) +
-* geom_histogram(
-*   binwidth = 0.25
-* )
 ```
-]
-
-.right-plot[
-&lt;img src="index_files/figure-html/tips-plot1-out-1.png" width="100%" /&gt;
-]
+        country        continent        year         lifeExp           pop           
+ Afghanistan:  12   Africa  :624   Min.   :1952   Min.   :23.60   Min.   :6.001e+04  
+ Albania    :  12   Americas:300   1st Qu.:1966   1st Qu.:48.20   1st Qu.:2.794e+06  
+ Algeria    :  12   Asia    :396   Median :1980   Median :60.71   Median :7.024e+06  
+ Angola     :  12   Europe  :360   Mean   :1980   Mean   :59.47   Mean   :2.960e+07  
+ Argentina  :  12   Oceania : 24   3rd Qu.:1993   3rd Qu.:70.85   3rd Qu.:1.959e+07  
+ Australia  :  12                  Max.   :2007   Max.   :82.60   Max.   :1.319e+09  
+ (Other)    :1632                                                                    
+   gdpPercap       
+ Min.   :   241.2  
+ 1st Qu.:  1202.1  
+ Median :  3531.8  
+ Mean   :  7215.3  
+ 3rd Qu.:  9325.5  
+ Max.   :113523.1  
+                   
+```
 
 ---
+class: fullscreen
 layout: true
-# tips: tip density
 ---
 
 .left-code[
 
 ```r
-ggplot(tips) +
-  aes(x = tip) +
-* geom_density(
-*   aes(fill = day)
-* )
+ggplot(gapminder) +
+  aes(x = gdpPercap,
+      y = lifeExp)
 ```
 ]
 
 .right-plot[
-&lt;img src="index_files/figure-html/tips-plot-density1-out-1.png" width="100%" /&gt;
-]
-
----
-
-
-.left-code[
-
-```r
-ggplot(tips) +
-  aes(x = tip) +
-  geom_density(
-    aes(fill = day),
-*   alpha = 0.4
-  )
-```
-]
-
-.right-plot[
-&lt;img src="index_files/figure-html/tips-plot-density2-out-1.png" width="100%" /&gt;
+![](index_files/figure-html/gapminder-le-gdp-1-1.png)
 ]
 
 ---
@@ -1843,54 +1227,15 @@ ggplot(tips) +
 .left-code[
 
 ```r
-ggplot(tips) +
-  aes(x = tip/total_bill) +
-  geom_density(
-    aes(fill = day)
-  ) +
-* facet_wrap(~ day)
-```
-]
-
-.right-plot[
-&lt;img src="index_files/figure-html/tips-plot-density3-out-1.png" width="100%" /&gt;
-]
-
----
-layout: true
-# tips: tip vs total
----
-
-.left-code[
-
-```r
-ggplot(tips) +
-  aes(x = total_bill,
-*     y = tip) +
+ggplot(gapminder) +
+  aes(x = gdpPercap,
+      y = lifeExp) +
 * geom_point()
 ```
 ]
 
 .right-plot[
-&lt;img src="index_files/figure-html/tips-plot-total1-out-1.png" width="100%" /&gt;
-]
-
----
-
-
-.left-code[
-
-```r
-ggplot(tips) +
-  aes(x = total_bill,
-      y = tip) +
-  geom_point() +
-* geom_smooth(method = "lm")
-```
-]
-
-.right-plot[
-&lt;img src="index_files/figure-html/tips-plot-total2-out-1.png" width="100%" /&gt;
+![](index_files/figure-html/gapminder-le-gdp-2-1.png)
 ]
 
 ---
@@ -1898,64 +1243,16 @@ ggplot(tips) +
 .left-code[
 
 ```r
-ggplot(tips) +
-  aes(x = total_bill,
-      y = tip) +
-  geom_point() +
-  geom_smooth(method = "lm")+ 
-* geom_abline(
-*   slope = c(0.2, 0.15),
-*   intercept = 0,
-    color = c('#69b578', 
-              "#dd1144"),
-    linetype = 3)
-```
-]
-
-.right-plot[
-&lt;img src="index_files/figure-html/tips-plot-total3-out-1.png" width="100%" /&gt;
-]
-
----
-
-.left-code[
-
-```r
-ggplot(tips) +
-  aes(x = total_bill,
-*     y = tip/total_bill) +
-  geom_point() +
-* geom_hline(
-    yintercept = c(0.2, 0.15),
-    color = c('#69b578', 
-              "#dd1144"),
-    linetype = 1)
-```
-]
-
-.right-plot[
-&lt;img src="index_files/figure-html/tips-plot-total4-out-1.png" width="100%" /&gt;
-]
-
-
----
-
-.left-code[
-
-```r
-*tips$percent &lt;-
-* tips$tip/tips$total_bill
-
-ggplot(tips) +
-  aes(x = size,
-*     y = percent,
-*     color = smoker) +
+ggplot(gapminder) +
+  aes(x = gdpPercap,
+      y = lifeExp,
+*     color = continent) +
   geom_point()
 ```
 ]
 
 .right-plot[
-&lt;img src="index_files/figure-html/tips-plot-total5-out-1.png" width="100%" /&gt;
+![](index_files/figure-html/gapminder-le-gdp-3-1.png)
 ]
 
 ---
@@ -1963,38 +1260,37 @@ ggplot(tips) +
 .left-code[
 
 ```r
-tips$percent &lt;- 
-  tips$tip/tips$total_bill
-
-ggplot(tips) +
-  aes(x = size,
-      y = percent,
-      color = smoker) +
-* geom_jitter(width = 0.25)
+ggplot(gapminder) +
+  aes(x = gdpPercap,
+      y = lifeExp,
+      color = continent) +
+  geom_point() +
+* scale_x_log10()
 ```
 ]
 
 .right-plot[
-&lt;img src="index_files/figure-html/tips-plot-total5b-out-1.png" width="100%" /&gt;
+![](index_files/figure-html/gapminder-le-gdp-4-1.png)
 ]
 
 ---
 
-
 .left-code[
 
 ```r
-ggplot(tips) +
-  aes(x = day,
-      y = percent,
-      color = sex) +
-  geom_jitter(width = 0.25) +
-* facet_grid(time ~ smoker)
+ggplot(gapminder) +
+  aes(x = gdpPercap,
+      y = lifeExp,
+      color = continent) +
+  geom_point() +
+  scale_x_log10() +
+* facet_wrap(~ continent) +
+* guides(color = FALSE)
 ```
 ]
 
 .right-plot[
-&lt;img src="index_files/figure-html/tips-plot-total6-out-1.png" width="100%" /&gt;
+![](index_files/figure-html/gapminder-le-gdp-5-1.png)
 ]
 
 ---
@@ -2002,25 +1298,19 @@ ggplot(tips) +
 .left-code[
 
 ```r
-tips &lt;- mutate(tips,
-* time = factor(time,
-*   c("Lunch", "Dinner")),
-* day = factor(day,
-*   c("Thur", "Fri",
-*     "Sat", "Sun")
-  ))
-
-ggplot(tips) +
-  aes(x = day,
-      y = percent,
-      color = sex) +
-  geom_jitter(width = 0.25) +
-  facet_grid(time ~ smoker)
+ggplot(gapminder) +
+  aes(x = gdpPercap,
+      y = lifeExp,
+      color = continent) +
+* geom_point(size = 0.25) +
+  scale_x_log10() +
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
 ```
 ]
 
 .right-plot[
-&lt;img src="index_files/figure-html/tips-plot-total62-out-1.png" width="100%" /&gt;
+![](index_files/figure-html/gapminder-le-gdp-6-1.png)
 ]
 
 ---
@@ -2028,57 +1318,95 @@ ggplot(tips) +
 .left-code[
 
 ```r
-ggplot(tips) +
-  aes(x = day,
-      y = percent,
-      fill = time) +
-* geom_boxplot() +
-  facet_grid(. ~ smoker)
+ggplot(gapminder) +
+  aes(x = gdpPercap,
+      y = lifeExp,
+      color = continent) +
+* geom_line() +
+  geom_point(size = 0.25) +
+  scale_x_log10() +
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
 ```
 ]
 
 .right-plot[
-&lt;img src="index_files/figure-html/tips-plot-total7-out-1.png" width="100%" /&gt;
+![](index_files/figure-html/gapminder-le-gdp-7-1.png)
 ]
+
 ---
 
 .left-code[
 
 ```r
-ggplot(tips) +
-  aes(x = day,
-      y = percent,
-*     color = smoker,
-*     fill  = smoker) +
-* geom_violin(alpha = 0.3) +
-  facet_wrap(~ smoker)
+ggplot(gapminder) +
+  aes(x = gdpPercap,
+      y = lifeExp,
+      color = continent) +
+  geom_line(
+*   aes(group = country)
+  ) +
+  geom_point(size = 0.25) +
+  scale_x_log10() +
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
+```
+
+.font200.center[&amp;#x1F914;]
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-le-gdp-8-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+ggplot(gapminder) +
+* aes(x = year,
+*     y = gdpPercap,
+      color = continent) +
+  geom_line(
+    aes(group = country)
+  ) +
+  geom_point(size = 0.25) +
+* scale_y_log10() +
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
 ```
 ]
 
 .right-plot[
-&lt;img src="index_files/figure-html/tips-plot-total8-out-1.png" width="100%" /&gt;
+![](index_files/figure-html/gapminder-gdp-year-1-1.png)
 ]
+
 ---
 
 .left-code[
 
 ```r
-g &lt;- ggplot(tips) +
-  aes(x = day,
-      y = percent,
-      color = smoker,
-      fill = smoker) +
-  geom_violin(alpha = 0.3) + 
-* geom_jitter(alpha = 0.4,
-*             width = 0.25,
-*             size  = 0.8)+
-  facet_wrap(~ smoker)
-g
+ggplot(gapminder) +
+  aes(x = year,
+      y = gdpPercap,
+      color = continent) +
+  geom_line(
+    aes(group = country)
+  ) +
+  geom_point(size = 0.25) +
+  scale_y_log10() +
+* scale_x_continuous(
+*   breaks =
+*     seq(1950, 2000, 25)
+* ) +
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
 ```
 ]
 
 .right-plot[
-&lt;img src="index_files/figure-html/tips-plot-total9-out-1.png" width="100%" /&gt;
+![](index_files/figure-html/gapminder-gdp-year-2-1.png)
 ]
 
 ---
@@ -2086,18 +1414,1063 @@ g
 .left-code[
 
 ```r
-g + guides(color = FALSE,
-           fill  = FALSE) +
-  labs(x = '', 
-       y = 'Tip Rate') +
-* scale_y_continuous(
-*   labels = scales::percent
+ggplot(gapminder) +
+  aes(x = year, 
+*     y = lifeExp,
+      color = continent) +
+  geom_line(
+    aes(group = country)
+  ) +
+  geom_point(size = 0.25) +
+* #scale_y_log10() +
+  scale_x_continuous(
+    breaks = 
+      seq(1950, 2000, 25)
+  ) +  
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-le-year-1-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+ggplot(gapminder) +
+  aes(x = year, 
+      y = lifeExp,
+      color = continent) +
+  geom_line(
+    aes(group = country)
+  ) +
+  geom_point(size = 0.25) +
+* geom_smooth() +
+  scale_x_continuous(
+    breaks = 
+      seq(1950, 2000, 25)
+  ) +  
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-le-year-2-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+ggplot(gapminder) +
+  aes(x = year, 
+      y = lifeExp,
+      color = continent) +
+  geom_line(
+    aes(group = country),
+*   color = "grey75"
+  ) +
+  geom_point(size = 0.25) +
+  geom_smooth() + 
+  scale_x_continuous(
+    breaks = 
+      seq(1950, 2000, 25)
+  ) +  
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-le-year-3-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+ggplot(gapminder) +
+  aes(x = year, 
+      y = lifeExp,
+      color = continent) +
+  geom_line(
+    aes(group = country),
+    color = "grey75"
+  ) +
+* #geom_point(size = 0.25) +
+  geom_smooth() + 
+  scale_x_continuous(
+    breaks = 
+      seq(1950, 2000, 25)
+  ) +  
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-le-year-4-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+ggplot(gapminder) +
+  aes(x = year, 
+      y = lifeExp,
+      color = continent) +
+  geom_line(
+    aes(group = country),
+    color = "grey75"
+  ) +
+  geom_smooth() + 
+  # scale_x_continuous(
+  #   breaks = 
+  #     seq(1950, 2000, 25)
+  # ) +  
+* # facet_wrap(~ continent) +
+  guides(color = FALSE)
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-le-year-5-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+ggplot(gapminder) +
+  aes(x = year, 
+      y = lifeExp,
+      color = continent) +
+  geom_line(
+    aes(group = country),
+    color = "grey75"
+  ) +
+  geom_smooth() + 
+* theme(
+* legend.position = "bottom"
 * )
 ```
 ]
 
 .right-plot[
-&lt;img src="index_files/figure-html/tips-plot-total10-out-1.png" width="100%" /&gt;
+![](index_files/figure-html/gapminder-le-year-6-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+ggplot(gapminder) +
+  aes(x = year, 
+      y = lifeExp,
+      color = continent) +
+  geom_line(
+    aes(group = country),
+    color = "grey75"
+  ) +
+  geom_smooth() + 
+* theme_minimal() +
+  theme(
+  legend.position = "bottom"
+  )
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-le-year-7-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+ggplot(gapminder) +
+  aes(x = year, 
+      y = lifeExp,
+      color = continent) +
+  geom_line(
+    aes(group = country),
+    color = "grey75"
+  ) +
+  geom_smooth() + 
+  theme_minimal( 
+*   base_size = 8) +
+  theme(
+  legend.position = "bottom"
+  )
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-le-year-8-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+americas &lt;- 
+  gapminder %&gt;% 
+  filter(
+    country %in% c(
+      "United States",
+      "Canada",
+      "Mexico",
+      "Ecuador"
+    )
+  )
+```
+]
+
+.right-plot[
+&lt;!-- ![](index_files/figure-html/gapminder-le-year-8-1.png) --&gt;
+&lt;div class="kable-table"&gt;
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; country &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; continent &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; year &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; lifeExp &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; pop &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; gdpPercap &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1952 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 68.750 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14785584 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11367.161 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1957 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 69.960 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17010154 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12489.950 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1962 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 71.300 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18985849 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13462.486 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1967 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 72.130 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20819767 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16076.588 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1972 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 72.880 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22284500 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18970.571 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1977 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 74.210 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 23796400 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22090.883 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1982 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 75.760 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 25201900 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22898.792 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1987 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 76.860 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26549700 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26626.515 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1992 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 77.950 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 28523502 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26342.884 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 78.610 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30305843 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 28954.926 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 79.770 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31902268 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33328.965 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 80.653 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33390141 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36319.235 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1952 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.357 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3548753 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3522.111 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1957 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 51.356 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4058385 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3780.547 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1962 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 54.640 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4681707 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4086.114 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1967 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 56.678 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5432424 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4579.074 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1972 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 58.796 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6298651 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5280.995 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1977 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 61.310 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7278866 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6679.623 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1982 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 64.342 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8365850 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7213.791 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1987 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 67.231 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9545158 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6481.777 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1992 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 69.613 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10748394 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7103.703 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 72.312 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11911819 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7429.456 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 74.173 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12921234 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5773.045 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 74.994 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13755680 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6873.262 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1952 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.789 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30144317 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3478.126 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1957 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 55.190 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35015548 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4131.547 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1962 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 58.299 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41121485 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4581.609 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1967 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 60.110 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47995559 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5754.734 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1972 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 62.361 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 55984294 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6809.407 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1977 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 65.032 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 63759976 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7674.929 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1982 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 67.405 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 71640904 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9611.148 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1987 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 69.498 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 80122492 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8688.156 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1992 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 71.455 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 88111030 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9472.384 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 73.670 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 95895146 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9767.298 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 74.902 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 102479927 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10742.441 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 76.195 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 108700891 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11977.575 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1952 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 68.440 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 157553000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13990.482 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1957 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 69.490 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 171984000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14847.127 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1962 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 70.210 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 186538000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16173.146 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1967 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 70.760 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 198712000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19530.366 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1972 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 71.340 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 209896000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21806.036 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1977 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 73.380 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 220239000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 24072.632 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1982 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 74.650 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 232187835 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 25009.559 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1987 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 75.020 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 242803533 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 29884.350 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1992 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 76.090 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 256894189 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 32003.932 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 76.810 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 272911760 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35767.433 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 77.310 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 287675526 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39097.100 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 78.242 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 301139947 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42951.653 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;/div&gt;
+]
+
+---
+
+.left-code[
+
+```r
+ggplot(americas) +
+  aes(
+    x = year,
+    y = pop
+  ) +
+  geom_col()
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-americas-1-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+ggplot(americas) +
+  aes(
+    x = year,
+    y = pop,
+*   fill = country
+  ) +
+  geom_col()
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-americas-2-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+ggplot(americas) +
+  aes(
+    x = year,
+    y = pop,
+    fill = country
+  ) +
+  geom_col(
+*   position = "dodge"
+  )
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-americas-3-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+ggplot(americas) +
+  aes(
+    x = year,
+*   y = pop / 10^6,
+    fill = country
+  ) +
+  geom_col(
+    position = "dodge" 
+  )
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-americas-4-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+ggplot(americas) +
+  aes(
+    x = year,
+    y = pop / 10^6,
+    fill = country
+  ) +
+  geom_col(
+    position = "dodge" 
+  ) +
+* facet_wrap(~ country) +
+* guides(fill = FALSE)
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-americas-5-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+ggplot(americas) +
+  aes(
+    x = year,
+    y = pop / 10^6,
+    fill = country
+  ) +
+  geom_col(
+    position = "dodge" 
+  ) +
+  facet_wrap(~ country,
+*   scales = "free_y") +
+  guides(fill = FALSE)
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-americas-6-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+ggplot(americas) +
+  aes(
+    x = year,
+*   y = lifeExp,
+    fill = country
+  ) +
+  geom_col(
+    position = "dodge" 
+  ) +
+  facet_wrap(~ country,
+    scales = "free_y") +
+  guides(fill = FALSE)
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-americas-7-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+ggplot(americas) +
+  aes(
+    x = year,
+    y = lifeExp,
+    fill = country
+  ) +
+* geom_line() +
+  facet_wrap(~ country,
+    scales = "free_y") +
+  guides(fill = FALSE)
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-americas-8-1.png)
+]
+
+
+---
+
+.left-code[
+
+```r
+ggplot(americas) +
+  aes(
+    x = year,
+    y = lifeExp,
+*   color = country
+  ) +
+  geom_line() +
+  facet_wrap(~ country,
+    scales = "free_y") +
+* guides(color = FALSE)
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-americas-9-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+ggplot(americas) +
+  aes(
+    x = year,
+    y = lifeExp,
+    color = country
+  ) +
+  geom_line()
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-americas-10-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+gapminder %&gt;% 
+  filter(
+    continent == "Americas"
+* ) %&gt;%
+* ggplot() +
+  aes(
+    x = year,
+    y = lifeExp
+  )
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-all-americas-1-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+gapminder %&gt;% 
+  filter(
+    continent == "Americas"
+  ) %&gt;%
+  ggplot() +
+  aes(
+    x = year,
+    y = lifeExp
+  ) +
+* geom_boxplot()
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-all-americas-2-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+gapminder %&gt;% 
+  filter(
+    continent == "Americas"
+  ) %&gt;%
+* mutate(
+*   year = factor(year)
+* ) %&gt;%
+  ggplot() +
+  aes(
+    x = year,
+    y = lifeExp
+  ) +
+  geom_boxplot()
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-all-americas-3-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+gapminder %&gt;% 
+  # filter(
+  #   continent == "Americas"
+  # ) %&gt;%
+  mutate(
+    year = factor(year)
+  ) %&gt;% 
+  ggplot() +
+  aes(
+    x = year,
+    y = lifeExp
+  ) +
+  geom_boxplot()
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-all-americas-4-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+gapminder %&gt;% 
+  mutate(
+    year = factor(year)
+  ) %&gt;% 
+  ggplot() +
+  aes(
+    x = year,
+    y = lifeExp,
+*   fill = continent
+  ) +
+  geom_boxplot()
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-all-americas-5-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+gapminder %&gt;% 
+  mutate(
+    year = factor(year)
+  ) %&gt;% 
+  ggplot() +
+  aes(
+    x = year,
+    y = lifeExp,
+    fill = continent
+  ) +
+  geom_boxplot() +
+* coord_flip()
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-all-americas-6-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+gapminder %&gt;% 
+  mutate(
+*   decade = floor(year / 10),
+*   decade = decade * 10,
+*   decade = factor(decade)
+  ) %&gt;% 
+  ggplot() +
+  aes(
+*   x = decade,
+    y = lifeExp,
+    fill = continent
+  ) +
+  geom_boxplot() +
+  coord_flip()
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-all-americas-7-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+g &lt;- gapminder %&gt;% 
+* filter(
+*   continent != "Oceania"
+* ) %&gt;%
+  mutate(
+    decade = floor(year / 10) * 10, decade = factor(decade)      
+  ) %&gt;% 
+  ggplot() +
+  aes(
+    x = decade,
+    y = lifeExp,
+    fill = continent
+  ) +
+  geom_boxplot() +
+  coord_flip()
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-all-americas-8-1.png)
+]
+
+---
+
+.left-code[
+
+```r
+g +
+  theme_minimal(8) +
+  labs(
+    x = "Life Expectancy",
+    y = "Decade",
+    fill = NULL,
+    title = "Life Expectancy by Continent and Decade",
+    caption = "gapminder.org"
+  )
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-all-americas-9-1.png)
 ]
 
 ---
@@ -2106,475 +2479,145 @@ class: inverse, center, middle
 
 # Level up
 
-
 ```r
-data(babynames, 'babynames')
+Inspired by "The Best Stats You've Ever Seen" by Hans Rosling
+
+http://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen
 ```
 
 ---
-# head(babynames)
-
-The [babynames package](https://github.com/hadley/babynames) contains data provided by the USA social security administration:
-
-* `babynames`: For each year from 1880 to 2015, the number of children of &lt;br&gt;
-  each sex given each name. All names with more than 5 uses are given.
-
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:right;"&gt; year &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; sex &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; name &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; n &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; prop &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1947 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; M &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Corky &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 12 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1986 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; M &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Ezra &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 163 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; M &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Sinceer &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1969 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; F &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Celena &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 57 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2001 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; M &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Ashraf &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1982 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; F &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Tynisha &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 57 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
----
-layout: true
-# Most popular baby names in 2015
----
-
-.pull-left[
-
-```r
-babynames_pop2015 &lt;- babynames %&gt;% 
-  filter(year == 2015) %&gt;% 
-  mutate(
-    n = n/1000,
-    sex = case_when(
-      sex == "F" ~ "Girl Names",
-      TRUE ~ "Boy Names"
-  )) %&gt;% 
-  group_by(sex) %&gt;% 
-  top_n(10, n)
-```
-]
-
-.pull-right[
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:right;"&gt; year &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; sex &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; name &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; n &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; prop &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2015 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Boy Names &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Noah &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 19.511 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.010 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2015 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Boy Names &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Liam &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 18.281 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.009 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2015 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Boy Names &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Mason &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 16.535 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.008 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2015 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Boy Names &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Jacob &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 15.816 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.008 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2015 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Girl Names &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Emma &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 20.355 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.011 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2015 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Girl Names &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Olivia &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 19.553 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.010 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2015 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Girl Names &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Sophia &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 17.327 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.009 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2015 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Girl Names &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Ava &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 16.286 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.008 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-]
-
----
+# Create the initial layout
 
 
 ```r
-g_babynames &lt;- ggplot(babynames_pop2015) +
-* aes(y = n, x = name) +
-* geom_col()
+g_hr &lt;- 
+  ggplot(gapminder) +
+  aes(x = gdpPercap, y = lifeExp, size = pop, color = country) +
+  geom_point() +
+  facet_wrap(~year)
 ```
 
 .plot-callout[
-&lt;img src="index_files/figure-html/unnamed-chunk-19-1.png" width="100%" height="99%" /&gt;
+![](index_files/figure-html/hans-rosling-1-1.png)
 ]
 
 ---
+# Hide the guides
 
 
 ```r
-g_babynames &lt;- ggplot(babynames_pop2015) +
-  aes(y = n, x = name) +
-  geom_col() +
-* coord_flip()
+g_hr &lt;- 
+  ggplot(gapminder) +
+  aes(x = gdpPercap, y = lifeExp, size = pop, color = country) +
+  geom_point() +
+  facet_wrap(~year) +
+  guides(color = FALSE, size = FALSE)
 ```
 
 .plot-callout[
-&lt;img src="index_files/figure-html/unnamed-chunk-20-1.png" width="100%" height="99%" /&gt;
+![](index_files/figure-html/hans-rosling-1a-1.png)
 ]
 
 ---
+# Adjust scales of x-axis, color, and size
 
 
 ```r
-g_babynames &lt;- ggplot(babynames_pop2015) +
-* aes(y = n, x = fct_reorder(name, n)) +
-  geom_col() +
-  coord_flip()
-```
-
-&lt;br&gt;📦 `fct_reorder` comes from the tidyverse package `forecats`
-
-.plot-callout[
-&lt;img src="index_files/figure-html/unnamed-chunk-21-1.png" width="100%" height="99%" /&gt;
-]
-
----
-
-
-```r
-g_babynames &lt;- ggplot(babynames_pop2015) +
-* aes(y = n, x = fct_reorder(name, n), fill = sex) +
-  geom_col() +
-  coord_flip()
+g_hr &lt;- 
+  g_hr +
+  scale_x_log10(breaks = c(10^3, 10^4, 10^5), labels = c("1k", "10k", "100k")) +
+  scale_color_manual(values = gapminder::country_colors) +
+  scale_size(range = c(0.5, 12))
 ```
 
 .plot-callout[
-&lt;img src="index_files/figure-html/unnamed-chunk-22-1.png" width="100%" height="99%" /&gt;
+![](index_files/figure-html/hans-rosling-2-1.png)
 ]
 
 ---
+# Tweak Anotations
+
+&lt;br&gt;&lt;br&gt;
 
 
 ```r
-g_babynames &lt;- ggplot(babynames_pop2015) +
-  aes(y = n, x = fct_reorder(name, n), fill = sex) +
-  geom_col() +
-  coord_flip() +
-* facet_wrap( ~ sex, scales = 'free_y')
-```
-
-.plot-callout[
-&lt;img src="index_files/figure-html/unnamed-chunk-23-1.png" width="100%" height="99%" /&gt;
-]
-
----
-
-```r
-g_babynames &lt;- ggplot(babynames_pop2015) +
-  aes(y = n, x = fct_reorder(name, n), fill = sex) +
-  geom_col() +
-* geom_text(
-*   aes(label = format(n*1000, big.mark = ',')),
-*   size = 9, hjust = 1.1, 
-*   color = 'white', family = 'Fira Sans'
-* ) +
-  coord_flip() +
-  facet_wrap( ~ sex, scales = 'free_y')
-```
-
-.plot-callout[
-&lt;img src="index_files/figure-html/unnamed-chunk-24-1.png" width="100%" height="99%" /&gt;
-]
-
----
-
-
-```r
-g_babynames +
-  labs(x = '', 
-       y = 'Number of Babies Born in 2015 (thousands)') + 
-  guides(fill = FALSE) +
-  scale_fill_manual(
-    values = c("Boy Names"  = "#77cbb9",
-               "Girl Names" = "#a077cb")) +
+g_hr &lt;- 
+  g_hr +
+  labs(
+    x = "GDP per capita",
+    y = "Life Expectancy"
+  ) +
+  theme_minimal(base_family = "Fira Sans") +
   theme(
-    strip.text = element_text(face = 'bold', size = 20),
-    strip.background = element_blank(),
-    text = element_text(size = 24)
+    strip.text = element_text(size = 16, face = "bold"),
+    panel.border = element_rect(fill = NA, color = "grey40"),
+    panel.grid.minor = element_blank()
   )
 ```
 
-.plot-callout[
-&lt;img src="index_files/figure-html/babynames-popular-out-callout-1.png" width="100%" height="99%" /&gt;
+.plot-callout.top-right[
+![](index_files/figure-html/hans-rosling-3-1.png)
 ]
 
 ---
+# The final code and plot
 
-&lt;img src="index_files/figure-html/babynames-popular-out-1.png" width="100%" /&gt;
+.font70[
+
+```r
+ggplot(gapminder) +
+  aes(x = gdpPercap, y = lifeExp, size = pop, color = country) +
+  geom_point() +
+  facet_wrap(~year) +
+  guides(color = FALSE, size = FALSE) +
+  scale_x_log10(
+    breaks = c(10^3, 10^4, 10^5), 
+    labels = c("1k", "10k", "100k")) +
+  scale_color_manual(values = gapminder::country_colors) +
+  scale_size(range = c(0.5, 12)) +
+  labs(
+    x = "GDP per capita",
+    y = "Life Expectancy") +
+  theme_minimal(14, base_family = "Fira Sans") +
+  theme(
+    strip.text = element_text(size = 16, face = "bold"),
+    panel.border = element_rect(fill = NA, color = "grey40"),
+    panel.grid.minor = element_blank())
+```
+]
 
 ---
-layout: true
-# Gender-bending baby names
+class: fullscreen
+background-image: url(index_files/figure-html/hans-rosling-final-1.png)
+background-size: cover
+
 ---
+# Special Bonus: Animated!
 
-Find babynames that were
+.left-code[
 
-1. More "boyish" or "girlish" in pre-1900s and opposite in post-1900s
 
-2. Pick top 10 boy ↔ girl names
+.font70[
+
+```r
+# library(devtools)
+# install_github("thomasp85/gganimate")
+library(gganimate)
+
+# Same plot without facet_wrap()
+g_hra + 
+  transition_states(year, 1, 0) + 
+  ggtitle("{closest_state}")
+```
+]
+]
+
 --
 
-
-
-**Boy → Girl Names:**&lt;br&gt; Madison, Ashley, Alexis, Lauren, Taylor, Addison, Sydney, Allison, Morgan, Aubrey
-
-**Girl → Boy Names:**&lt;br&gt; Ollie, Jean, Lou, Cruz, Frankie, Alpha, Artie, Vinnie, Donnie, Lue
-
----
-
-.pull-left[
-Data-preprocessing:
-
-1. Un-tidy `sex` column into `Female` and `Male`
-
-2. Calculate difference in proportion by name
-
-3. Add groups for area plot (thank you [stackoverflow](https://stackoverflow.com/a/7883556)!)
-
-&lt;br&gt;&lt;br&gt;Check out `babynames-prep.R` in repo
+.right-plot[
+![](images/hans-rosling-esque.gif)
 ]
 
-.pull-right[
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:right;"&gt; year &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; name &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; prop &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; prop_group &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1913 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Ashley &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; -0.00006 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1925 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Jean &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.00892 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1931 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Donnie &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; -0.00012 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1940 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Artie &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; -0.00001 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1942 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Morgan &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; -0.00008 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1946 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Jean &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.00521 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1953 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Morgan &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; -0.00007 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1973 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Morgan &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; -0.00010 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1991 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Donnie &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; -0.00012 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Alexis &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.00754 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-]
-
----
-
-
-```r
-ggplot(sel_change_babynames) + 
-  aes(x = year, y = prop)
-```
-
-.plot-callout[
-&lt;img src="index_files/figure-html/genben-plot1-out-1.png" width="100%" height="99%" /&gt;
-]
-
----
-
-
-```r
-ggplot(sel_change_babynames) + 
-  aes(x = year, y = prop) +
-* geom_line(color = "grey50", aes(group=name))
-```
-
-.plot-callout[
-&lt;img src="index_files/figure-html/genben-plot2-out-1.png" width="100%" height="99%" /&gt;
-]
-
----
-
-
-```r
-ggplot(sel_change_babynames) + 
-  aes(x = year, y = prop, fill = prop &gt; 0) +
-* geom_area(aes(group = prop_group)) +
-  geom_line(color = "grey50", aes(group=name))+
-* facet_wrap(~ name, scales = 'free_y', ncol = 5)
-```
-
-.plot-callout[
-&lt;img src="index_files/figure-html/genben-plot3-out-1.png" width="100%" height="99%" /&gt;
-]
-
----
-
-
-```r
-g_bnc &lt;- ggplot(sel_change_babynames) + 
-  aes(x = year, y = prop, fill = prop &gt; 0) +
-  geom_area(aes(group = prop_group)) +
-  geom_line(color = "grey50", aes(group=name))+
-  facet_wrap(~ name, scales = 'free_y', ncol = 5) + 
-* scale_fill_manual(values = c("#6ec4db", "#fa7c92")) +
-* guides(fill = FALSE) +
-* labs(x = '', y = '')
-
-g_bnc
-```
-
-.plot-callout[
-&lt;img src="index_files/figure-html/genben-plot4-out-1.png" width="100%" height="99%" /&gt;
-]
-
-
----
-
-
-```r
-g_bnc &lt;- g_bnc +
-  theme_minimal(base_family = 'Palatino') +
-  theme(
-    axis.text.y = element_blank(),
-    strip.text = element_text(size = 18, face = 'bold'),
-    panel.grid.major.y = element_blank(),
-    panel.grid.minor.y = element_blank(),
-    panel.grid.minor.x = element_blank(),
-    panel.grid.major.x = element_line(color = "grey80", linetype = 3))
-```
-
-.plot-callout[
-&lt;img src="index_files/figure-html/genben-plot5-out-1.png" width="100%" height="99%" /&gt;
-]
-
----
-
-&lt;img src="index_files/figure-html/genben-plot-out-1.png" width="100%" height="99%" /&gt;
 
 ---
 layout: false
@@ -2587,15 +2630,17 @@ layout: true
 ---
 
 ![](images/stack-exchange-search.png)
+
 ---
-![](images/stack-exchange-answer.png)
+
+&lt;img src="images/stack-exchange-answer.png" style="max-height: 100%"&gt;
 
 ---
 layout: false
 
 # ggplot2 Extensions: ggplot2-exts.org
 
-![](images/ggplot2-exts-gallery.png)
+&lt;img src="images/ggplot2-exts-gallery.png" style="max-height: 100%"&gt;
 
 ---
 # ggplot2 and beyond
@@ -2610,6 +2655,8 @@ layout: false
 
 ### Noteworthy RStudio Add-Ins
 
+- [esquisse](https://github.com/dreamRs/esquisse): Interactively build ggplot2 plots
+
 - [ggplotThemeAssist](https://github.com/calligross/ggthemeassist): Customize your ggplot theme interactively
 
 - [ggedit](https://github.com/metrumresearchgroup/ggedit): Layer, scale, and theme editing
@@ -2617,6 +2664,10 @@ layout: false
 ---
 
 # Practice and Review
+
+### #TidyTuesday
+
+- &lt;https://github.com/rfordatascience/tidytuesday&gt;
 
 ### Fun Datasets
 
@@ -2626,11 +2677,9 @@ layout: false
 
 - `ggplot2movies`
 
-- `population` and `who` in `tidyr`
-
 ### Review
 
-- Slides and code on GitHub: &lt;http://github.com/gadenbuie/trug-ggplot2&gt;
+- Slides and code on GitHub: &lt;http://github.com/gadenbuie/gentle-ggplot2&gt;
 
 ---
 class: inverse, center, middle
@@ -2646,9 +2695,9 @@ Garrick Aden-Buie
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
 "ratio": "16:9",
-"highlightStyle": "github",
+"highlightStyle": "foundation",
 "highlightLines": true,
-"countIncrementalSlides": false,
+"countIncrementalSlides": true,
 "slideNumberFormat": "%current%"
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {

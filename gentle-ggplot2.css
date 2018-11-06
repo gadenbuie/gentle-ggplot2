@@ -6,6 +6,11 @@ img {
   max-height: 525px;
 }
 
+strong {
+  color: #23373B;
+  font-weight: 500;
+}
+
 .title-slide {
   background-image: url(images/hex-ggplot2.png);
   background-size: 25%;
@@ -44,6 +49,11 @@ img {
   color: #ff3e41; */
   color: #d14;
   font-weight: 400;
+}
+.hlb {
+  /* color: #d16666;
+  color: #ff3e41; */
+  color: #d14;
 }
 
 .left-code {
@@ -100,9 +110,9 @@ img {
 }
 
 .plot-callout {
-  height: 225px;
-  width: 450px;
-  bottom: 5%;
+  height: 300px;
+  width: 600px;
+  bottom: 10%;
   right: 5%;
   position: absolute;
   padding: 0px;

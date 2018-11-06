@@ -2,7 +2,7 @@
 title: "A Gentle Guide to the Grammar of Graphics<br>with `ggplot2`"
 subtitle: ""
 author: "Garrick Aden-Buie<br>@grrrck"
-date: "Follow along: **bit.ly/gentle-ggplot2**"
+date: "Slides and code: **bit.ly/gentle-ggplot2**"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -10,9 +10,9 @@ output:
     df_print: kable
     nature:
       ratio: 16:9
-      highlightStyle: github
+      highlightStyle: "foundation"
       highlightLines: true
-      countIncrementalSlides: false
+      countIncrementalSlides: true
       slideNumberFormat: "%current%"
 editor_options: 
   chunk_output_type: console
@@ -42,6 +42,7 @@ knitr::opts_hooks$set(fig.callout = function(options) {
 options(
   htmltools.dir.version = FALSE, 
   width = 90,
+  max.print = 9999,
   knitr.table.format = "html"
 )
 
@@ -146,15 +147,12 @@ library(tidyverse)
 ---
 ## Other packages you'll need for this adventure
 
-We'll be using an excerpt of the [gapminder](http://www.gapminder.org/data/) dataset provided by the [`gapminder` package](https://github.com/jennybc/gapminder) by Jenny Bryan.
+We'll use an excerpt of the [gapminder](http://www.gapminder.org/data/) dataset provided by the [`gapminder` package](https://github.com/jennybc/gapminder) by Jenny Bryan.
 
 <https://github.com/jennybc/gapminder>
 
-```r
+```{r library-extra, message=FALSE, eval=-1}
 install.packages("gapminder")
-```
-
-```{r library-extra, message=FALSE}
 library(gapminder)
 ```
 
@@ -275,13 +273,52 @@ g +
 
 ---
 
-.right-code[
+.right-plot[
 ```{r guess-data-from-plot-data, echo=FALSE, results='asis'}
 df_mpg %>% 
   select(manufacturer, class, cty, hwy, model) %>% 
   knitr::kable()
 ```
 ]
+
+---
+layout: false
+# How do we express visuals in words?
+
+.font120[
+- **Data** to be visualized
+]
+
+--
+.font120[
+- **.hlb[Geom]etric objects** that appear on the plot
+]
+
+--
+.font120[
+- **.hlb[Aes]thetic mappings** from data to visual component
+]
+
+--
+.font120[
+- **.hlb[Stat]istics** transform data on the way to visualization
+]
+
+--
+.font120[
+- **.hlb[Coord]inates** organize location of geometric objects
+]
+
+--
+.font120[
+- **.hlb[Scale]s** define the range of values for aesthetics
+]
+
+--
+.font120[
+- **.hlb[Facet]s** group into subplots
+]
+
 
 ---
 layout: true
@@ -412,9 +449,42 @@ layout: true
 
 ---
 
-Geometric objects displayed on the plot:
+.right-column[
+Geometric objects displayed on the plot
 
-.font80[
+.center[
+```{r geom_demo, echo=FALSE, out.width="450px"}
+minimal_theme <- theme_bw() +
+  theme(
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    panel.grid = element_blank(),
+    panel.border = element_blank(),
+    axis.title = element_blank(),
+    plot.title = element_text(face = "bold", hjust = 0.5)
+  )
+
+set.seed(4242)
+df_geom <- data_frame(y = rnorm(10), x = 1:10)
+
+g_geom <- list()
+g_geom$point <- ggplot(df_geom, aes(x, y)) + geom_point() + ggtitle("geom_point")
+g_geom$line <- ggplot(df_geom, aes(x, y)) + geom_line() + ggtitle("geom_line")
+g_geom$bar <- ggplot(df_geom, aes(x, y)) + geom_col() + ggtitle("geom_bar")
+g_geom$boxplot <- ggplot(df_geom, aes(y = y)) + geom_boxplot() + ggtitle("geom_boxplot") + labs(x = "x")
+
+g_geom <- map(g_geom, ~ . + minimal_theme)
+
+cowplot::plot_grid(plotlist = g_geom)
+```
+]]
+
+---
+
+.right-column[
+Here are the [some of the most widely used geoms](https://eric.netlify.com/2017/08/10/most-popular-ggplot2-geoms/)
+
+.font70.center[
 | Type | Function |
 |:----:|:--------:|
 | Point | `geom_point()` |
@@ -427,16 +497,17 @@ Geometric objects displayed on the plot:
 | Vert./Horiz. Line | `geom_{vh}line()` |
 | Count | `geom_count()` |
 | Density | `geom_density()` |
+
+<https://eric.netlify.com/2017/08/10/most-popular-ggplot2-geoms/>
 ]
+]
+
 
 ---
 
 .right-column[
-Those are just the [top 10 most popular geoms](https://eric.netlify.com/2017/08/10/most-popular-ggplot2-geoms/)<sup>1</sup>
 
 See <http://ggplot2.tidyverse.org/reference/> for many more options
-
-Or just start typing `geom_` in RStudio
 
 .font70[
 ```{r ggplot2-geom-names, echo=FALSE}
@@ -445,9 +516,15 @@ old_width = options(width = 80)
 lsf.str("package:ggplot2") %>% grep("^geom_", ., value = TRUE)
 options(width = old_width$width)
 ```
-]]
+]
+]
+--
 
-.footnote[[1] <https://eric.netlify.com/2017/08/10/most-popular-ggplot2-geoms/>]
+.right-column[
+<img src="images/geom.gif" width="200px" style="float: right; margin-right: 100px; margin-top: -25px;">
+Or just start typing `geom_` in RStudio
+]
+
 
 ---
 layout: true
@@ -559,6 +636,28 @@ ggplot(tidy_pop) +
 ]
 
 ---
+
+
+.left-code[
+```{r first-plot3, eval=FALSE}
+g <- ggplot(tidy_pop) +
+  aes(x = year,
+      y = pop,
+      color = country) +
+  geom_point() +
+  geom_line(
+    aes(group = country))
+
+g
+```
+]
+
+.right-plot[
+```{r first-plot3-out, ref.label='first-plot2', echo=FALSE, out.width="100%"}
+```
+]
+
+---
 layout: true
 # gg is for Grammar of Graphics
 
@@ -568,7 +667,7 @@ layout: true
 ### Geoms
 
 ```r
-g + geom_*()
++ geom_*()
 ```
 ]
 ---
@@ -606,152 +705,6 @@ geom_*(mapping, data, stat, position)
 
 ---
 layout: true
-# Example: Stat and Position
----
-
-.pull-left[
-#### Star Wars Characters
-
-.font90[
-```{r stat-prep}
-sw_chars <- starwars %>% 
-  mutate(
-    n_movies = map_int(films, length), 
-    gender = ifelse(
-      !gender %in% c('female', 'male'), 
-      'other', gender)
-  ) %>% 
-  select(name, gender, n_movies)
-```
-]]
-
-.pull-right[
-```{r stat-prep-table, echo=FALSE}
-as_table(sw_chars)
-```
-]
-
----
-
-.left-code[
-```{r stat-example, eval=FALSE}
-ggplot(sw_chars) +
-  aes(x = n_movies) +
-  geom_bar(stat = "count")
-```
-]
-
-.right-plot[
-```{r stat-example-out, ref.label='stat-example', echo=FALSE, out.width="100%"}
-```
-]
-
-
----
-
-.left-code[
-```{r stat-example2, eval=FALSE}
-ggplot(sw_chars) +
-  aes(x = n_movies,
-      fill = gender) + #<<
-  geom_bar(stat = "count")
-```
-]
-
-.right-plot[
-```{r stat-example2-out, ref.label='stat-example2', echo=FALSE, out.width="100%"}
-```
-]
-
-
----
-
-.pull-left[.font90[
-```{r stat-prep-identity}
-sw_chars_id <- sw_chars %>% 
-  group_by(n_movies, gender) %>% 
-  tally
-```
-]]
-
-.pull-right[
-```{r stat-prep-identity-table, echo=FALSE}
-as_table(sw_chars_id)
-```
-]
-
----
-
-.left-code[
-```{r stat-example4, eval=FALSE}
-ggplot(sw_chars_id) +
-  aes(x = n_movies,
-      y = n,
-      fill = gender) +
-  geom_bar(stat = 'identity') #<<
-```
-
-.font80[Note: `geom_col()` is alias for <br>`geom_bar(stat = 'identity')` ]
-]
-
-.right-plot[
-```{r stat-example4-out, ref.label='stat-example4', echo=FALSE, out.width="100%"}
-```
-]
-
----
-
-.left-code[
-```{r stat-example5, eval=FALSE}
-ggplot(sw_chars_id) +
-  aes(x = n_movies,
-      y = n,
-      fill = gender) +
-  geom_col(position = "fill") #<<
-```
-]
-
-.right-plot[
-```{r stat-example5-out, ref.label='stat-example5', echo=FALSE, out.width="100%"}
-```
-]
-
----
-
-.left-code[
-```{r stat-example3, eval=FALSE}
-ggplot(sw_chars_id) +
-  aes(x = n_movies,
-      y = n,
-      fill = gender) +
-  geom_col(position = "dodge") #<<
-```
-]
-
-.right-plot[
-```{r stat-example3-out, ref.label='stat-example3', echo=FALSE, out.width="100%"}
-```
-]
-
----
-layout: false
-exclude: true
-# Stat and position are functions too
-
-#### Stat transformations
-
-```{r echo=FALSE}
-lsf.str("package:ggplot2") %>% grep("^stat_", ., value = TRUE)
-```
-
-#### Position transformations
-
-```{r, echo=FALSE}
-lsf.str("package:ggplot2") %>% grep("^position_", ., value = TRUE)
-```
-
----
-layout: true
 # gg is for Grammar of Graphics
 
 .left-column[
@@ -761,60 +714,35 @@ layout: true
 ### Facet
 
 ```r
-g+facet_wrap() 
++facet_wrap() 
 
-g+facet_grid()
++facet_grid()
 ```
 ]
 ---
 
-```{r facet_example_setup, include=FALSE}
-sw_chars <- starwars %>% 
-  mutate(
-    n_movies = map_int(films, length),
-    gender = ifelse(
-      !gender %in% c("female", "male"), 
-      "other", gender),
-    hair_color = case_when(
-      str_detect(hair_color, "blond") ~ "blond",
-      str_detect(hair_color, "brown") ~ "brown",
-      str_detect(hair_color, "auburn") ~ "auburn",
-      str_detect(hair_color, "(grey|white)") ~ "grey/white",
-      TRUE ~ "other"
-    )
-  )
+```{r geom_facet_setup, include=FALSE}
+tidy_pop <- left_join(tidy_pop, select(gapminder, country, continent))
+
+g <- ggplot(tidy_pop) +
+  aes(x = year,
+      y = pop,
+      color = country) +
+  geom_point() +
+  geom_line(aes(group = country))
 ```
 
 .right-column[
-```{r facet_wrap_example, eval=TRUE}
-g <- ggplot(sw_chars) +
-  aes(x = n_movies,
-      fill = gender) +
-  geom_bar()
+```{r geom_facet, echo=TRUE, out.width="90%", fig.width=6}
+g + facet_wrap(~ country)
 ```
 ]
 
 ---
 
 .right-column[
-```{r, out.width="75%", fig.width=6}
-g + facet_wrap(~ gender)
-```
-]
-
----
-
-.right-column[
-```{r, out.width="75%", fig.width=6}
-g + facet_grid(gender ~ hair_color)
-```
-]
-
----
-
-.right-column[
-```{r, out.width="75%", fig.width=6}
-g + facet_grid(gender ~ hair_color, scales = 'free_y')
+```{r geom_grid, echo=TRUE, out.width="90%", fig.width=6}
+g + facet_grid(continent ~ country)
 ```
 ]
 
@@ -830,30 +758,14 @@ layout: true
 ### Labels
 
 ```r
-g + labs()
++ labs()
 ```
 ]
-
 ---
 
 .right-column[
-```{r}
-g <- g + 
-  labs(
-    x = "Film Appearances",
-    y = "Count of Characters",
-    title = "Recurring Star Wars Characters",
-    subtitle = "How often do characters appear?",
-    fill = "Gender"
-  )
-```
-]
-
----
-
-.right-column[
-```{r, echo=FALSE, out.width="90%", fig.width=5}
-g
+```{r labs-ex, echo=TRUE, out.width="90%", fig.width=6}
+g + labs(x = "Year", y = "Population")
 ```
 ]
 
@@ -867,10 +779,43 @@ layout: true
 ### Geoms
 ### Facet
 ### Labels
+### Coords
+
+```r
++ coord_*()
+```
+]
+---
+
+.right-column[
+```{r coord-ex, echo=TRUE, out.width="90%", fig.width=6}
+g + coord_flip()
+```
+]
+
+---
+
+.right-column[
+```{r coord-ex2, echo=TRUE, out.width="90%", fig.width=6}
+g + coord_polar()
+```
+]
+
+---
+layout: true
+# gg is for Grammar of Graphics
+
+.left-column[
+### Data
+### Aesthetics
+### Geoms
+### Facet
+### Labels
+### Coords
 ### Scales
 
 ```r
-g + scale_*_*()
++ scale_*_*()
 ```
 ]
 ---
@@ -882,7 +827,7 @@ What parameter do you want to adjust? → `<aes>` <br>
 What type is the parameter? → `<type>`
 
 - I want to change my discrete x-axis<br>`scale_x_discrete()`
-- I want to change point size from continuous variable<br>`scale_size_continuous()`
+- I want to change range of point sizes from continuous variable<br>`scale_size_continuous()`
 - I want to rescale y-axis as log<br>`scale_y_log10()`
 - I want to use a different color palette<br>`scale_fill_discrete()`<br>`scale_color_manual()`
 ]
@@ -890,15 +835,25 @@ What type is the parameter? → `<type>`
 ---
 
 .right-column[
-```{r}
-g <- g + scale_fill_brewer(palette = 'Set1')
+```{r scale_ex1, out.width="90%", fig.width=6}
+g + scale_color_manual(values = c("peru", "pink", "plum"))
 ```
+]
 
-```{r, echo=FALSE, out.width="90%", fig.width=6}
-g
+---
+
+.right-column[
+```{r scale_ex2, out.width="90%", fig.width=6}
+g + scale_y_log10()
 ```
+]
 
+---
 
+.right-column[
+```{r scale_ex4, out.width="90%", fig.width=6}
+g + scale_x_discrete(labels = c("MCMXCVII", "MMII", "MMVII"))
+```
 ]
 
 ---
@@ -911,11 +866,12 @@ layout: true
 ### Geoms
 ### Facet
 ### Labels
+### Coords
 ### Scales
 ### Theme
 
 ```r
-g + theme()
++ theme()
 ```
 ]
 
@@ -991,6 +947,8 @@ my_theme <- theme_bw() +
 
 theme_set(my_theme)
 ```
+
+All plots will now use this theme!
 ]
 
 ---
@@ -1011,6 +969,23 @@ g + theme(legend.position = 'bottom')
 
 ---
 layout: false
+# Save Your Work
+
+To save your plot, use **ggsave**
+
+```{r ggsave, eval=FALSE}
+ggsave(
+  filename = "my_plot.png",
+  plot = my_plot,
+  width = 10,
+  height = 8,
+  dpi = 100,
+  device = "png"
+)
+```
+
+---
+layout: false
 count: hide
 class: fullscreen, inverse, top, left, text-white
 background-image: url(images/super-grover.jpg)
@@ -1023,334 +998,859 @@ class: inverse, center, middle
 # "Live" Coding
 
 ```{r}
-data(tips, package = "reshape2")
+library(gapminder)
+```
+
+```{r reset_theme, include=FALSE}
+theme_set(theme_gray())
 ```
 
 ---
-# head(tips)
+# head(gapminder)
 
-```{r, echo=FALSE}
-as_table(head(tips, 10))
+```{r head-gapminder, echo=FALSE}
+head(gapminder)
 ```
 
 ---
-# tips: tip histogram
+# summary(gapminder)
 
-
-.left-code[
-```{r tips-plot1, eval=FALSE}
-ggplot(tips) +
-  aes(x = tip) +
-  geom_histogram(   #<<
-    binwidth = 0.25 #<<
-  )                 #<<
+```{r summary-gapminder, echo=FALSE, comment=""}
+summary(gapminder)
 ```
-]
-
-.right-plot[
-```{r tips-plot1-out, ref.label="tips-plot1", echo=FALSE, out.width="100%"}
-```
-]
 
 ---
+class: fullscreen
 layout: true
-# tips: tip density
 ---
 
 .left-code[
-```{r tips-plot-density1, eval=FALSE}
-ggplot(tips) +
-  aes(x = tip) +
-  geom_density(     #<<
-    aes(fill = day) #<<
-  )                 #<<
+```{r gapminder-le-gdp-1, fig.show="hide"}
+ggplot(gapminder) +
+  aes(x = gdpPercap,
+      y = lifeExp)
 ```
 ]
 
 .right-plot[
-```{r tips-plot-density1-out, ref.label="tips-plot-density1", echo=FALSE, out.width="100%"}
-```
+![](`r knitr::fig_chunk("gapminder-le-gdp-1", "png")`)
 ]
 
 ---
 
-
 .left-code[
-```{r tips-plot-density2, eval=FALSE}
-ggplot(tips) +
-  aes(x = tip) +
-  geom_density(
-    aes(fill = day),
-    alpha = 0.4 #<<
-  )
+```{r gapminder-le-gdp-2, fig.show="hide"}
+ggplot(gapminder) +
+  aes(x = gdpPercap,
+      y = lifeExp) +
+  geom_point() #<<
 ```
 ]
 
 .right-plot[
-```{r tips-plot-density2-out, ref.label="tips-plot-density2", echo=FALSE, out.width="100%"}
-```
+![](`r knitr::fig_chunk("gapminder-le-gdp-2", "png")`)
 ]
 
 ---
 
 .left-code[
-```{r tips-plot-density3, eval=FALSE}
-ggplot(tips) +
-  aes(x = tip/total_bill) +
-  geom_density(
-    aes(fill = day)
-  ) +
-  facet_wrap(~ day) #<<
-```
-]
-
-.right-plot[
-```{r tips-plot-density3-out, ref.label="tips-plot-density3", echo=FALSE, out.width="100%"}
-```
-]
-
----
-layout: true
-# tips: tip vs total
----
-
-.left-code[
-```{r tips-plot-total1, eval=FALSE}
-ggplot(tips) +
-  aes(x = total_bill,
-      y = tip) + #<<
-  geom_point()   #<<
-```
-]
-
-.right-plot[
-```{r tips-plot-total1-out, ref.label="tips-plot-total1", echo=FALSE, out.width="100%"}
-```
-]
-
----
-
-
-.left-code[
-```{r tips-plot-total2, eval=FALSE}
-ggplot(tips) +
-  aes(x = total_bill,
-      y = tip) +
-  geom_point() +
-  geom_smooth(method = "lm") #<<
-```
-]
-
-.right-plot[
-```{r tips-plot-total2-out, ref.label="tips-plot-total2", echo=FALSE, out.width="100%"}
-```
-]
-
----
-
-.left-code[
-```{r tips-plot-total3, eval=FALSE}
-ggplot(tips) +
-  aes(x = total_bill,
-      y = tip) +
-  geom_point() +
-  geom_smooth(method = "lm")+ 
-  geom_abline(            #<<
-    slope = c(0.2, 0.15), #<<
-    intercept = 0,        #<<
-    color = c('#69b578', 
-              "#dd1144"),
-    linetype = 3)
-```
-]
-
-.right-plot[
-```{r tips-plot-total3-out, ref.label="tips-plot-total3", echo=FALSE, out.width="100%"}
-```
-]
-
----
-
-.left-code[
-```{r tips-plot-total4, eval=FALSE}
-ggplot(tips) +
-  aes(x = total_bill,
-      y = tip/total_bill) + #<<
-  geom_point() +
-  geom_hline( #<<
-    yintercept = c(0.2, 0.15),
-    color = c('#69b578', 
-              "#dd1144"),
-    linetype = 1)
-```
-]
-
-.right-plot[
-```{r tips-plot-total4-out, ref.label="tips-plot-total4", echo=FALSE, out.width="100%"}
-```
-]
-
-
----
-
-.left-code[
-```{r tips-plot-total5, eval=FALSE}
-tips$percent <-  #<<
-  tips$tip/tips$total_bill #<<
-
-ggplot(tips) +
-  aes(x = size,
-      y = percent, #<<
-      color = smoker) + #<<
+```{r gapminder-le-gdp-3, fig.show="hide"}
+ggplot(gapminder) +
+  aes(x = gdpPercap,
+      y = lifeExp,
+      color = continent) + #<<
   geom_point()
 ```
 ]
 
 .right-plot[
-```{r tips-plot-total5-out, ref.label="tips-plot-total5", echo=FALSE, out.width="100%"}
-```
+![](`r knitr::fig_chunk("gapminder-le-gdp-3", "png")`)
 ]
 
 ---
 
 .left-code[
-```{r tips-plot-total5b, eval=FALSE}
-tips$percent <- 
-  tips$tip/tips$total_bill
-
-ggplot(tips) +
-  aes(x = size,
-      y = percent,
-      color = smoker) +
-  geom_jitter(width = 0.25) #<<
+```{r gapminder-le-gdp-4, fig.show="hide"}
+ggplot(gapminder) +
+  aes(x = gdpPercap,
+      y = lifeExp,
+      color = continent) +
+  geom_point() +
+  scale_x_log10() #<<
 ```
 ]
 
 .right-plot[
-```{r tips-plot-total5b-out, ref.label="tips-plot-total5b", echo=FALSE, out.width="100%"}
-```
+![](`r knitr::fig_chunk("gapminder-le-gdp-4", "png")`)
 ]
 
 ---
 
-
 .left-code[
-```{r tips-plot-total6, eval=FALSE}
-ggplot(tips) +
-  aes(x = day,
-      y = percent,
-      color = sex) +
-  geom_jitter(width = 0.25) +
-  facet_grid(time ~ smoker) #<<
+```{r gapminder-le-gdp-5, fig.show="hide"}
+ggplot(gapminder) +
+  aes(x = gdpPercap,
+      y = lifeExp,
+      color = continent) +
+  geom_point() +
+  scale_x_log10() +
+  facet_wrap(~ continent) + #<<
+  guides(color = FALSE)     #<<
 ```
 ]
 
 .right-plot[
-```{r tips-plot-total6-out, ref.label="tips-plot-total6", echo=FALSE, out.width="100%"}
-```
+![](`r knitr::fig_chunk("gapminder-le-gdp-5", "png")`)
 ]
 
 ---
 
 .left-code[
-```{r tips-plot-total62, eval=FALSE}
-tips <- mutate(tips,
-  time = factor(time, #<<
-    c("Lunch", "Dinner")), #<<
-  day = factor(day, #<<
-    c("Thur", "Fri", #<<
-      "Sat", "Sun") #<<
-  ))
-
-ggplot(tips) +
-  aes(x = day,
-      y = percent,
-      color = sex) +
-  geom_jitter(width = 0.25) +
-  facet_grid(time ~ smoker)
+```{r gapminder-le-gdp-6, fig.show="hide"}
+ggplot(gapminder) +
+  aes(x = gdpPercap,
+      y = lifeExp,
+      color = continent) +
+  geom_point(size = 0.25) + #<<
+  scale_x_log10() +
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
 ```
 ]
 
 .right-plot[
-```{r tips-plot-total62-out, ref.label="tips-plot-total62", echo=FALSE, out.width="100%"}
-```
+![](`r knitr::fig_chunk("gapminder-le-gdp-6", "png")`)
 ]
 
 ---
 
 .left-code[
-```{r tips-plot-total7, eval=FALSE}
-ggplot(tips) +
-  aes(x = day,
-      y = percent,
-      fill = time) +
-  geom_boxplot() + #<<
-  facet_grid(. ~ smoker)
+```{r gapminder-le-gdp-7, fig.show="hide"}
+ggplot(gapminder) +
+  aes(x = gdpPercap,
+      y = lifeExp,
+      color = continent) +
+  geom_line() + #<<
+  geom_point(size = 0.25) +
+  scale_x_log10() +
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
 ```
 ]
 
 .right-plot[
-```{r tips-plot-total7-out, ref.label="tips-plot-total7", echo=FALSE, out.width="100%"}
-```
+![](`r knitr::fig_chunk("gapminder-le-gdp-7", "png")`)
 ]
+
 ---
 
 .left-code[
-```{r tips-plot-total8, eval=FALSE}
-ggplot(tips) +
-  aes(x = day,
-      y = percent,
-      color = smoker, #<<
-      fill  = smoker) + #<<
-  geom_violin(alpha = 0.3) + #<<
-  facet_wrap(~ smoker)
+```{r gapminder-le-gdp-8, fig.show="hide"}
+ggplot(gapminder) +
+  aes(x = gdpPercap,
+      y = lifeExp,
+      color = continent) +
+  geom_line(
+    aes(group = country) #<<
+  ) +
+  geom_point(size = 0.25) +
+  scale_x_log10() +
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
+```
+
+.font200.center[&#x1F914;]
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-le-gdp-8", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-gdp-year-1, fig.show="hide"}
+ggplot(gapminder) +
+  aes(x = year, #<<
+      y = gdpPercap, #<<
+      color = continent) +
+  geom_line(
+    aes(group = country)
+  ) +
+  geom_point(size = 0.25) +
+  scale_y_log10() + #<<
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
 ```
 ]
 
 .right-plot[
-```{r tips-plot-total8-out, ref.label="tips-plot-total8", echo=FALSE, out.width="100%"}
-```
+![](`r knitr::fig_chunk("gapminder-gdp-year-1", "png")`)
 ]
+
 ---
 
 .left-code[
-```{r tips-plot-total9, eval=FALSE, hiline=TRUE}
-g <- ggplot(tips) +
-  aes(x = day,
-      y = percent,
-      color = smoker,
-      fill = smoker) +
-  geom_violin(alpha = 0.3) + 
-  geom_jitter(alpha = 0.4,   #<<
-              width = 0.25,  #<<
-              size  = 0.8)+  #<<
-  facet_wrap(~ smoker)
+```{r gapminder-gdp-year-2, fig.show="hide"}
+ggplot(gapminder) +
+  aes(x = year,
+      y = gdpPercap,
+      color = continent) +
+  geom_line(
+    aes(group = country)
+  ) +
+  geom_point(size = 0.25) +
+  scale_y_log10() +
+  scale_x_continuous(            #<<
+    breaks = #<<
+      seq(1950, 2000, 25) #<<
+  ) +                            #<<
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-gdp-year-2", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-le-year-1, fig.show="hide"}
+ggplot(gapminder) +
+  aes(x = year, 
+      y = lifeExp, #<<
+      color = continent) +
+  geom_line(
+    aes(group = country)
+  ) +
+  geom_point(size = 0.25) +
+  #scale_y_log10() + #<<
+  scale_x_continuous(
+    breaks = 
+      seq(1950, 2000, 25)
+  ) +  
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-le-year-1", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-le-year-2, fig.show="hide"}
+ggplot(gapminder) +
+  aes(x = year, 
+      y = lifeExp,
+      color = continent) +
+  geom_line(
+    aes(group = country)
+  ) +
+  geom_point(size = 0.25) +
+  geom_smooth() + #<<
+  scale_x_continuous(
+    breaks = 
+      seq(1950, 2000, 25)
+  ) +  
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-le-year-2", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-le-year-3, fig.show="hide"}
+ggplot(gapminder) +
+  aes(x = year, 
+      y = lifeExp,
+      color = continent) +
+  geom_line(
+    aes(group = country),
+    color = "grey75" #<<
+  ) +
+  geom_point(size = 0.25) +
+  geom_smooth() + 
+  scale_x_continuous(
+    breaks = 
+      seq(1950, 2000, 25)
+  ) +  
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-le-year-3", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-le-year-4, fig.show="hide"}
+ggplot(gapminder) +
+  aes(x = year, 
+      y = lifeExp,
+      color = continent) +
+  geom_line(
+    aes(group = country),
+    color = "grey75"
+  ) +
+  #geom_point(size = 0.25) + #<<
+  geom_smooth() + 
+  scale_x_continuous(
+    breaks = 
+      seq(1950, 2000, 25)
+  ) +  
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-le-year-4", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-le-year-5, fig.show="hide"}
+ggplot(gapminder) +
+  aes(x = year, 
+      y = lifeExp,
+      color = continent) +
+  geom_line(
+    aes(group = country),
+    color = "grey75"
+  ) +
+  geom_smooth() + 
+  # scale_x_continuous(
+  #   breaks = 
+  #     seq(1950, 2000, 25)
+  # ) +  
+  # facet_wrap(~ continent) + #<<
+  guides(color = FALSE)
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-le-year-5", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-le-year-6, fig.show="hide"}
+ggplot(gapminder) +
+  aes(x = year, 
+      y = lifeExp,
+      color = continent) +
+  geom_line(
+    aes(group = country),
+    color = "grey75"
+  ) +
+  geom_smooth() + 
+  theme( #<<
+  legend.position = "bottom" #<<
+  ) #<<
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-le-year-6", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-le-year-7, fig.show="hide"}
+ggplot(gapminder) +
+  aes(x = year, 
+      y = lifeExp,
+      color = continent) +
+  geom_line(
+    aes(group = country),
+    color = "grey75"
+  ) +
+  geom_smooth() + 
+  theme_minimal() + #<<
+  theme(
+  legend.position = "bottom"
+  )
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-le-year-7", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-le-year-8, fig.show="hide"}
+ggplot(gapminder) +
+  aes(x = year, 
+      y = lifeExp,
+      color = continent) +
+  geom_line(
+    aes(group = country),
+    color = "grey75"
+  ) +
+  geom_smooth() + 
+  theme_minimal( 
+    base_size = 8) + #<<
+  theme(
+  legend.position = "bottom"
+  )
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-le-year-8", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-americas-data, fig.show="hide"}
+americas <- 
+  gapminder %>% 
+  filter(
+    country %in% c(
+      "United States",
+      "Canada",
+      "Mexico",
+      "Ecuador"
+    )
+  )
+```
+]
+
+.right-plot[
+<!-- ![](`r knitr::fig_chunk("gapminder-le-year-8", "png")`) -->
+```{r echo=FALSE}
+americas
+```
+]
+
+---
+
+.left-code[
+```{r gapminder-americas-1, fig.show="hide"}
+ggplot(americas) +
+  aes(
+    x = year,
+    y = pop
+  ) +
+  geom_col()
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-americas-1", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-americas-2, fig.show="hide"}
+ggplot(americas) +
+  aes(
+    x = year,
+    y = pop,
+    fill = country #<<
+  ) +
+  geom_col()
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-americas-2", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-americas-3, fig.show="hide"}
+ggplot(americas) +
+  aes(
+    x = year,
+    y = pop,
+    fill = country
+  ) +
+  geom_col(
+    position = "dodge" #<<
+  )
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-americas-3", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-americas-4, fig.show="hide"}
+ggplot(americas) +
+  aes(
+    x = year,
+    y = pop / 10^6, #<<
+    fill = country
+  ) +
+  geom_col(
+    position = "dodge" 
+  )
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-americas-4", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-americas-5, fig.show="hide"}
+ggplot(americas) +
+  aes(
+    x = year,
+    y = pop / 10^6,
+    fill = country
+  ) +
+  geom_col(
+    position = "dodge" 
+  ) +
+  facet_wrap(~ country) + #<<
+  guides(fill = FALSE) #<<
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-americas-5", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-americas-6, fig.show="hide"}
+ggplot(americas) +
+  aes(
+    x = year,
+    y = pop / 10^6,
+    fill = country
+  ) +
+  geom_col(
+    position = "dodge" 
+  ) +
+  facet_wrap(~ country,
+    scales = "free_y") + #<<
+  guides(fill = FALSE)
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-americas-6", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-americas-7, fig.show="hide"}
+ggplot(americas) +
+  aes(
+    x = year,
+    y = lifeExp, #<<
+    fill = country
+  ) +
+  geom_col(
+    position = "dodge" 
+  ) +
+  facet_wrap(~ country,
+    scales = "free_y") +
+  guides(fill = FALSE)
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-americas-7", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-americas-8, fig.show="hide"}
+ggplot(americas) +
+  aes(
+    x = year,
+    y = lifeExp,
+    fill = country
+  ) +
+  geom_line() + #<<
+  facet_wrap(~ country,
+    scales = "free_y") +
+  guides(fill = FALSE)
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-americas-8", "png")`)
+]
+
+
+---
+
+.left-code[
+```{r gapminder-americas-9, fig.show="hide"}
+ggplot(americas) +
+  aes(
+    x = year,
+    y = lifeExp,
+    color = country #<<
+  ) +
+  geom_line() +
+  facet_wrap(~ country,
+    scales = "free_y") +
+  guides(color = FALSE) #<<
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-americas-9", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-americas-10, fig.show="hide"}
+ggplot(americas) +
+  aes(
+    x = year,
+    y = lifeExp,
+    color = country
+  ) +
+  geom_line()
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-americas-10", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-all-americas-1, fig.show="hide"}
+gapminder %>% 
+  filter(
+    continent == "Americas"
+  ) %>% #<<
+  ggplot() + #<<
+  aes(
+    x = year,
+    y = lifeExp
+  )
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-all-americas-1", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-all-americas-2, fig.show="hide"}
+gapminder %>% 
+  filter(
+    continent == "Americas"
+  ) %>%
+  ggplot() +
+  aes(
+    x = year,
+    y = lifeExp
+  ) +
+  geom_boxplot() #<<
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-all-americas-2", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-all-americas-3, fig.show="hide"}
+gapminder %>% 
+  filter(
+    continent == "Americas"
+  ) %>%
+  mutate( #<<
+    year = factor(year) #<<
+  ) %>%  #<<
+  ggplot() +
+  aes(
+    x = year,
+    y = lifeExp
+  ) +
+  geom_boxplot()
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-all-americas-3", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-all-americas-4, fig.show="hide"}
+gapminder %>% 
+  # filter(
+  #   continent == "Americas"
+  # ) %>%
+  mutate(
+    year = factor(year)
+  ) %>% 
+  ggplot() +
+  aes(
+    x = year,
+    y = lifeExp
+  ) +
+  geom_boxplot()
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-all-americas-4", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-all-americas-5, fig.show="hide"}
+gapminder %>% 
+  mutate(
+    year = factor(year)
+  ) %>% 
+  ggplot() +
+  aes(
+    x = year,
+    y = lifeExp,
+    fill = continent #<<
+  ) +
+  geom_boxplot()
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-all-americas-5", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-all-americas-6, fig.show="hide"}
+gapminder %>% 
+  mutate(
+    year = factor(year)
+  ) %>% 
+  ggplot() +
+  aes(
+    x = year,
+    y = lifeExp,
+    fill = continent
+  ) +
+  geom_boxplot() +
+  coord_flip() #<<
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-all-americas-6", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-all-americas-7, fig.show="hide"}
+gapminder %>% 
+  mutate(
+    decade = floor(year / 10), #<<
+    decade = decade * 10,      #<<
+    decade = factor(decade)      #<<
+  ) %>% 
+  ggplot() +
+  aes(
+    x = decade, #<<
+    y = lifeExp,
+    fill = continent
+  ) +
+  geom_boxplot() +
+  coord_flip()
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-all-americas-7", "png")`)
+]
+
+---
+
+.left-code[
+```{r gapminder-all-americas-8, fig.show="hide", echo=1}
+g <- gapminder %>% 
+  filter( #<<
+    continent != "Oceania" #<<
+  ) %>% #<<
+  mutate(
+    decade = floor(year / 10) * 10, decade = factor(decade)      
+  ) %>% 
+  ggplot() +
+  aes(
+    x = decade,
+    y = lifeExp,
+    fill = continent
+  ) +
+  geom_boxplot() +
+  coord_flip()
+
 g
 ```
 ]
 
 .right-plot[
-```{r tips-plot-total9-out, ref.label="tips-plot-total9", echo=FALSE, out.width="100%"}
-```
+![](`r knitr::fig_chunk("gapminder-all-americas-8", "png")`)
 ]
 
 ---
 
 .left-code[
-```{r tips-plot-total10, eval=FALSE}
-g + guides(color = FALSE,
-           fill  = FALSE) +
-  labs(x = '', 
-       y = 'Tip Rate') +
-  scale_y_continuous(        #<<
-    labels = scales::percent #<<
-  )                          #<<
+```{r gapminder-all-americas-9, fig.show="hide", echo=1}
+g +
+  theme_minimal(8) +
+  labs(
+    x = "Life Expectancy",
+    y = "Decade",
+    fill = NULL,
+    title = "Life Expectancy by Continent and Decade",
+    caption = "gapminder.org"
+  )
 ```
 ]
 
 .right-plot[
-```{r tips-plot-total10-out, ref.label="tips-plot-total10", echo=FALSE, out.width="100%"}
-```
+![](`r knitr::fig_chunk("gapminder-all-americas-9", "png")`)
 ]
 
 ---
@@ -1359,320 +1859,174 @@ class: inverse, center, middle
 
 # Level up
 
-```{r}
-data(babynames, 'babynames')
-```
-
----
-# head(babynames)
-
-The [babynames package](https://github.com/hadley/babynames) contains data provided by the USA social security administration:
-
-* `babynames`: For each year from 1880 to 2015, the number of children of <br>
-  each sex given each name. All names with more than 5 uses are given.
-
-```{r, echo=FALSE}
-babynames %>% 
-  sample_n(6) %>% 
-  as_table
-```
-
----
-layout: true
-# Most popular baby names in 2015
----
-
-.pull-left[
-```{r babynames_pop2015}
-babynames_pop2015 <- babynames %>% 
-  filter(year == 2015) %>% 
-  mutate(
-    n = n/1000,
-    sex = case_when(
-      sex == "F" ~ "Girl Names",
-      TRUE ~ "Boy Names"
-  )) %>% 
-  group_by(sex) %>% 
-  top_n(10, n)
-
-```
-]
-
-.pull-right[
-```{r results='asis', echo=FALSE}
-babynames_pop2015 %>% 
-  slice(1:4) %>% 
-  as_table()
-```
-]
-
----
-
-```{r babynames-popular-base-a, dependson='babynames_pop2015'}
-g_babynames <- ggplot(babynames_pop2015) +
- {{aes(y = n, x = name)}} +
- {{geom_col()}}
-```
-
-.plot-callout[
-```{r, fig.callout=TRUE}
-g_babynames
-```
-]
-
----
-
-```{r babynames-popular-base-b, dependson='babynames_pop2015'}
-g_babynames <- ggplot(babynames_pop2015) +
-  aes(y = n, x = name) +
-  geom_col() +
- {{coord_flip()}}
-```
-
-.plot-callout[
-```{r, fig.callout=TRUE}
-g_babynames
-```
-]
-
----
-
-```{r babynames-popular-base-c, dependson='babynames_pop2015'}
-g_babynames <- ggplot(babynames_pop2015) +
- {{aes(y = n, x = fct_reorder(name, n))}} +
-  geom_col() +
-  coord_flip()
-```
-
-<br>📦 `fct_reorder` comes from the tidyverse package `forecats`
-
-.plot-callout[
-```{r, fig.callout=TRUE}
-g_babynames
-```
-]
-
----
-
-```{r babynames-popular-base-d, dependson='babynames_pop2015'}
-g_babynames <- ggplot(babynames_pop2015) +
- {{aes(y = n, x = fct_reorder(name, n), fill = sex)}} +
-  geom_col() +
-  coord_flip()
-```
-
-.plot-callout[
-```{r, fig.callout=TRUE}
-g_babynames
-```
-]
-
----
-
-```{r babynames-popular-base-e, dependson='babynames_pop2015'}
-g_babynames <- ggplot(babynames_pop2015) +
-  aes(y = n, x = fct_reorder(name, n), fill = sex) +
-  geom_col() +
-  coord_flip() +
- {{facet_wrap( ~ sex, scales = 'free_y')}}
-```
-
-.plot-callout[
-```{r, fig.callout=TRUE}
-g_babynames
-```
-]
-
----
-
 ```r
-g_babynames <- ggplot(babynames_pop2015) +
-  aes(y = n, x = fct_reorder(name, n), fill = sex) +
-  geom_col() +
-* geom_text(
-*   aes(label = format(n*1000, big.mark = ',')),
-*   size = 9, hjust = 1.1, 
-*   color = 'white', family = 'Fira Sans'
-* ) +
-  coord_flip() +
-  facet_wrap( ~ sex, scales = 'free_y')
+Inspired by "The Best Stats You've Ever Seen" by Hans Rosling
+
+http://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen
+```
+
+---
+# Create the initial layout
+
+```{r hans-rosling-1, echo=1, out.height="99%", fig.width=16, fig.height=8, fig.show="hide"}
+g_hr <- 
+  ggplot(gapminder) +
+  aes(x = gdpPercap, y = lifeExp, size = pop, color = country) +
+  geom_point() +
+  facet_wrap(~year)
+g_hr
 ```
 
 .plot-callout[
-```{r, fig.callout=TRUE}
-g_babynames <-ggplot(babynames_pop2015) +
-  aes(y = n, x = fct_reorder(name, n), fill = sex) +
-  geom_col() +
-  geom_text(
-    aes(label = format(n*1000, big.mark = ',')),
-    size = 9, hjust = 1.1, 
-    color = 'white', family = 'Fira Sans'
+![](`r knitr::fig_chunk("hans-rosling-1", "png")`)
+]
+
+---
+# Hide the guides
+
+```{r hans-rosling-1a, echo=1, out.height="99%", fig.width=16, fig.height=8, fig.show="hide"}
+g_hr <- 
+  ggplot(gapminder) +
+  aes(x = gdpPercap, y = lifeExp, size = pop, color = country) +
+  geom_point() +
+  facet_wrap(~year) +
+  guides(color = FALSE, size = FALSE)
+g_hr
+```
+
+.plot-callout[
+![](`r knitr::fig_chunk("hans-rosling-1a", "png")`)
+]
+
+---
+# Adjust scales of x-axis, color, and size
+
+```{r hans-rosling-2, echo=1, out.height="99%", fig.width=16, fig.height=8, fig.show="hide"}
+g_hr <- 
+  g_hr +
+  scale_x_log10(breaks = c(10^3, 10^4, 10^5), labels = c("1k", "10k", "100k")) +
+  scale_color_manual(values = gapminder::country_colors) +
+  scale_size(range = c(0.5, 12))
+  
+g_hr
+```
+
+.plot-callout[
+![](`r knitr::fig_chunk("hans-rosling-2", "png")`)
+]
+
+---
+# Tweak Anotations
+
+<br><br>
+
+```{r hans-rosling-3, echo=1, out.height="99%", fig.width=16, fig.height=8, fig.show="hide"}
+g_hr <- 
+  g_hr +
+  labs(
+    x = "GDP per capita",
+    y = "Life Expectancy"
   ) +
-  coord_flip() +
-  facet_wrap( ~ sex, scales = 'free_y')
-
-g_babynames
-```
-]
-
----
-
-```{r babynames-popular, eval=FALSE, dependson='babynames-popular-base'}
-g_babynames +
-  labs(x = '', 
-       y = 'Number of Babies Born in 2015 (thousands)') + 
-  guides(fill = FALSE) +
-  scale_fill_manual(
-    values = c("Boy Names"  = "#77cbb9",
-               "Girl Names" = "#a077cb")) +
+  theme_minimal(base_family = "Fira Sans") +
   theme(
-    strip.text = element_text(face = 'bold', size = 20),
-    strip.background = element_blank(),
-    text = element_text(size = 24)
+    strip.text = element_text(size = 16, face = "bold"),
+    panel.border = element_rect(fill = NA, color = "grey40"),
+    panel.grid.minor = element_blank()
   )
+g_hr
 ```
 
-.plot-callout[
-```{r babynames-popular-out-callout, ref.label="babynames-popular", fig.callout=TRUE}
+.plot-callout.top-right[
+![](`r knitr::fig_chunk("hans-rosling-3", "png")`)
+]
+
+---
+# The final code and plot
+
+.font70[
+```{r hans-rosling-final, fig.width=16, fig.height=9, fig.show="hide"}
+ggplot(gapminder) +
+  aes(x = gdpPercap, y = lifeExp, size = pop, color = country) +
+  geom_point() +
+  facet_wrap(~year) +
+  guides(color = FALSE, size = FALSE) +
+  scale_x_log10(
+    breaks = c(10^3, 10^4, 10^5), 
+    labels = c("1k", "10k", "100k")) +
+  scale_color_manual(values = gapminder::country_colors) +
+  scale_size(range = c(0.5, 12)) +
+  labs(
+    x = "GDP per capita",
+    y = "Life Expectancy") +
+  theme_minimal(14, base_family = "Fira Sans") +
+  theme(
+    strip.text = element_text(size = 16, face = "bold"),
+    panel.border = element_rect(fill = NA, color = "grey40"),
+    panel.grid.minor = element_blank())
 ```
 ]
 
 ---
+class: fullscreen
+background-image: url(`r knitr::fig_chunk("hans-rosling-final", "png")`)
+background-size: cover
 
-```{r babynames-popular-out, ref.label="babynames-popular", echo=FALSE, out.width="100%", fig.width=16, fig.height=8}
+---
+# Special Bonus: Animated!
+
+.left-code[
+```{r include=FALSE}
+library(gganimate)
+g_hra <- 
+  ggplot(gapminder) +
+  aes(x = gdpPercap, y = lifeExp, size = pop, color = country) +
+  geom_point() +
+  guides(color = FALSE, size = FALSE) +
+  scale_x_log10(
+    breaks = c(10^3, 10^4, 10^5), 
+    labels = c("1k", "10k", "100k")) +
+  scale_color_manual(values = gapminder::country_colors) +
+  scale_size(range = c(0.5, 12)) +
+  labs(
+    x = "GDP per capita",
+    y = "Life Expectancy") +
+  theme_minimal(18, base_family = "Fira Sans") +
+  theme(
+    plot.background = element_rect("#FAFAFA", color = NA),
+    strip.text = element_text(size = 16, face = "bold"),
+    panel.border = element_rect(fill = NA, color = "grey40"),
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(hjust = 0.5)
+  ) + 
+  transition_states(
+    year, 1, 0
+  ) + 
+  ggtitle("{closest_state}")
+
+anim_save("images/hans-rosling-esque.gif", 
+          animate(g_hra, width = 700, height = 500))
 ```
 
----
-layout: true
-# Gender-bending baby names
----
+.font70[
+```{r hans-rosling-animated, eval=FALSE}
+# library(devtools)
+# install_github("thomasp85/gganimate")
+library(gganimate)
 
-Find babynames that were
+# Same plot without facet_wrap()
+g_hra + 
+  transition_states(year, 1, 0) + 
+  ggtitle("{closest_state}")
+```
+]
+]
 
-1. More "boyish" or "girlish" in pre-1900s and opposite in post-1900s
-
-2. Pick top 10 boy ↔ girl names
 --
 
-
-```{r echo=FALSE, results='asis'}
-source('babynames-prep.R')
-cat("\n\n**Boy → Girl Names:**<br>", paste(names_m2f, collapse = ', '))
-
-cat("\n\n**Girl → Boy Names:**<br>", paste(names_f2m, collapse = ', '))
-```
-
----
-
-.pull-left[
-Data-preprocessing:
-
-1. Un-tidy `sex` column into `Female` and `Male`
-
-2. Calculate difference in proportion by name
-
-3. Add groups for area plot (thank you [stackoverflow](https://stackoverflow.com/a/7883556)!)
-
-<br><br>Check out `babynames-prep.R` in repo
+.right-plot[
+![](images/hans-rosling-esque.gif)
 ]
 
-.pull-right[
-```{r results='asis', echo=FALSE}
-sel_change_babynames %>% 
-  select(year, name, prop, prop_group) %>% 
-  sample_n(10) %>% 
-  arrange(year, name) %>% 
-  filter(abs(prop) > 0) %>% 
-  knitr::kable(digits = 5, format = 'html')
-```
-]
-
----
-
-```{r genben-plot1, eval=FALSE}
-ggplot(sel_change_babynames) + 
-  aes(x = year, y = prop)
-```
-
-.plot-callout[
-```{r genben-plot1-out, ref.label="genben-plot1", fig.callout=TRUE}
-```
-]
-
----
-
-```{r genben-plot2, eval=FALSE}
-ggplot(sel_change_babynames) + 
-  aes(x = year, y = prop) +
- {{geom_line(color = "grey50", aes(group=name))}}
-```
-
-.plot-callout[
-```{r genben-plot2-out, ref.label="genben-plot2", fig.callout=TRUE}
-```
-]
-
----
-
-```{r genben-plot3, eval=FALSE}
-ggplot(sel_change_babynames) + 
-  aes(x = year, y = prop, fill = prop > 0) +
- {{geom_area(aes(group = prop_group))}} +
-  geom_line(color = "grey50", aes(group=name))+
- {{facet_wrap(~ name, scales = 'free_y', ncol = 5)}}
-```
-
-.plot-callout[
-```{r genben-plot3-out, ref.label="genben-plot3", fig.callout=TRUE}
-```
-]
-
----
-
-```{r genben-plot4, eval=FALSE}
-g_bnc <- ggplot(sel_change_babynames) + 
-  aes(x = year, y = prop, fill = prop > 0) +
-  geom_area(aes(group = prop_group)) +
-  geom_line(color = "grey50", aes(group=name))+
-  facet_wrap(~ name, scales = 'free_y', ncol = 5) + 
- {{scale_fill_manual(values = c("#6ec4db", "#fa7c92"))}} +
- {{guides(fill = FALSE)}} +
- {{labs(x = '', y = '')}}
-
-g_bnc
-```
-
-.plot-callout[
-```{r genben-plot4-out, ref.label="genben-plot4", fig.callout=TRUE}
-```
-]
-
-
----
-
-```{r genben-plot5}
-g_bnc <- g_bnc +
-  theme_minimal(base_family = 'Palatino') +
-  theme(
-    axis.text.y = element_blank(),
-    strip.text = element_text(size = 18, face = 'bold'),
-    panel.grid.major.y = element_blank(),
-    panel.grid.minor.y = element_blank(),
-    panel.grid.minor.x = element_blank(),
-    panel.grid.major.x = element_line(color = "grey80", linetype = 3))
-```
-
-.plot-callout[
-```{r genben-plot5-out, fig.callout=TRUE}
-g_bnc
-```
-]
-
----
-
-```{r genben-plot-out, echo=FALSE, out.height="99%", fig.width=16, fig.height=8}
-g_bnc
-```
 
 ---
 layout: false
@@ -1685,15 +2039,17 @@ layout: true
 ---
 
 ![](images/stack-exchange-search.png)
+
 ---
-![](images/stack-exchange-answer.png)
+
+<img src="images/stack-exchange-answer.png" style="max-height: 100%">
 
 ---
 layout: false
 
 # ggplot2 Extensions: ggplot2-exts.org
 
-![](images/ggplot2-exts-gallery.png)
+<img src="images/ggplot2-exts-gallery.png" style="max-height: 100%">
 
 ---
 # ggplot2 and beyond
@@ -1708,6 +2064,8 @@ layout: false
 
 ### Noteworthy RStudio Add-Ins
 
+- [esquisse](https://github.com/dreamRs/esquisse): Interactively build ggplot2 plots
+
 - [ggplotThemeAssist](https://github.com/calligross/ggthemeassist): Customize your ggplot theme interactively
 
 - [ggedit](https://github.com/metrumresearchgroup/ggedit): Layer, scale, and theme editing
@@ -1715,6 +2073,10 @@ layout: false
 ---
 
 # Practice and Review
+
+### #TidyTuesday
+
+- <https://github.com/rfordatascience/tidytuesday>
 
 ### Fun Datasets
 
@@ -1724,11 +2086,9 @@ layout: false
 
 - `ggplot2movies`
 
-- `population` and `who` in `tidyr`
-
 ### Review
 
-- Slides and code on GitHub: <http://github.com/gadenbuie/trug-ggplot2>
+- Slides and code on GitHub: <http://github.com/gadenbuie/gentle-ggplot2>
 
 ---
 class: inverse, center, middle
