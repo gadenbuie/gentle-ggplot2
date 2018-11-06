@@ -1,0 +1,129 @@
+body {
+  font-size: 1.1em;
+}
+
+img {
+  max-height: 525px;
+}
+
+strong {
+  color: #23373B;
+  font-weight: 500;
+}
+
+.title-slide {
+  background-image: url(images/hex-ggplot2.png);
+  background-size: 25%;
+  background-position: 88% 70%;
+}
+
+.footnote {
+    position: absolute;
+    bottom: 1em;
+    padding-right: 4em;
+    font-size: 70%;
+}
+
+.remark-slide-content {
+  font-size: 25px;
+}
+
+.remark-code {
+  font-size: 0.9em;
+}
+
+.left-column h3 {
+    line-height: 1;
+}
+
+.left-column h3:last-of-type{
+  color: #000;
+}
+
+.right-column {
+  padding-top: 0;
+}
+
+.hl {
+  /* color: #d16666;
+  color: #ff3e41; */
+  color: #d14;
+  font-weight: 400;
+}
+.hlb {
+  /* color: #d16666;
+  color: #ff3e41; */
+  color: #d14;
+}
+
+.left-code {
+  color: #777;
+  width: 38%;
+  height: 92%;
+  float: left;
+}
+.right-plot {
+  width: 60%;
+  float: right;
+  /* border-left: solid 1px #272822; */
+  padding-left: 1%;
+}
+
+.huge {
+  font-size: 2em;
+}
+
+
+.fullscreen {
+  background-color: #FAFAFA;
+  border-top: none;
+  background-position: center;
+  background-size: cover;
+}
+
+.fullscreen .remark-slide-number {
+  display: none;
+}
+
+.inverse .remark-slide-number {
+  display: none;
+}
+
+.text-white {
+  color: #FFF;
+}
+
+.text-black {
+  color: #000;
+}
+
+.img-right{
+  height: 300px;
+  width: 300px;
+  top: 34%;
+  left: 65%;
+  position: absolute;
+}
+
+.img-right img {
+  width: 100%;
+}
+
+.plot-callout {
+  height: 300px;
+  width: 600px;
+  bottom: 10%;
+  right: 5%;
+  position: absolute;
+  padding: 0px;
+}
+
+.plot-callout img {
+  width: 100%;
+  border: 4px solid #23373B;
+}
+
+.top-right {
+  top: 10%;
+  right: 5%;
+}
