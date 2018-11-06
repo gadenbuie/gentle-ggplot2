@@ -123,145 +123,184 @@ devtools::install_github('tidyverse/ggplot2')
 library(tidyverse)
 ```
 
+```
+## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+```
+
+```
+## ✔ ggplot2 3.1.0     ✔ purrr   0.2.5
+## ✔ tibble  1.4.2     ✔ dplyr   0.7.7
+## ✔ tidyr   0.8.1     ✔ stringr 1.3.1
+## ✔ readr   1.1.1     ✔ forcats 0.3.0
+```
+
+```
+## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()
+```
+
+---
+## Other packages you'll need for this adventure
+
+We'll be using an excerpt of the [gapminder](http://www.gapminder.org/data/) dataset provided by the [`gapminder` package](https://github.com/jennybc/gapminder) by Jenny Bryan.
+
+&lt;https://github.com/jennybc/gapminder&gt;
+
+```r
+install.packages("gapminder")
+```
+
+
+```r
+library(gapminder)
+```
+
 ---
 layout: false
 class: inverse center middle text-white
 
 .font200[gg is for&lt;br&gt;Grammar of Graphics]
 
+
+---
+
+# What is a grammar of graphics?
+
+.left-code[
+"Good grammar is just the first step in creating a good sentence."
+
+#### How is the drawing on the right connected to data?
+
+.footnote[&lt;http://vita.had.co.nz/papers/layered-grammar.pdf&gt;]
+]
+
+.right-plot[
+&lt;img src="index_files/figure-html/guess-data-from-plot-0-1.png" width="100%" /&gt;
+]
+
 ---
 layout: true
 # Guess the data behind this plot?
 
-.pull-left[
+.left-code[
 ### MPG Ratings of Cars
 
 - Manufacturer
-- Model
+- Car Type (Class)
 - City MPG
 - Highway MPG
 ]
 
 ---
 
-.pull-right[
-&lt;img src="index_files/figure-html/guess-data-from-plot-1.png" width="100%" /&gt;
+.right-plot[
+&lt;img src="index_files/figure-html/guess-data-from-plot-2-1.png" width="100%" /&gt;
 ]
 
 ---
 
-.pull-right[
-&lt;img src="index_files/figure-html/unnamed-chunk-1-1.png" width="100%" /&gt;
+.right-plot[
+&lt;img src="index_files/figure-html/guess-data-from-plot-3-1.png" width="100%" /&gt;
 ]
 
 ---
 
-.pull-right[
-&lt;img src="index_files/figure-html/unnamed-chunk-2-1.png" width="100%" /&gt;
+.right-plot[
+&lt;img src="index_files/figure-html/guess-data-from-plot-1-1.png" width="100%" /&gt;
 ]
 
 ---
 
-.pull-right[
-&lt;img src="index_files/figure-html/unnamed-chunk-3-1.png" width="100%" /&gt;
+.right-plot[
+&lt;img src="index_files/figure-html/guess-data-from-plot-4-1.png" width="100%" /&gt;
 ]
 
 ---
 
-.pull-right[
-&lt;img src="index_files/figure-html/unnamed-chunk-4-1.png" width="100%" /&gt;
+.right-plot[
+&lt;img src="index_files/figure-html/guess-data-from-plot-5-1.png" width="100%" /&gt;
 ]
 
 ---
 
-.pull-right[
-&lt;img src="index_files/figure-html/unnamed-chunk-5-1.png" width="100%" /&gt;
+.right-plot[
+&lt;img src="index_files/figure-html/guess-data-from-plot-6-1.png" width="100%" /&gt;
 ]
 
 ---
 
-.pull-right[
+.right-code[
 &lt;table&gt;
  &lt;thead&gt;
   &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt; model &lt;/th&gt;
    &lt;th style="text-align:left;"&gt; manufacturer &lt;/th&gt;
    &lt;th style="text-align:left;"&gt; class &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; cty &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; hwy &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; model &lt;/th&gt;
   &lt;/tr&gt;
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; audi &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; compact &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; a4 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; audi &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; compact &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; audi &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; compact &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 25 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; a4 quattro &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; audi &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; compact &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; expedition 2wd &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; ford &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; suv &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 12 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; expedition 2wd &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; explorer 4wd &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; ford &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; suv &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 13 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; explorer 4wd &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; 4runner 4wd &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; toyota &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; suv &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 4runner 4wd &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; camry solara &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; toyota &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; compact &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; camry solara &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; corolla &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; toyota &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; compact &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; corolla &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; land cruiser wagon 4wd &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; toyota &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; suv &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 13 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; land cruiser wagon 4wd &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 ]
-
----
-layout: false
-## Other packages you'll need for this adventure
-
-
-```r
-library(lubridate)       # tidyverse
-library(reshape2)        # install.packages("reshape2")
-library(babynames)       # install.packages("babynames")
-```
 
 ---
 layout: true
@@ -271,7 +310,7 @@ layout: true
 ### Data
 
 ```r
-g &lt;- ggplot()
+ggplot(data)
 ```
 ]
 
@@ -285,13 +324,16 @@ g &lt;- ggplot()
 2. Each observation forms a .hl[row]
 
 3. Each observational unit forms a table
+]
 
-&lt;br&gt;&lt;br&gt;The following example draws from
+--
 
-```r
-data(population, package = "tidyr")
-```
+.right-column[
+#### Start by asking
 
+1. What information do I want to use in my visualization?
+
+1. Is that data contained in .hl[one column/row] for a given data point?
 ]
 
 ---
@@ -301,83 +343,40 @@ data(population, package = "tidyr")
  &lt;thead&gt;
   &lt;tr&gt;
    &lt;th style="text-align:left;"&gt; country &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; 1995 &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; 2000 &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; 2005 &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; 2010 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; 1997 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; 2002 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; 2007 &lt;/th&gt;
   &lt;/tr&gt;
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 29.2949 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 30.69742 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 32.25309 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 34.12624 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30.30584 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31.90227 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33.39014 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1237.5314 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1280.42858 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1318.17683 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1359.82146 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1230.07500 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1280.40000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1318.68310 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; USA &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 268.0397 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 284.59440 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 298.16580 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 312.24712 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-
-&lt;br&gt;
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:right;"&gt; year &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Canada &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; China &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; USA &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1995 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 29.29490 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1237.531 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 268.0397 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 30.69742 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1280.429 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 284.5944 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2005 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 32.25309 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1318.177 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 298.1658 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2010 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 34.12624 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1359.821 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 312.2471 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 272.91176 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 287.67553 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 301.13995 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 ]
 
----
+--
 
 .right-column[
 
 ```r
-tidy1 &lt;- gather(messy1, 'year', 'population', -country)
+tidy_pop &lt;- gather(messy_pop, 'year', 'pop', -country)
 ```
 
 &lt;table&gt;
@@ -385,154 +384,59 @@ tidy1 &lt;- gather(messy1, 'year', 'population', -country)
   &lt;tr&gt;
    &lt;th style="text-align:left;"&gt; country &lt;/th&gt;
    &lt;th style="text-align:left;"&gt; year &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; population &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; pop &lt;/th&gt;
   &lt;/tr&gt;
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 1995 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 29.295 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30.306 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 1995 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1237.531 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1230.075 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; USA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 1995 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 268.040 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 272.912 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2000 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 30.697 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31.902 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2000 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1280.429 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1280.400 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; USA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2000 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 284.594 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 287.676 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2005 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 32.253 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33.390 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2005 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1318.177 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1318.683 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; USA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2005 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 298.166 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2010 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 34.126 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2010 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1359.821 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; USA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2010 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 312.247 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 301.140 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 ]
 
----
-
-.right-column[
-
-```r
-tidy2 &lt;- gather(messy2, 'country', 'population', -year)
-```
-
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:right;"&gt; year &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; country &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; population &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1995 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 29.295 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 30.697 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2005 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 32.253 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2010 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 34.126 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1995 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1237.531 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1280.429 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2005 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1318.177 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2010 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1359.821 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1995 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; USA &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 268.040 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; USA &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 284.594 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2005 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; USA &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 298.166 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2010 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; USA &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 312.247 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-]
 
 ---
 layout: true
@@ -543,7 +447,7 @@ layout: true
 ### Aesthetics
 
 ```r
-g + aes()
++ aes()
 ```
 
 ]
@@ -554,7 +458,7 @@ Map data to visual elements or parameters
 
 - year
 
-- population
+- pop
 
 - country
 ]
@@ -566,9 +470,23 @@ Map data to visual elements or parameters
 
 - year → **x**
 
-- population → **y**
+- pop → **y**
 
 - country → *shape*, *color*, etc.
+]
+
+---
+
+.right-column[
+Map data to visual elements or parameters
+
+```r
+aes(
+  x = year,
+  y = pop,
+  color = country
+)
+```
 ]
 
 ---
@@ -581,7 +499,7 @@ layout: true
 ### Geoms
 
 ```r
-g + geom_*()
++ geom_*()
 ```
 ]
 
@@ -622,8 +540,12 @@ Or just start typing `geom_` in RStudio
 ## [13] "geom_density_2d" "geom_density2d"  "geom_dotplot"    "geom_errorbar"  
 ## [17] "geom_errorbarh"  "geom_freqpoly"   "geom_hex"        "geom_histogram" 
 ## [21] "geom_hline"      "geom_jitter"     "geom_label"      "geom_line"      
-## [25] "geom_linerange" 
-##  [ reached getOption("max.print") -- omitted 21 entries ]
+## [25] "geom_linerange"  "geom_map"        "geom_path"       "geom_point"     
+## [29] "geom_pointrange" "geom_polygon"    "geom_qq"         "geom_qq_line"   
+## [33] "geom_quantile"   "geom_raster"     "geom_rect"       "geom_ribbon"    
+## [37] "geom_rug"        "geom_segment"    "geom_sf"         "geom_sf_label"  
+## [41] "geom_sf_text"    "geom_smooth"     "geom_spoke"      "geom_step"      
+## [45] "geom_text"       "geom_tile"       "geom_violin"     "geom_vline"
 ```
 ]]
 
@@ -637,7 +559,7 @@ layout: true
 .left-code[
 
 ```r
-ggplot(tidy1)
+ggplot(tidy_pop)
 ```
 ]
 
@@ -650,9 +572,9 @@ ggplot(tidy1)
 .left-code[
 
 ```r
-ggplot(tidy1) +
+ggplot(tidy_pop) +
 * aes(x = year,
-*     y = population)
+*     y = pop)
 ```
 ]
 
@@ -665,9 +587,9 @@ ggplot(tidy1) +
 .left-code[
 
 ```r
-ggplot(tidy1) +
+ggplot(tidy_pop) +
   aes(x = year,
-      y = population) +
+      y = pop) +
 * geom_point()
 ```
 ]
@@ -681,9 +603,9 @@ ggplot(tidy1) +
 .left-code[
 
 ```r
-ggplot(tidy1) +
+ggplot(tidy_pop) +
   aes(x = year,
-      y = population,
+      y = pop,
 *     color = country) +
   geom_point()
 ```
@@ -698,9 +620,9 @@ ggplot(tidy1) +
 .left-code[
 
 ```r
-ggplot(tidy1) +
+ggplot(tidy_pop) +
   aes(x = year,
-      y = population,
+      y = pop,
       color = country) +
   geom_point() +
 * geom_line()
@@ -724,9 +646,9 @@ group aesthetic?
 .left-code[
 
 ```r
-ggplot(tidy1) +
+ggplot(tidy_pop) +
   aes(x = year,
-      y = population,
+      y = pop,
       color = country) +
   geom_point() +
   geom_line(
@@ -1445,14 +1367,16 @@ exclude: true
 
 
 ```
-##  [1] "stat_bin"         "stat_bin_2d"      "stat_bin_hex"     "stat_bin2d"      
-##  [5] "stat_binhex"      "stat_boxplot"     "stat_contour"     "stat_count"      
-##  [9] "stat_density"     "stat_density_2d"  "stat_density2d"   "stat_ecdf"       
-## [13] "stat_ellipse"     "stat_function"    "stat_identity"    "stat_qq"         
-## [17] "stat_qq_line"     "stat_quantile"    "stat_sf"          "stat_smooth"     
-## [21] "stat_spoke"       "stat_sum"         "stat_summary"     "stat_summary_2d" 
-## [25] "stat_summary_bin"
-##  [ reached getOption("max.print") -- omitted 4 entries ]
+##  [1] "stat_bin"            "stat_bin_2d"         "stat_bin_hex"       
+##  [4] "stat_bin2d"          "stat_binhex"         "stat_boxplot"       
+##  [7] "stat_contour"        "stat_count"          "stat_density"       
+## [10] "stat_density_2d"     "stat_density2d"      "stat_ecdf"          
+## [13] "stat_ellipse"        "stat_function"       "stat_identity"      
+## [16] "stat_qq"             "stat_qq_line"        "stat_quantile"      
+## [19] "stat_sf"             "stat_sf_coordinates" "stat_smooth"        
+## [22] "stat_spoke"          "stat_sum"            "stat_summary"       
+## [25] "stat_summary_2d"     "stat_summary_bin"    "stat_summary_hex"   
+## [28] "stat_summary2d"      "stat_unique"         "stat_ydensity"
 ```
 
 #### Position transformations
@@ -1502,7 +1426,7 @@ g &lt;- ggplot(sw_chars) +
 g + facet_wrap(~ gender)
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-9-1.png" width="75%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-3-1.png" width="75%" /&gt;
 ]
 
 ---
@@ -1513,7 +1437,7 @@ g + facet_wrap(~ gender)
 g + facet_grid(gender ~ hair_color)
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-10-1.png" width="75%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-4-1.png" width="75%" /&gt;
 ]
 
 ---
@@ -1524,7 +1448,7 @@ g + facet_grid(gender ~ hair_color)
 g + facet_grid(gender ~ hair_color, scales = 'free_y')
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-11-1.png" width="75%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-5-1.png" width="75%" /&gt;
 ]
 
 ---
@@ -1562,7 +1486,7 @@ g &lt;- g +
 ---
 
 .right-column[
-&lt;img src="index_files/figure-html/unnamed-chunk-13-1.png" width="90%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-7-1.png" width="90%" /&gt;
 ]
 
 ---
@@ -1603,7 +1527,7 @@ What type is the parameter? → `&lt;type&gt;`
 g &lt;- g + scale_fill_brewer(palette = 'Set1')
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-15-1.png" width="90%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-9-1.png" width="90%" /&gt;
 
 
 ]
@@ -1673,7 +1597,7 @@ Theme options are supported by helper functions:
 g + theme_bw()
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-16-1.png" width="90%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-10-1.png" width="90%" /&gt;
 ]
 
 ---
@@ -1685,7 +1609,7 @@ g + theme_bw()
 g + theme_minimal() + theme(text = element_text(family = "Palatino"))
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-17-1.png" width="90%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-11-1.png" width="90%" /&gt;
 ]
 ]
 
@@ -1715,7 +1639,7 @@ theme_set(my_theme)
 g
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-18-1.png" width="90%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-12-1.png" width="90%" /&gt;
 ]
 
 ---
@@ -1726,7 +1650,7 @@ g
 g + theme(legend.position = 'bottom')
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-19-1.png" width="90%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-13-1.png" width="90%" /&gt;
 ]
 
 ---
@@ -2207,45 +2131,45 @@ The [babynames package](https://github.com/hadley/babynames) contains data provi
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1947 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; M &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Corky &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1986 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; M &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Ezra &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 163 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
    &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; F &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Shakyla &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1939 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; F &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Leverne &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2013 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; M &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Can &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Sinceer &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2013 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; M &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Juston &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 11 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2002 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; M &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Reis &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 36 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1944 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1969 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; F &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Loy &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Celena &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 57 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2001 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; M &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Ashraf &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1982 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; F &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Tynisha &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 57 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
@@ -2354,7 +2278,7 @@ g_babynames &lt;- ggplot(babynames_pop2015) +
 ```
 
 .plot-callout[
-&lt;img src="index_files/figure-html/unnamed-chunk-25-1.png" width="100%" height="99%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-19-1.png" width="100%" height="99%" /&gt;
 ]
 
 ---
@@ -2368,7 +2292,7 @@ g_babynames &lt;- ggplot(babynames_pop2015) +
 ```
 
 .plot-callout[
-&lt;img src="index_files/figure-html/unnamed-chunk-26-1.png" width="100%" height="99%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-20-1.png" width="100%" height="99%" /&gt;
 ]
 
 ---
@@ -2384,7 +2308,7 @@ g_babynames &lt;- ggplot(babynames_pop2015) +
 &lt;br&gt;📦 `fct_reorder` comes from the tidyverse package `forecats`
 
 .plot-callout[
-&lt;img src="index_files/figure-html/unnamed-chunk-27-1.png" width="100%" height="99%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-21-1.png" width="100%" height="99%" /&gt;
 ]
 
 ---
@@ -2398,7 +2322,7 @@ g_babynames &lt;- ggplot(babynames_pop2015) +
 ```
 
 .plot-callout[
-&lt;img src="index_files/figure-html/unnamed-chunk-28-1.png" width="100%" height="99%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-22-1.png" width="100%" height="99%" /&gt;
 ]
 
 ---
@@ -2413,7 +2337,7 @@ g_babynames &lt;- ggplot(babynames_pop2015) +
 ```
 
 .plot-callout[
-&lt;img src="index_files/figure-html/unnamed-chunk-29-1.png" width="100%" height="99%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-23-1.png" width="100%" height="99%" /&gt;
 ]
 
 ---
@@ -2432,7 +2356,7 @@ g_babynames &lt;- ggplot(babynames_pop2015) +
 ```
 
 .plot-callout[
-&lt;img src="index_files/figure-html/unnamed-chunk-30-1.png" width="100%" height="99%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-24-1.png" width="100%" height="99%" /&gt;
 ]
 
 ---
@@ -2505,63 +2429,63 @@ Data-preprocessing:
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1886 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1913 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Ashley &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.00006 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1925 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Jean &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.00071 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00892 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1891 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Jean &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.00077 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1908 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Vinnie &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.00009 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1916 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Taylor &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; -0.00011 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1917 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Artie &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.00008 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1921 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Lou &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.00023 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1940 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Vinnie &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.00003 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1944 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Morgan &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; -0.00009 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1975 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Alexis &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.00030 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1931 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Donnie &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.00012 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 1993 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Lauren &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.00820 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1940 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Artie &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.00001 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1942 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Morgan &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.00008 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1946 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Jean &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00521 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1953 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Morgan &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.00007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1973 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Morgan &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.00010 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1991 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Donnie &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.00012 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Alexis &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00754 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;

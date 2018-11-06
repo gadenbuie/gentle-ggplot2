@@ -2,6 +2,10 @@ body {
   font-size: 1.1em;
 }
 
+img {
+  max-height: 525px;
+}
+
 .title-slide {
   background-image: url(images/hex-ggplot2.png);
   background-size: 25%;

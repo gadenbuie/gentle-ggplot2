@@ -144,28 +144,27 @@ library(tidyverse)
 ```
 
 ---
+## Other packages you'll need for this adventure
+
+We'll be using an excerpt of the [gapminder](http://www.gapminder.org/data/) dataset provided by the [`gapminder` package](https://github.com/jennybc/gapminder) by Jenny Bryan.
+
+<https://github.com/jennybc/gapminder>
+
+```r
+install.packages("gapminder")
+```
+
+```{r library-extra, message=FALSE}
+library(gapminder)
+```
+
+---
 layout: false
 class: inverse center middle text-white
 
 .font200[gg is for<br>Grammar of Graphics]
 
----
-layout: true
-# Guess the data behind this plot?
-
-.pull-left[
-### MPG Ratings of Cars
-
-- Manufacturer
-- Model
-- City MPG
-- Highway MPG
-]
-
----
-
-.pull-right[
-```{r guess-data-from-plot, echo=FALSE}
+```{r guess-data-from-plot-og, echo=FALSE}
 df_mpg <- mpg %>% 
   filter(class %in% c("compact", "suv")) %>% 
   filter(manufacturer %in% c("toyota", "ford", "audi")) %>% 
@@ -179,9 +178,25 @@ g <- ggplot(df_mpg) +
   labs(x = NULL, y = NULL, shape = NULL, color = NULL) +
   theme_minimal() +
   theme(
-    panel.grid = element_blank()
+    panel.grid = element_blank(),
+    plot.background = element_rect(fill = rgb(250, 250, 250, max = 255),
+                                   color = "#777777")
   )
+```
+---
 
+# What is a grammar of graphics?
+
+.left-code[
+"Good grammar is just the first step in creating a good sentence."
+
+#### How is the drawing on the right connected to data?
+
+.footnote[<http://vita.had.co.nz/papers/layered-grammar.pdf>]
+]
+
+.right-plot[
+```{r guess-data-from-plot-0, echo=FALSE}
 g + 
   guides(color = FALSE, shape = FALSE) +
   theme(axis.text = element_blank())
@@ -189,44 +204,68 @@ g +
 ]
 
 ---
+layout: true
+# Guess the data behind this plot?
 
-.pull-right[
-```{r echo=FALSE}
-g + guides(color = FALSE, shape = FALSE)
+.left-code[
+### MPG Ratings of Cars
+
+- Manufacturer
+- Car Type (Class)
+- City MPG
+- Highway MPG
+]
+
+---
+
+.right-plot[
+```{r guess-data-from-plot-2, echo=FALSE}
+g + guides(color = FALSE, shape = FALSE) +
+  theme(axis.text = element_blank())
 ```
 ]
 
 ---
 
-.pull-right[
-```{r echo=FALSE}
-g + guides(color = FALSE)
+.right-plot[
+```{r guess-data-from-plot-3, echo=FALSE}
+g + guides(color = FALSE) +
+  theme(axis.text = element_blank())
 ```
 ]
 
 ---
 
-.pull-right[
-```{r echo=FALSE}
+.right-plot[
+```{r guess-data-from-plot-1, echo=FALSE}
+g + 
+  theme(axis.text = element_blank())
+```
+]
+
+---
+
+.right-plot[
+```{r guess-data-from-plot-4, echo=FALSE}
 g
 ```
 ]
 
 ---
 
-.pull-right[
-```{r echo=FALSE}
+.right-plot[
+```{r guess-data-from-plot-5, echo=FALSE}
 g + theme(panel.grid.major = element_line(color = "grey90"))
 ```
 ]
 
 ---
 
-.pull-right[
-```{r echo=FALSE}
+.right-plot[
+```{r guess-data-from-plot-6, echo=FALSE}
 g + 
   ggtitle("MPG Ratings") +
-  labs(x = "City", y = "Highway", shape = "Manufacturer", color = "Model") +
+  labs(x = "City", y = "Highway", shape = "Manufacturer", color = "Class") +
   theme(
     panel.border = element_rect(fill = NA, color = "grey85"),
     panel.grid.major = element_line(color = "grey90")
@@ -236,23 +275,13 @@ g +
 
 ---
 
-.pull-right[
-```{r echo=FALSE, results='asis'}
+.right-code[
+```{r guess-data-from-plot-data, echo=FALSE, results='asis'}
 df_mpg %>% 
-  select(manufacturer, class, cty, hwy) %>% 
+  select(manufacturer, class, cty, hwy, model) %>% 
   knitr::kable()
 ```
 ]
-
----
-layout: false
-## Other packages you'll need for this adventure
-
-```{r library-extra, message=FALSE}
-library(lubridate)       # tidyverse
-library(reshape2)        # install.packages("reshape2")
-library(babynames)       # install.packages("babynames")
-```
 
 ---
 layout: true
@@ -262,7 +291,7 @@ layout: true
 ### Data
 
 ```r
-g <- ggplot()
+ggplot(data)
 ```
 ]
 
@@ -276,55 +305,45 @@ g <- ggplot()
 2. Each observation forms a .hl[row]
 
 3. Each observational unit forms a table
+]
 
-<br><br>The following example draws from
+--
 
-```r
-data(population, package = "tidyr")
-```
+.right-column[
+#### Start by asking
 
+1. What information do I want to use in my visualization?
+
+1. Is that data contained in .hl[one column/row] for a given data point?
 ]
 
 ---
 
 .right-column[
 ```{r tidy-messy1, results='asis', echo=FALSE}
-pop_simple <- population %>% 
+pop_simple <- gapminder %>% 
   filter(
-    country %in% c("United States of America", "Canada", "China"),
-    year %in% seq(1995, 2010, 5)
+    country %in% c("Canada", "China", "United States"), 
+    year >= 1997
   ) %>% 
-  mutate(
-    country = ifelse(country == "United States of America",
-                     "USA", country)
-  )
+  select(country, year, pop) %>% 
+  mutate(pop = pop / 10^6)
 
-messy1 <- pop_simple %>% mutate(population = population/10^6) %>% spread(year, population)
-messy2 <- pop_simple %>% mutate(population = population/10^6) %>% spread(country, population)
+messy_pop <- pop_simple %>% spread(year, pop)
 
-knitr::kable(messy1, format = 'html')
-cat('\n<br>\n')
-knitr::kable(messy2, format = 'html')
+knitr::kable(messy_pop, format = 'html')
 ```
 ]
 
----
+--
 
 .right-column[
 ```{r tidy-tidy1, result='asis', echo=-2}
-tidy1 <- gather(messy1, 'year', 'population', -country)
-as_table(tidy1)
+tidy_pop <- gather(messy_pop, 'year', 'pop', -country)
+as_table(tidy_pop)
 ```
 ]
 
----
-
-.right-column[
-```{r tidy-tidy2, result='asis', echo=-2}
-tidy2 <- gather(messy2, 'country', 'population', -year)
-as_table(tidy2)
-```
-]
 
 ---
 layout: true
@@ -335,7 +354,7 @@ layout: true
 ### Aesthetics
 
 ```r
-g + aes()
++ aes()
 ```
 
 ]
@@ -346,7 +365,7 @@ Map data to visual elements or parameters
 
 - year
 
-- population
+- pop
 
 - country
 ]
@@ -358,9 +377,23 @@ Map data to visual elements or parameters
 
 - year → **x**
 
-- population → **y**
+- pop → **y**
 
 - country → *shape*, *color*, etc.
+]
+
+---
+
+.right-column[
+Map data to visual elements or parameters
+
+```r
+aes(
+  x = year,
+  y = pop,
+  color = country
+)
+```
 ]
 
 ---
@@ -373,7 +406,7 @@ layout: true
 ### Geoms
 
 ```r
-g + geom_*()
++ geom_*()
 ```
 ]
 
@@ -423,7 +456,7 @@ layout: true
 
 .left-code[
 ```{r first-plot1a, eval=FALSE}
-ggplot(tidy1)
+ggplot(tidy_pop)
 ```
 ]
 
@@ -436,9 +469,9 @@ ggplot(tidy1)
 
 .left-code[
 ```{r first-plot1b, eval=FALSE}
-ggplot(tidy1) +
+ggplot(tidy_pop) +
   aes(x = year, #<<
-      y = population) #<<
+      y = pop) #<<
 ```
 ]
 
@@ -451,9 +484,9 @@ ggplot(tidy1) +
 
 .left-code[
 ```{r first-plot1c, eval=FALSE}
-ggplot(tidy1) +
+ggplot(tidy_pop) +
   aes(x = year,
-      y = population) +
+      y = pop) +
   geom_point() #<<
 ```
 ]
@@ -467,9 +500,9 @@ ggplot(tidy1) +
 
 .left-code[
 ```{r first-plot1, eval=FALSE}
-ggplot(tidy1) +
+ggplot(tidy_pop) +
   aes(x = year,
-      y = population,
+      y = pop,
       color = country) + #<<
   geom_point()
 ```
@@ -484,9 +517,9 @@ ggplot(tidy1) +
 
 .left-code[
 ```{r first-plot2-fake, eval=FALSE}
-ggplot(tidy1) +
+ggplot(tidy_pop) +
   aes(x = year,
-      y = population,
+      y = pop,
       color = country) +
   geom_point() +
   geom_line() #<<
@@ -510,9 +543,9 @@ group aesthetic?
 
 .left-code[
 ```{r first-plot2, eval=FALSE}
-ggplot(tidy1) +
+ggplot(tidy_pop) +
   aes(x = year,
-      y = population,
+      y = pop,
       color = country) +
   geom_point() +
   geom_line(
