@@ -124,18 +124,18 @@ library(tidyverse)
 ```
 
 ```
-## ── Attaching packages ─────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+## ── Attaching packages ───────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
 ```
 
 ```
-## ✔ ggplot2 3.0.0     ✔ purrr   0.2.5
+## ✔ ggplot2 3.1.0     ✔ purrr   0.2.5
 ## ✔ tibble  1.4.2     ✔ dplyr   0.7.7
 ## ✔ tidyr   0.8.1     ✔ stringr 1.3.1
 ## ✔ readr   1.1.1     ✔ forcats 0.3.0
 ```
 
 ```
-## ── Conflicts ────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ── Conflicts ──────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()
 ```
@@ -242,15 +242,15 @@ layout: true
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; audi &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; compact &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; a4 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; audi &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; compact &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; a4 quattro &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
@@ -270,22 +270,22 @@ layout: true
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; toyota &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; suv &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 4runner 4wd &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; toyota &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; compact &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; camry solara &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; toyota &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; compact &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; corolla &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
@@ -544,9 +544,8 @@ layout: true
 .right-column[
 Geometric objects displayed on the plot
 
-.center[
-&lt;img src="index_files/figure-html/geom_demo-1.png" width="450px" /&gt;
-]]
+&lt;img src="index_files/figure-html/geom_demo-1.png" width="650px" /&gt;
+]
 
 ---
 
@@ -590,9 +589,9 @@ See &lt;http://ggplot2.tidyverse.org/reference/&gt; for many more options
 ## [25] "geom_linerange"  "geom_map"        "geom_path"       "geom_point"     
 ## [29] "geom_pointrange" "geom_polygon"    "geom_qq"         "geom_qq_line"   
 ## [33] "geom_quantile"   "geom_raster"     "geom_rect"       "geom_ribbon"    
-## [37] "geom_rug"        "geom_segment"    "geom_sf"         "geom_smooth"    
-## [41] "geom_spoke"      "geom_step"       "geom_text"       "geom_tile"      
-## [45] "geom_violin"     "geom_vline"
+## [37] "geom_rug"        "geom_segment"    "geom_sf"         "geom_sf_label"  
+## [41] "geom_sf_text"    "geom_smooth"     "geom_spoke"      "geom_step"      
+## [45] "geom_text"       "geom_tile"       "geom_violin"     "geom_vline"
 ```
 ]
 ]
@@ -1182,27 +1181,23 @@ library(gapminder)
 &lt;/div&gt;
 
 ---
-# summary(gapminder)
+# glimpse(gapminder)
 
 
 ```
-        country        continent        year         lifeExp           pop           
- Afghanistan:  12   Africa  :624   Min.   :1952   Min.   :23.60   Min.   :6.001e+04  
- Albania    :  12   Americas:300   1st Qu.:1966   1st Qu.:48.20   1st Qu.:2.794e+06  
- Algeria    :  12   Asia    :396   Median :1980   Median :60.71   Median :7.024e+06  
- Angola     :  12   Europe  :360   Mean   :1980   Mean   :59.47   Mean   :2.960e+07  
- Argentina  :  12   Oceania : 24   3rd Qu.:1993   3rd Qu.:70.85   3rd Qu.:1.959e+07  
- Australia  :  12                  Max.   :2007   Max.   :82.60   Max.   :1.319e+09  
- (Other)    :1632                                                                    
-   gdpPercap       
- Min.   :   241.2  
- 1st Qu.:  1202.1  
- Median :  3531.8  
- Mean   :  7215.3  
- 3rd Qu.:  9325.5  
- Max.   :113523.1  
-                   
+Observations: 1,704
+Variables: 6
+$ country   &lt;fct&gt; Afghanistan, Afghanistan, Afghanistan, Afghanistan, Afghanistan, Af...
+$ continent &lt;fct&gt; Asia, Asia, Asia, Asia, Asia, Asia, Asia, Asia, Asia, Asia, Asia, A...
+$ year      &lt;int&gt; 1952, 1957, 1962, 1967, 1972, 1977, 1982, 1987, 1992, 1997, 2002, 2...
+$ lifeExp   &lt;dbl&gt; 28.801, 30.332, 31.997, 34.020, 36.088, 38.438, 39.854, 40.822, 41....
+$ pop       &lt;int&gt; 8425333, 9240934, 10267083, 11537966, 13079460, 14880372, 12881816,...
+$ gdpPercap &lt;dbl&gt; 779.4453, 820.8530, 853.1007, 836.1971, 739.9811, 786.1134, 978.011...
 ```
+
+--
+
+Let's start with `lifeExp` vs `gdpPercap`
 
 ---
 class: fullscreen
@@ -1222,6 +1217,10 @@ ggplot(gapminder) +
 ![](index_files/figure-html/gapminder-le-gdp-1-1.png)
 ]
 
+--
+
+Add points...
+
 ---
 
 .left-code[
@@ -1237,6 +1236,10 @@ ggplot(gapminder) +
 .right-plot[
 ![](index_files/figure-html/gapminder-le-gdp-2-1.png)
 ]
+
+--
+
+How can I tell countries apart?
 
 ---
 
@@ -1254,6 +1257,10 @@ ggplot(gapminder) +
 .right-plot[
 ![](index_files/figure-html/gapminder-le-gdp-3-1.png)
 ]
+
+--
+
+GDP is squished together on the left
 
 ---
 
@@ -1273,6 +1280,10 @@ ggplot(gapminder) +
 ![](index_files/figure-html/gapminder-le-gdp-4-1.png)
 ]
 
+--
+
+Still lots of overlap in the countries...
+
 ---
 
 .left-code[
@@ -1287,11 +1298,17 @@ ggplot(gapminder) +
 * facet_wrap(~ continent) +
 * guides(color = FALSE)
 ```
+
+No need for color legend thanks to facet titles
 ]
 
 .right-plot[
 ![](index_files/figure-html/gapminder-le-gdp-5-1.png)
 ]
+
+--
+
+Lots of overplotting due to point size
 
 ---
 
@@ -1313,6 +1330,10 @@ ggplot(gapminder) +
 ![](index_files/figure-html/gapminder-le-gdp-6-1.png)
 ]
 
+--
+
+Is there a trend?
+
 ---
 
 .left-code[
@@ -1333,6 +1354,10 @@ ggplot(gapminder) +
 .right-plot[
 ![](index_files/figure-html/gapminder-le-gdp-7-1.png)
 ]
+
+--
+
+Okay, that line just connected all of the points sequentially...
 
 ---
 
@@ -1359,6 +1384,10 @@ ggplot(gapminder) +
 ![](index_files/figure-html/gapminder-le-gdp-8-1.png)
 ]
 
+--
+
+&amp;#x1F4A1; We need time on x-axis!
+
 ---
 
 .left-code[
@@ -1382,6 +1411,10 @@ ggplot(gapminder) +
 ![](index_files/figure-html/gapminder-gdp-year-1-1.png)
 ]
 
+--
+
+Can't see x-axis labels, though
+
 ---
 
 .left-code[
@@ -1396,9 +1429,8 @@ ggplot(gapminder) +
   ) +
   geom_point(size = 0.25) +
   scale_y_log10() +
-* scale_x_continuous(
-*   breaks =
-*     seq(1950, 2000, 25)
+* scale_x_continuous(breaks =
+*   seq(1950, 2000, 25)
 * ) +
   facet_wrap(~ continent) +
   guides(color = FALSE)
@@ -1408,6 +1440,10 @@ ggplot(gapminder) +
 .right-plot[
 ![](index_files/figure-html/gapminder-gdp-year-2-1.png)
 ]
+
+--
+
+What about life expectancy?
 
 ---
 
@@ -1423,9 +1459,8 @@ ggplot(gapminder) +
   ) +
   geom_point(size = 0.25) +
 * #scale_y_log10() +
-  scale_x_continuous(
-    breaks = 
-      seq(1950, 2000, 25)
+  scale_x_continuous(breaks = 
+    seq(1950, 2000, 25)
   ) +  
   facet_wrap(~ continent) +
   guides(color = FALSE)
@@ -1435,6 +1470,10 @@ ggplot(gapminder) +
 .right-plot[
 ![](index_files/figure-html/gapminder-le-year-1-1.png)
 ]
+
+--
+
+Okay, let's add a trend line
 
 ---
 
@@ -1450,9 +1489,8 @@ ggplot(gapminder) +
   ) +
   geom_point(size = 0.25) +
 * geom_smooth() +
-  scale_x_continuous(
-    breaks = 
-      seq(1950, 2000, 25)
+  scale_x_continuous(breaks = 
+    seq(1950, 2000, 25)
   ) +  
   facet_wrap(~ continent) +
   guides(color = FALSE)
@@ -1462,6 +1500,10 @@ ggplot(gapminder) +
 .right-plot[
 ![](index_files/figure-html/gapminder-le-year-2-1.png)
 ]
+
+--
+
+De-emphasize individual countries
 
 ---
 
@@ -1478,9 +1520,8 @@ ggplot(gapminder) +
   ) +
   geom_point(size = 0.25) +
   geom_smooth() + 
-  scale_x_continuous(
-    breaks = 
-      seq(1950, 2000, 25)
+  scale_x_continuous(breaks = 
+    seq(1950, 2000, 25)
   ) +  
   facet_wrap(~ continent) +
   guides(color = FALSE)
@@ -1490,6 +1531,10 @@ ggplot(gapminder) +
 .right-plot[
 ![](index_files/figure-html/gapminder-le-year-3-1.png)
 ]
+
+--
+
+Points are still in the way
 
 ---
 
@@ -1506,9 +1551,8 @@ ggplot(gapminder) +
   ) +
 * #geom_point(size = 0.25) +
   geom_smooth() + 
-  scale_x_continuous(
-    breaks = 
-      seq(1950, 2000, 25)
+  scale_x_continuous(breaks = 
+    seq(1950, 2000, 25)
   ) +  
   facet_wrap(~ continent) +
   guides(color = FALSE)
@@ -1518,6 +1562,10 @@ ggplot(gapminder) +
 .right-plot[
 ![](index_files/figure-html/gapminder-le-year-4-1.png)
 ]
+
+--
+
+Let's compare continents
 
 ---
 
@@ -1546,6 +1594,10 @@ ggplot(gapminder) +
 ![](index_files/figure-html/gapminder-le-year-5-1.png)
 ]
 
+--
+
+Wait, what color is each continent?
+
 ---
 
 .left-code[
@@ -1569,6 +1621,10 @@ ggplot(gapminder) +
 .right-plot[
 ![](index_files/figure-html/gapminder-le-year-6-1.png)
 ]
+
+--
+
+Let's try the minimal theme
 
 ---
 
@@ -1594,6 +1650,10 @@ ggplot(gapminder) +
 .right-plot[
 ![](index_files/figure-html/gapminder-le-year-7-1.png)
 ]
+
+--
+
+Fonts are kind of big
 
 ---
 
@@ -1621,6 +1681,10 @@ ggplot(gapminder) +
 ![](index_files/figure-html/gapminder-le-year-8-1.png)
 ]
 
+--
+
+Cool, let's switch gears
+
 ---
 
 .left-code[
@@ -1637,6 +1701,8 @@ americas &lt;-
     )
   )
 ```
+
+Let's look at four countries in more detail. How do their populations compare to each other?
 ]
 
 .right-plot[
@@ -2063,6 +2129,10 @@ ggplot(americas) +
 ![](index_files/figure-html/gapminder-americas-1-1.png)
 ]
 
+--
+
+Yeah, but how many people are in each country?
+
 ---
 
 .left-code[
@@ -2082,6 +2152,10 @@ ggplot(americas) +
 ![](index_files/figure-html/gapminder-americas-2-1.png)
 ]
 
+--
+
+Bars are "stacked", can we separate?
+
 ---
 
 .left-code[
@@ -2097,11 +2171,17 @@ ggplot(americas) +
 *   position = "dodge"
   )
 ```
+
+`position = "dodge"` places objects _next to each other_ instead of overlapping
 ]
 
 .right-plot[
 ![](index_files/figure-html/gapminder-americas-3-1.png)
 ]
+
+--
+
+&amp;#x1F913; What is scientific notation anyway?
 
 ---
 
@@ -2118,11 +2198,17 @@ ggplot(americas) +
     position = "dodge" 
   )
 ```
+
+ggplot aesthetics can take expressions!
 ]
 
 .right-plot[
 ![](index_files/figure-html/gapminder-americas-4-1.png)
 ]
+
+--
+
+Might be easier to see countries individually
 
 ---
 
@@ -2146,6 +2232,10 @@ ggplot(americas) +
 .right-plot[
 ![](index_files/figure-html/gapminder-americas-5-1.png)
 ]
+
+--
+
+Let range of y-axis vary in each plot
 
 ---
 
@@ -2171,6 +2261,10 @@ ggplot(americas) +
 ![](index_files/figure-html/gapminder-americas-6-1.png)
 ]
 
+--
+
+What about life expectancy again?
+
 ---
 
 .left-code[
@@ -2195,6 +2289,10 @@ ggplot(americas) +
 ![](index_files/figure-html/gapminder-americas-7-1.png)
 ]
 
+--
+
+This should really be &amp;#x1F4C8; instead of &amp;#x1F4CA;
+
 ---
 
 .left-code[
@@ -2217,6 +2315,9 @@ ggplot(americas) +
 ![](index_files/figure-html/gapminder-americas-8-1.png)
 ]
 
+--
+
+&amp;#x1F4CA; are **fill**ed, &amp;#x1F4C8; are **color**ed
 
 ---
 
@@ -2240,6 +2341,10 @@ ggplot(americas) +
 ![](index_files/figure-html/gapminder-americas-9-1.png)
 ]
 
+--
+
+Altogether now!
+
 ---
 
 .left-code[
@@ -2259,6 +2364,10 @@ ggplot(americas) +
 ![](index_files/figure-html/gapminder-americas-10-1.png)
 ]
 
+--
+
+Okay, changing gears again. What is range of life expectancy in Americas?
+
 ---
 
 .left-code[
@@ -2274,11 +2383,18 @@ gapminder %&gt;%
     y = lifeExp
   )
 ```
+
+You can pipe into `ggplot()`!  
+Just watch for `%&gt;%` changing to `+`
 ]
 
 .right-plot[
 ![](index_files/figure-html/gapminder-all-americas-1-1.png)
 ]
+
+--
+
+Boxplot for life expectancy range
 
 ---
 
@@ -2301,6 +2417,10 @@ gapminder %&gt;%
 .right-plot[
 ![](index_files/figure-html/gapminder-all-americas-2-1.png)
 ]
+
+--
+
+Why not boxplots by year?
 
 ---
 
@@ -2327,6 +2447,10 @@ gapminder %&gt;%
 ![](index_files/figure-html/gapminder-all-americas-3-1.png)
 ]
 
+--
+
+OK, what about global life expectancy?
+
 ---
 
 .left-code[
@@ -2352,6 +2476,10 @@ gapminder %&gt;%
 ![](index_files/figure-html/gapminder-all-americas-4-1.png)
 ]
 
+--
+
+Can we have cute little boxplots for each continent?
+
 ---
 
 .left-code[
@@ -2374,6 +2502,10 @@ gapminder %&gt;%
 .right-plot[
 ![](index_files/figure-html/gapminder-all-americas-5-1.png)
 ]
+
+--
+
+Hard to read years, let's rotate &amp;#x1F504;
 
 ---
 
@@ -2398,6 +2530,10 @@ gapminder %&gt;%
 .right-plot[
 ![](index_files/figure-html/gapminder-all-americas-6-1.png)
 ]
+
+--
+
+Use `dplyr` to group by decade
 
 ---
 
@@ -2424,6 +2560,10 @@ gapminder %&gt;%
 .right-plot[
 ![](index_files/figure-html/gapminder-all-americas-7-1.png)
 ]
+
+--
+
+Let's hide Oceania, sorry &amp;#x1F1E6;&amp;#x1F1FA;&amp;#x1F1F3;&amp;#x1F1FF;&amp;#x1F1EE;&amp;#x1F1E9;&amp;#x1F1EB;&amp;#x1F1EF;&amp;#x1F1F5;&amp;#x1F1EC;
 
 ---
 
@@ -2460,13 +2600,17 @@ g &lt;- gapminder %&gt;%
 g +
   theme_minimal(8) +
   labs(
-    x = "Life Expectancy",
-    y = "Decade",
+    y = "Life Expectancy",
+    x = "Decade",
     fill = NULL,
     title = "Life Expectancy by Continent and Decade",
     caption = "gapminder.org"
   )
 ```
+
+Note `x` and `y` are _original_ aesthetics, `coord_flip()` happens _after_.  
+
+Remove labels by setting `= NULL`.
 ]
 
 .right-plot[

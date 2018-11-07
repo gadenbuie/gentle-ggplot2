@@ -452,8 +452,7 @@ layout: true
 .right-column[
 Geometric objects displayed on the plot
 
-.center[
-```{r geom_demo, echo=FALSE, out.width="450px"}
+```{r geom_demo, echo=FALSE, fig.width=6, out.width="650px"}
 minimal_theme <- theme_bw() +
   theme(
     axis.text = element_blank(),
@@ -461,23 +460,28 @@ minimal_theme <- theme_bw() +
     panel.grid = element_blank(),
     panel.border = element_blank(),
     axis.title = element_blank(),
-    plot.title = element_text(face = "bold", hjust = 0.5)
+    plot.title = element_text(hjust = 0.5),
+    text = element_text(family = "Fira Mono"),
+    plot.background = element_rect(fill = "#FAFAFA", color = NA),
+    panel.background = element_rect(fill = "#FAFAFA", color = NA)
   )
 
 set.seed(4242)
 df_geom <- data_frame(y = rnorm(10), x = 1:10)
 
 g_geom <- list()
-g_geom$point <- ggplot(df_geom, aes(x, y)) + geom_point() + ggtitle("geom_point")
-g_geom$line <- ggplot(df_geom, aes(x, y)) + geom_line() + ggtitle("geom_line")
-g_geom$bar <- ggplot(df_geom, aes(x, y)) + geom_col() + ggtitle("geom_bar")
-g_geom$boxplot <- ggplot(df_geom, aes(y = y)) + geom_boxplot() + ggtitle("geom_boxplot") + labs(x = "x")
+g_geom$point <- ggplot(df_geom, aes(x, y)) + geom_point() + ggtitle("geom_point()")
+g_geom$line <- ggplot(df_geom, aes(x, y)) + geom_line() + ggtitle("geom_line()")
+g_geom$bar <- ggplot(df_geom, aes(x, y)) + geom_col() + ggtitle("geom_col()")
+g_geom$boxplot <- ggplot(df_geom, aes(y = y)) + geom_boxplot() + ggtitle("geom_boxplot()")
+g_geom$histogram <- ggplot(df_geom, aes(y)) + geom_histogram(binwidth = 1) + ggtitle("geom_histogram()")
+g_geom$density <- ggplot(df_geom, aes(y)) + geom_density(fill = "grey40", alpha = 0.25) + ggtitle("geom_density()") + xlim(-4, 4)
 
 g_geom <- map(g_geom, ~ . + minimal_theme)
 
 cowplot::plot_grid(plotlist = g_geom)
 ```
-]]
+]
 
 ---
 
@@ -1013,11 +1017,15 @@ head(gapminder)
 ```
 
 ---
-# summary(gapminder)
+# glimpse(gapminder)
 
 ```{r summary-gapminder, echo=FALSE, comment=""}
-summary(gapminder)
+glimpse(gapminder)
 ```
+
+--
+
+Let's start with `lifeExp` vs `gdpPercap`
 
 ---
 class: fullscreen
@@ -1036,6 +1044,10 @@ ggplot(gapminder) +
 ![](`r knitr::fig_chunk("gapminder-le-gdp-1", "png")`)
 ]
 
+--
+
+Add points...
+
 ---
 
 .left-code[
@@ -1050,6 +1062,10 @@ ggplot(gapminder) +
 .right-plot[
 ![](`r knitr::fig_chunk("gapminder-le-gdp-2", "png")`)
 ]
+
+--
+
+How can I tell countries apart?
 
 ---
 
@@ -1066,6 +1082,10 @@ ggplot(gapminder) +
 .right-plot[
 ![](`r knitr::fig_chunk("gapminder-le-gdp-3", "png")`)
 ]
+
+--
+
+GDP is squished together on the left
 
 ---
 
@@ -1084,6 +1104,10 @@ ggplot(gapminder) +
 ![](`r knitr::fig_chunk("gapminder-le-gdp-4", "png")`)
 ]
 
+--
+
+Still lots of overlap in the countries...
+
 ---
 
 .left-code[
@@ -1097,11 +1121,17 @@ ggplot(gapminder) +
   facet_wrap(~ continent) + #<<
   guides(color = FALSE)     #<<
 ```
+
+No need for color legend thanks to facet titles
 ]
 
 .right-plot[
 ![](`r knitr::fig_chunk("gapminder-le-gdp-5", "png")`)
 ]
+
+--
+
+Lots of overplotting due to point size
 
 ---
 
@@ -1122,6 +1152,10 @@ ggplot(gapminder) +
 ![](`r knitr::fig_chunk("gapminder-le-gdp-6", "png")`)
 ]
 
+--
+
+Is there a trend?
+
 ---
 
 .left-code[
@@ -1141,6 +1175,10 @@ ggplot(gapminder) +
 .right-plot[
 ![](`r knitr::fig_chunk("gapminder-le-gdp-7", "png")`)
 ]
+
+--
+
+Okay, that line just connected all of the points sequentially...
 
 ---
 
@@ -1166,6 +1204,10 @@ ggplot(gapminder) +
 ![](`r knitr::fig_chunk("gapminder-le-gdp-8", "png")`)
 ]
 
+--
+
+&#x1F4A1; We need time on x-axis!
+
 ---
 
 .left-code[
@@ -1188,6 +1230,10 @@ ggplot(gapminder) +
 ![](`r knitr::fig_chunk("gapminder-gdp-year-1", "png")`)
 ]
 
+--
+
+Can't see x-axis labels, though
+
 ---
 
 .left-code[
@@ -1201,9 +1247,8 @@ ggplot(gapminder) +
   ) +
   geom_point(size = 0.25) +
   scale_y_log10() +
-  scale_x_continuous(            #<<
-    breaks = #<<
-      seq(1950, 2000, 25) #<<
+  scale_x_continuous(breaks = #<<
+    seq(1950, 2000, 25) #<<
   ) +                            #<<
   facet_wrap(~ continent) +
   guides(color = FALSE)
@@ -1213,6 +1258,10 @@ ggplot(gapminder) +
 .right-plot[
 ![](`r knitr::fig_chunk("gapminder-gdp-year-2", "png")`)
 ]
+
+--
+
+What about life expectancy?
 
 ---
 
@@ -1227,9 +1276,8 @@ ggplot(gapminder) +
   ) +
   geom_point(size = 0.25) +
   #scale_y_log10() + #<<
-  scale_x_continuous(
-    breaks = 
-      seq(1950, 2000, 25)
+  scale_x_continuous(breaks = 
+    seq(1950, 2000, 25)
   ) +  
   facet_wrap(~ continent) +
   guides(color = FALSE)
@@ -1239,6 +1287,10 @@ ggplot(gapminder) +
 .right-plot[
 ![](`r knitr::fig_chunk("gapminder-le-year-1", "png")`)
 ]
+
+--
+
+Okay, let's add a trend line
 
 ---
 
@@ -1253,9 +1305,8 @@ ggplot(gapminder) +
   ) +
   geom_point(size = 0.25) +
   geom_smooth() + #<<
-  scale_x_continuous(
-    breaks = 
-      seq(1950, 2000, 25)
+  scale_x_continuous(breaks = 
+    seq(1950, 2000, 25)
   ) +  
   facet_wrap(~ continent) +
   guides(color = FALSE)
@@ -1265,6 +1316,10 @@ ggplot(gapminder) +
 .right-plot[
 ![](`r knitr::fig_chunk("gapminder-le-year-2", "png")`)
 ]
+
+--
+
+De-emphasize individual countries
 
 ---
 
@@ -1280,9 +1335,8 @@ ggplot(gapminder) +
   ) +
   geom_point(size = 0.25) +
   geom_smooth() + 
-  scale_x_continuous(
-    breaks = 
-      seq(1950, 2000, 25)
+  scale_x_continuous(breaks = 
+    seq(1950, 2000, 25)
   ) +  
   facet_wrap(~ continent) +
   guides(color = FALSE)
@@ -1292,6 +1346,10 @@ ggplot(gapminder) +
 .right-plot[
 ![](`r knitr::fig_chunk("gapminder-le-year-3", "png")`)
 ]
+
+--
+
+Points are still in the way
 
 ---
 
@@ -1307,9 +1365,8 @@ ggplot(gapminder) +
   ) +
   #geom_point(size = 0.25) + #<<
   geom_smooth() + 
-  scale_x_continuous(
-    breaks = 
-      seq(1950, 2000, 25)
+  scale_x_continuous(breaks = 
+    seq(1950, 2000, 25)
   ) +  
   facet_wrap(~ continent) +
   guides(color = FALSE)
@@ -1319,6 +1376,10 @@ ggplot(gapminder) +
 .right-plot[
 ![](`r knitr::fig_chunk("gapminder-le-year-4", "png")`)
 ]
+
+--
+
+Let's compare continents
 
 ---
 
@@ -1346,6 +1407,10 @@ ggplot(gapminder) +
 ![](`r knitr::fig_chunk("gapminder-le-year-5", "png")`)
 ]
 
+--
+
+Wait, what color is each continent?
+
 ---
 
 .left-code[
@@ -1368,6 +1433,10 @@ ggplot(gapminder) +
 .right-plot[
 ![](`r knitr::fig_chunk("gapminder-le-year-6", "png")`)
 ]
+
+--
+
+Let's try the minimal theme
 
 ---
 
@@ -1392,6 +1461,10 @@ ggplot(gapminder) +
 .right-plot[
 ![](`r knitr::fig_chunk("gapminder-le-year-7", "png")`)
 ]
+
+--
+
+Fonts are kind of big
 
 ---
 
@@ -1418,6 +1491,10 @@ ggplot(gapminder) +
 ![](`r knitr::fig_chunk("gapminder-le-year-8", "png")`)
 ]
 
+--
+
+Cool, let's switch gears
+
 ---
 
 .left-code[
@@ -1433,6 +1510,8 @@ americas <-
     )
   )
 ```
+
+Let's look at four countries in more detail. How do their populations compare to each other?
 ]
 
 .right-plot[
@@ -1459,6 +1538,10 @@ ggplot(americas) +
 ![](`r knitr::fig_chunk("gapminder-americas-1", "png")`)
 ]
 
+--
+
+Yeah, but how many people are in each country?
+
 ---
 
 .left-code[
@@ -1477,6 +1560,10 @@ ggplot(americas) +
 ![](`r knitr::fig_chunk("gapminder-americas-2", "png")`)
 ]
 
+--
+
+Bars are "stacked", can we separate?
+
 ---
 
 .left-code[
@@ -1491,11 +1578,17 @@ ggplot(americas) +
     position = "dodge" #<<
   )
 ```
+
+`position = "dodge"` places objects _next to each other_ instead of overlapping
 ]
 
 .right-plot[
 ![](`r knitr::fig_chunk("gapminder-americas-3", "png")`)
 ]
+
+--
+
+&#x1F913; What is scientific notation anyway?
 
 ---
 
@@ -1511,11 +1604,17 @@ ggplot(americas) +
     position = "dodge" 
   )
 ```
+
+ggplot aesthetics can take expressions!
 ]
 
 .right-plot[
 ![](`r knitr::fig_chunk("gapminder-americas-4", "png")`)
 ]
+
+--
+
+Might be easier to see countries individually
 
 ---
 
@@ -1538,6 +1637,10 @@ ggplot(americas) +
 .right-plot[
 ![](`r knitr::fig_chunk("gapminder-americas-5", "png")`)
 ]
+
+--
+
+Let range of y-axis vary in each plot
 
 ---
 
@@ -1562,6 +1665,10 @@ ggplot(americas) +
 ![](`r knitr::fig_chunk("gapminder-americas-6", "png")`)
 ]
 
+--
+
+What about life expectancy again?
+
 ---
 
 .left-code[
@@ -1585,6 +1692,10 @@ ggplot(americas) +
 ![](`r knitr::fig_chunk("gapminder-americas-7", "png")`)
 ]
 
+--
+
+This should really be &#x1F4C8; instead of &#x1F4CA;
+
 ---
 
 .left-code[
@@ -1606,6 +1717,9 @@ ggplot(americas) +
 ![](`r knitr::fig_chunk("gapminder-americas-8", "png")`)
 ]
 
+--
+
+&#x1F4CA; are **fill**ed, &#x1F4C8; are **color**ed
 
 ---
 
@@ -1628,6 +1742,10 @@ ggplot(americas) +
 ![](`r knitr::fig_chunk("gapminder-americas-9", "png")`)
 ]
 
+--
+
+Altogether now!
+
 ---
 
 .left-code[
@@ -1646,6 +1764,10 @@ ggplot(americas) +
 ![](`r knitr::fig_chunk("gapminder-americas-10", "png")`)
 ]
 
+--
+
+Okay, changing gears again. What is range of life expectancy in Americas?
+
 ---
 
 .left-code[
@@ -1660,11 +1782,18 @@ gapminder %>%
     y = lifeExp
   )
 ```
+
+You can pipe into `ggplot()`!  
+Just watch for `%>%` changing to `+`
 ]
 
 .right-plot[
 ![](`r knitr::fig_chunk("gapminder-all-americas-1", "png")`)
 ]
+
+--
+
+Boxplot for life expectancy range
 
 ---
 
@@ -1686,6 +1815,10 @@ gapminder %>%
 .right-plot[
 ![](`r knitr::fig_chunk("gapminder-all-americas-2", "png")`)
 ]
+
+--
+
+Why not boxplots by year?
 
 ---
 
@@ -1711,6 +1844,10 @@ gapminder %>%
 ![](`r knitr::fig_chunk("gapminder-all-americas-3", "png")`)
 ]
 
+--
+
+OK, what about global life expectancy?
+
 ---
 
 .left-code[
@@ -1735,6 +1872,10 @@ gapminder %>%
 ![](`r knitr::fig_chunk("gapminder-all-americas-4", "png")`)
 ]
 
+--
+
+Can we have cute little boxplots for each continent?
+
 ---
 
 .left-code[
@@ -1756,6 +1897,10 @@ gapminder %>%
 .right-plot[
 ![](`r knitr::fig_chunk("gapminder-all-americas-5", "png")`)
 ]
+
+--
+
+Hard to read years, let's rotate &#x1F504;
 
 ---
 
@@ -1779,6 +1924,10 @@ gapminder %>%
 .right-plot[
 ![](`r knitr::fig_chunk("gapminder-all-americas-6", "png")`)
 ]
+
+--
+
+Use `dplyr` to group by decade
 
 ---
 
@@ -1804,6 +1953,10 @@ gapminder %>%
 .right-plot[
 ![](`r knitr::fig_chunk("gapminder-all-americas-7", "png")`)
 ]
+
+--
+
+Let's hide Oceania, sorry &#x1F1E6;&#x1F1FA;&#x1F1F3;&#x1F1FF;&#x1F1EE;&#x1F1E9;&#x1F1EB;&#x1F1EF;&#x1F1F5;&#x1F1EC;
 
 ---
 
@@ -1840,13 +1993,17 @@ g
 g +
   theme_minimal(8) +
   labs(
-    x = "Life Expectancy",
-    y = "Decade",
+    y = "Life Expectancy",
+    x = "Decade",
     fill = NULL,
     title = "Life Expectancy by Continent and Decade",
     caption = "gapminder.org"
   )
 ```
+
+Note `x` and `y` are _original_ aesthetics, `coord_flip()` happens _after_.  
+
+Remove labels by setting `= NULL`.
 ]
 
 .right-plot[
