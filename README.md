@@ -14,6 +14,10 @@ You only need to install the following two packages (okay, one of them is the [t
 install.packages(c("tidyverse", "gapminder"))
 ```
 
+## Usage
+
+Please feel free to use materials from these slides in your own materials, with attribution. Text and images are provided under the Creative Commons [CC-BY-4.0 license](https://creativecommons.org/licenses/by/4.0/). The software and code I have authored for these materials are provided with the [MIT](https://choosealicense.com/licenses/mit/) license.
+
 ## Versions
 
 These slides are an updated version of [a presentation](https://github.com/gadenbuie/trug-ggplot2) given at the [Tampa R Users Group](https://tampausers.github.io).
