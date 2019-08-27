@@ -72,7 +72,7 @@ The transferrable skills from ggplot2 are not the idiosyncracies of plotting syn
 
 - .hl[Functional] data visualization
 
-    1. Wrange data
+    1. Wrangle data
     2. Map data to visual elements
     3. Tweak scales, guides, axis, labels, theme
 
