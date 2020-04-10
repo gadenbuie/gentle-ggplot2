@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="" xml:lang="">
   <head>
-    <title>A Gentle Guide to the Grammar of Graphics with ggplot2</title>
-    <meta charset="utf-8">
-    <meta name="author" content="Garrick Aden-Buie @grrrck" />
+    <title>Data Visualisation in R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dr. Laurie Baker" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
@@ -13,23 +13,80 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# A Gentle Guide to the Grammar of Graphics<br>with <code>ggplot2</code>
-### Garrick Aden-Buie<br><span class="citation">@grrrck</span>
-### Slides and code: <strong>bit.ly/gentle-ggplot2</strong>
+# Data Visualisation in R
+## Introduction to ggplot2 and leaflet
+### Dr. Laurie Baker
+### Data Science Campus
+### 2020/04/09 (updated: 2020-04-09)
 
 ---
 
 
-class: fullscreen, inverse, top, center, text-white
-background-image: url("images/letter-g.jpg")
+class: fullscreen, inverse, center, text-black
 
-.font150[**Brought to you by the letter...**]
+.font150[Introduction to ggplot2]
 
 
 
 ---
 layout: true
-# Why *ggplot2*?
+# How would you draw a graph by hand?
+---
+
+.left-column[
+![](images/grammar_graphics_book.jfif)
+__Grammar of Graphics__
+]
+
+.right-column[.font150[
+
+1. Draw the axes.
+
+2. Add the tick marks.
+
+3. Draw each line. Colour by country.
+
+4. Add the axes labels.
+
+5. Add a title.
+
+6. Add a legend.
+
+]]
+
+
+
+---
+
+
+---
+layout: true
+# The grammar of graphics
+---
+
+.left-column[
+![](images/grammar_graphics_book.jfif)
+__Grammar of Graphics__
+]
+
+.right-column[.font150[
+
+*  A computer goes through steps constructing a graphic.
+
+*  Must be told relationship between the data (**variables**) and the visual properties of the graph.
+    * E.g. Each line is coloured by **country**.
+
+
+* The **grammar of graphics =** set of rules for plotting.
+
+]
+
+---
+
+
+---
+layout: true
+# What is *ggplot2*?
 ---
 
 .left-column[
@@ -38,82 +95,96 @@ __Hadley Wickham__
 ]
 
 .right-column[.font150[
-The transferrable skills from ggplot2 are not the idiosyncracies of plotting syntax, but a powerful way of thinking about visualisation, as a way of **mapping between variables and the visual properties of geometric objects** that you can perceive.
+
+
+* The "gg" in **ggplot2** stands for the "**g**rammar of **g**raphics"
+
+* ggplot2 is the implementation of the grammar of graphics into R with some adaptations.
+
+* it is "a powerful way of thinking about visualisation, as a way of **mapping between variables and the visual properties of geometric objects** that you can perceive. 
 ]
 .footnote[&lt;http://disq.us/p/sv640d&gt;]
 ]
 
 
+]
+
+
+---
+layout: true
+# Why use *ggplot2*?
 ---
 
-## My personal reasons
+- Package for .hl[functional] data visualization.
 
-- .hl[Functional] data visualization
-
+--
     1. Wrangle data
+    
+--
+
     2. Map data to visual elements
+    
+--
+
     3. Tweak scales, guides, axis, labels, theme
+    
+--
 
-- Easy to .hl[reason] about how data drives visualization
+- Once you know the set up it is easy to
 
-- Easy to .hl[iterate]
+--
 
-- Easy to be .hl[consistent]
+  - .hl[Reason] about how data drives visualization
+
+--
+
+  - .hl[Iterate]
+
+--
+
+  - Be .hl[consistent]
 
 ---
 layout: false
 
-# What are we getting into?
+# Learning objectives
 
-&lt;br&gt;
-`ggplot2` is a huge package: philosophy + functions
-&lt;br&gt;...but it's very well organized
 
---
-
-&lt;br&gt;&lt;br&gt;
-*Lots* of examples of not-so-great plots in these slides
-&lt;br&gt;...but that's okay
+* `ggplot2` is a huge package with lots of options. But it's well documented and organized.
 
 --
 
-&lt;br&gt;&lt;br&gt;
-Going to throw a lot at you
-&lt;br&gt;...but you'll know *where* and *what* to look for
+* We'll cover a lot, but won't have time to go into every specific. 
 
 --
 
-.img-right[![](images/poppins-bag.gif)]
+* But you'll know where and what to look for. 
 
 --
 
-.img-right[![](images/poppins-bag-kids.gif)]
+* There'll be examples of not-so-great plots in these slides &lt;br&gt; ... but that's okay.
 
+-- 
+
+* For an even more advanced look at ggplot I highly recommend this online workshop by Thomas Lin Pedersen.
 ---
 layout: true
-# G is for getting started
+# Getting started
 
 ---
 
 
-**Easy**: install the [tidyverse](http://tidyverse.org)
+**Option 1**: install the metapackage [tidyverse](http://tidyverse.org)
 
 ```r
 install.packages('tidyverse')
 ```
 
-**Medium**: install just `ggplot2`
+**Option 2**: install just `ggplot2`
 
 ```r
 install.pacakages('ggplot2')
 ```
-
-**Expert**: install from GitHub
-
-```r
-devtools::install_github('tidyverse/ggplot2')
-```
-
 ---
 
 ## Load the tidyverse
@@ -124,20 +195,20 @@ library(tidyverse)
 ```
 
 ```
-## ── Attaching packages ───────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+## -- Attaching packages ----------------------------------------------------------------- tidyverse 1.3.0 --
 ```
 
 ```
-## ✔ ggplot2 3.1.0     ✔ purrr   0.2.5
-## ✔ tibble  1.4.2     ✔ dplyr   0.7.7
-## ✔ tidyr   0.8.1     ✔ stringr 1.3.1
-## ✔ readr   1.1.1     ✔ forcats 0.3.0
+## v ggplot2 3.2.1     v purrr   0.3.3
+## v tibble  2.1.3     v dplyr   0.8.3
+## v tidyr   1.0.0     v stringr 1.4.0
+## v readr   1.3.1     v forcats 0.4.0
 ```
 
 ```
-## ── Conflicts ──────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()
+## -- Conflicts -------------------------------------------------------------------- tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
 ```
 
 ---
@@ -162,72 +233,9 @@ class: inverse center middle text-white
 
 ---
 
-# What is a grammar of graphics?
+# Every plot starts with data
 
-.left-code[
-"Good grammar is just the first step in creating a good sentence."
 
-#### How is the drawing on the right connected to data?
-
-.footnote[&lt;http://vita.had.co.nz/papers/layered-grammar.pdf&gt;]
-]
-
-.right-plot[
-&lt;img src="index_files/figure-html/guess-data-from-plot-0-1.png" width="100%" /&gt;
-]
-
----
-layout: true
-# Guess the data behind this plot?
-
-.left-code[
-### MPG Ratings of Cars
-
-- Manufacturer
-- Car Type (Class)
-- City MPG
-- Highway MPG
-]
-
----
-
-.right-plot[
-&lt;img src="index_files/figure-html/guess-data-from-plot-2-1.png" width="100%" /&gt;
-]
-
----
-
-.right-plot[
-&lt;img src="index_files/figure-html/guess-data-from-plot-3-1.png" width="100%" /&gt;
-]
-
----
-
-.right-plot[
-&lt;img src="index_files/figure-html/guess-data-from-plot-1-1.png" width="100%" /&gt;
-]
-
----
-
-.right-plot[
-&lt;img src="index_files/figure-html/guess-data-from-plot-4-1.png" width="100%" /&gt;
-]
-
----
-
-.right-plot[
-&lt;img src="index_files/figure-html/guess-data-from-plot-5-1.png" width="100%" /&gt;
-]
-
----
-
-.right-plot[
-&lt;img src="index_files/figure-html/guess-data-from-plot-6-1.png" width="100%" /&gt;
-]
-
----
-
-.right-plot[
 &lt;table&gt;
  &lt;thead&gt;
   &lt;tr&gt;
@@ -249,8 +257,8 @@ layout: true
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; audi &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; compact &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 25 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; a4 quattro &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
@@ -270,22 +278,22 @@ layout: true
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; toyota &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; suv &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 4runner 4wd &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; toyota &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; compact &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; camry solara &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; toyota &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; compact &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 26 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 35 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; corolla &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
@@ -297,7 +305,118 @@ layout: true
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
+
+
+
+---
+layout: true
+# Guess the data behind this plot?
+---
+
+.left-code[
+### MPG Ratings of Cars
+
+- Manufacturer
+- Car Type (Class)
+- City MPG
+- Highway MPG
 ]
+
+
+.right-plot[
+&lt;img src="index_files/figure-html/guess-data-from-plot-2-1.png" width="100%" /&gt;
+]
+
+---
+layout: true
+# Guess the data behind this plot?
+---
+
+.left-code[
+### MPG Ratings of Cars
+
+- **Manufacturer**
+- Car Type (Class)
+- City MPG
+- Highway MPG
+]
+
+.right-plot[
+&lt;img src="index_files/figure-html/guess-data-from-plot-3-1.png" width="100%" /&gt;
+]
+
+---
+layout: true
+# Guess the data behind this plot?
+---
+
+.left-code[
+### MPG Ratings of Cars
+
+- Manufacturer
+- **Car Type (Class)**
+- City MPG
+- Highway MPG
+
+]
+.right-plot[
+&lt;img src="index_files/figure-html/guess-data-from-plot-1-1.png" width="100%" /&gt;
+]
+
+---
+layout: true
+# Guess the data behind this plot?
+---
+
+.left-code[
+### MPG Ratings of Cars
+
+- Manufacturer
+- Car Type (Class)
+- **City MPG**
+- Highway MPG
+]
+
+.right-plot[
+&lt;img src="index_files/figure-html/guess-data-from-plot-5-1.png" width="100%" /&gt;
+]
+
+---
+layout: true
+# Guess the data behind this plot?
+---
+
+.left-code[
+### MPG Ratings of Cars
+
+- Manufacturer
+- Car Type (Class)
+- City MPG
+- **Highway MPG**
+]
+
+.right-plot[
+&lt;img src="index_files/figure-html/guess-data-from-plot-6-1.png" width="100%" /&gt;
+]
+
+---
+layout: true
+# Guess the data behind this plot?
+---
+
+.left-code[
+### **MPG Ratings of Cars**
+
+- Manufacturer
+- Car Type (Class)
+- City MPG
+- Highway MPG
+]
+
+.right-plot[
+&lt;img src="index_files/figure-html/guess-data-from-plot-7-1.png" width="100%" /&gt;
+]
+
 
 ---
 layout: false
@@ -2836,27 +2955,86 @@ github.com/gadenbuie &lt;br&gt;
 Garrick Aden-Buie
 ]
     </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
 "ratio": "16:9",
 "highlightStyle": "foundation",
 "highlightLines": true,
-"countIncrementalSlides": true,
+"countIncrementalSlides": false,
 "slideNumberFormat": "%current%"
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
 });
-(function() {
-  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
   if (!r) return;
   s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
   d.head.appendChild(s);
-})();</script>
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
 
 <script>
 (function() {
-  var i, text, code, codes = document.getElementsByTagName('code');
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
   for (i = 0; i < codes.length;) {
     code = codes[i];
     if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
@@ -2870,14 +3048,15 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
     i++;
   }
-})();
+};
+slideshow._releaseMath(document);
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
 (function () {
   var script = document.createElement('script');
   script.type = 'text/javascript';
-  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
   if (location.protocol !== 'file:' && /^https?:/.test(script.src))
     script.src  = script.src.replace(/^https?:/, '');
   document.getElementsByTagName('head')[0].appendChild(script);

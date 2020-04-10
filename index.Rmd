@@ -1,8 +1,9 @@
 ---
-title: "A Gentle Guide to the Grammar of Graphics<br>with `ggplot2`"
-subtitle: ""
-author: "Garrick Aden-Buie<br>@grrrck"
-date: "Slides and code: **bit.ly/gentle-ggplot2**"
+title: "Data Visualisation in R"
+subtitle: "Introduction to ggplot2 and leaflet"
+author: "Dr. Laurie Baker"
+institute: "Data Science Campus"
+date: "2020/04/09 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -12,16 +13,15 @@ output:
       ratio: 16:9
       highlightStyle: "foundation"
       highlightLines: true
-      countIncrementalSlides: true
+      countIncrementalSlides: false
       slideNumberFormat: "%current%"
 editor_options: 
   chunk_output_type: console
 ---
 
-class: fullscreen, inverse, top, center, text-white
-background-image: url("images/letter-g.jpg")
+class: fullscreen, inverse, center, text-black
 
-.font150[**Brought to you by the letter...**]
+.font150[Introduction to ggplot2]
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(fig.width=4.25, fig.height=3.5, fig.retina=3,
@@ -51,7 +51,61 @@ as_table <- function(...) knitr::kable(..., format='html', digits = 3)
 
 ---
 layout: true
-# Why *ggplot2*?
+# How would you draw a graph by hand?
+---
+
+.left-column[
+![](images/grammar_graphics_book.jfif)
+__Grammar of Graphics__
+]
+
+.right-column[.font150[
+
+1. Draw the axes.
+
+2. Add the tick marks.
+
+3. Draw each line. Colour by country.
+
+4. Add the axes labels.
+
+5. Add a title.
+
+6. Add a legend.
+
+]]
+
+
+
+---
+
+
+---
+layout: true
+# The grammar of graphics
+---
+
+.left-column[
+![](images/grammar_graphics_book.jfif)
+__Grammar of Graphics__
+]
+
+.right-column[.font150[
+
+*  A computer uses steps to construct a graphic.
+
+*  Must be told relationship between the **variables** and the *visual properties* of the graph (e.g.*colour* = **country**).
+
+* The **grammar of graphics =** rules/steps for plotting.
+
+]
+
+---
+
+
+---
+layout: true
+# What is *ggplot2*?
 ---
 
 .left-column[
@@ -60,82 +114,96 @@ __Hadley Wickham__
 ]
 
 .right-column[.font150[
-The transferrable skills from ggplot2 are not the idiosyncracies of plotting syntax, but a powerful way of thinking about visualisation, as a way of **mapping between variables and the visual properties of geometric objects** that you can perceive.
+
+
+* The "gg" in **ggplot2** stands for the "**g**rammar of **g**raphics"
+
+* ggplot2 is the implementation of the grammar of graphics into R with some adaptations.
+
+* it is "a powerful way of thinking about visualisation, as a way of **mapping between variables and the visual properties of geometric objects** that you can perceive. 
 ]
 .footnote[<http://disq.us/p/sv640d>]
 ]
 
 
+]
+
+
+---
+layout: true
+# Why use *ggplot2*?
 ---
 
-## My personal reasons
+- Package for .hl[functional] data visualization.
 
-- .hl[Functional] data visualization
-
+--
     1. Wrangle data
+    
+--
+
     2. Map data to visual elements
+    
+--
+
     3. Tweak scales, guides, axis, labels, theme
+    
+--
 
-- Easy to .hl[reason] about how data drives visualization
+- Once you know the set up it is easy to
 
-- Easy to .hl[iterate]
+--
 
-- Easy to be .hl[consistent]
+  - .hl[Reason] about how data drives visualization
+
+--
+
+  - .hl[Iterate]
+
+--
+
+  - Be .hl[consistent]
 
 ---
 layout: false
 
-# What are we getting into?
+# Learning objectives
 
-<br>
-`ggplot2` is a huge package: philosophy + functions
-<br>...but it's very well organized
 
---
-
-<br><br>
-*Lots* of examples of not-so-great plots in these slides
-<br>...but that's okay
+* `ggplot2` is a huge package with lots of options. But it's well documented and organized.
 
 --
 
-<br><br>
-Going to throw a lot at you
-<br>...but you'll know *where* and *what* to look for
+* We'll cover a lot, but won't have time to go into every specific. 
 
 --
 
-.img-right[![](images/poppins-bag.gif)]
+* But you'll know where and what to look for. 
 
 --
 
-.img-right[![](images/poppins-bag-kids.gif)]
+* There'll be examples of not-so-great plots in these slides <br> ... but that's okay.
 
+-- 
+
+* For an even more advanced look at ggplot I highly recommend this online workshop by Thomas Lin Pedersen.
 ---
 layout: true
-# G is for getting started
+# Getting started
 
 ---
 
 
-**Easy**: install the [tidyverse](http://tidyverse.org)
+**Option 1**: install the metapackage [tidyverse](http://tidyverse.org)
 
 ```r
 install.packages('tidyverse')
 ```
 
-**Medium**: install just `ggplot2`
+**Option 2**: install just `ggplot2`
 
 ```r
 install.pacakages('ggplot2')
 ```
-
-**Expert**: install from GitHub
-
-```r
-devtools::install_github('tidyverse/ggplot2')
-```
-
 ---
 
 ## Load the tidyverse
@@ -183,27 +251,21 @@ g <- ggplot(df_mpg) +
 ```
 ---
 
-# What is a grammar of graphics?
+# Every plot starts with data
 
-.left-code[
-"Good grammar is just the first step in creating a good sentence."
 
-#### How is the drawing on the right connected to data?
-
-.footnote[<http://vita.had.co.nz/papers/layered-grammar.pdf>]
-]
-
-.right-plot[
-```{r guess-data-from-plot-0, echo=FALSE}
-g + 
-  guides(color = FALSE, shape = FALSE) +
-  theme(axis.text = element_blank())
+```{r guess-data-from-plot-data, echo=FALSE, results='asis'}
+df_mpg %>% 
+  select(manufacturer, class, cty, hwy, model) %>% 
+  knitr::kable()
 ```
-]
+
+
 
 ---
 layout: true
 # Guess the data behind this plot?
+---
 
 .left-code[
 ### MPG Ratings of Cars
@@ -214,7 +276,6 @@ layout: true
 - Highway MPG
 ]
 
----
 
 .right-plot[
 ```{r guess-data-from-plot-2, echo=FALSE}
@@ -224,6 +285,18 @@ g + guides(color = FALSE, shape = FALSE) +
 ]
 
 ---
+layout: true
+# Guess the data behind this plot?
+---
+
+.left-code[
+### MPG Ratings of Cars
+
+- **Manufacturer**
+- Car Type (Class)
+- City MPG
+- Highway MPG
+]
 
 .right-plot[
 ```{r guess-data-from-plot-3, echo=FALSE}
@@ -233,7 +306,19 @@ g + guides(color = FALSE) +
 ]
 
 ---
+layout: true
+# Guess the data behind this plot?
+---
 
+.left-code[
+### MPG Ratings of Cars
+
+- Manufacturer
+- **Car Type (Class)**
+- City MPG
+- Highway MPG
+
+]
 .right-plot[
 ```{r guess-data-from-plot-1, echo=FALSE}
 g + 
@@ -242,44 +327,69 @@ g +
 ]
 
 ---
-
-.right-plot[
-```{r guess-data-from-plot-4, echo=FALSE}
-g
-```
-]
-
+layout: true
+# Guess the data behind this plot?
 ---
+
+.left-code[
+### MPG Ratings of Cars
+
+- Manufacturer
+- Car Type (Class)
+- **City MPG**
+- Highway MPG
+]
 
 .right-plot[
 ```{r guess-data-from-plot-5, echo=FALSE}
-g + theme(panel.grid.major = element_line(color = "grey90"))
+g + 
+  labs(x = "City", y = " ", shape = "Manufacturer", color = "Class")
 ```
 ]
 
 ---
+layout: true
+# Guess the data behind this plot?
+---
+
+.left-code[
+### MPG Ratings of Cars
+
+- Manufacturer
+- Car Type (Class)
+- City MPG
+- **Highway MPG**
+]
 
 .right-plot[
 ```{r guess-data-from-plot-6, echo=FALSE}
 g + 
-  ggtitle("MPG Ratings") +
-  labs(x = "City", y = "Highway", shape = "Manufacturer", color = "Class") +
-  theme(
-    panel.border = element_rect(fill = NA, color = "grey85"),
-    panel.grid.major = element_line(color = "grey90")
-  )
+  labs(x = "City", y = "Highway", shape = "Manufacturer", color = "Class")
 ```
 ]
 
 ---
+layout: true
+# Guess the data behind this plot?
+---
+
+.left-code[
+### **MPG Ratings of Cars**
+
+- Manufacturer
+- Car Type (Class)
+- City MPG
+- Highway MPG
+]
 
 .right-plot[
-```{r guess-data-from-plot-data, echo=FALSE, results='asis'}
-df_mpg %>% 
-  select(manufacturer, class, cty, hwy, model) %>% 
-  knitr::kable()
+```{r guess-data-from-plot-7, echo=FALSE}
+g + 
+  ggtitle("MPG Ratings") +
+  labs(x = "City", y = "Highway", shape = "Manufacturer", color = "Class")
 ```
 ]
+
 
 ---
 layout: false
