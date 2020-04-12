@@ -19,9 +19,10 @@ editor_options:
   chunk_output_type: console
 ---
 
-class: fullscreen, inverse, center, text-black
+layout: false
+class: inverse center middle text-white
 
-.font150[Introduction to ggplot2]
+.font200[Introduction to ggplot2]
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(fig.width=4.25, fig.height=3.5, fig.retina=3,
@@ -51,7 +52,7 @@ as_table <- function(...) knitr::kable(..., format='html', digits = 3)
 
 ---
 layout: true
-# How would you draw a graph by hand?
+# How would you draw a line graph by hand?
 ---
 
 .left-column[
@@ -61,17 +62,43 @@ __Grammar of Graphics__
 
 .right-column[.font150[
 
-1. Draw the axes.
+1. Draw the axes, add tick marks.
 
-2. Add the tick marks.
+2. Draw each line. Colour by country.
 
-3. Draw each line. Colour by country.
+3. Add the axes labels.
 
-4. Add the axes labels.
+4. Add a title.
 
-5. Add a title.
+5. Add a legend.
 
-6. Add a legend.
+]]
+
+
+
+---
+
+---
+layout: true
+# How would you draw a bar graph by hand?
+---
+
+.left-column[
+![](images/grammar_graphics_book.jfif)
+__Grammar of Graphics__
+]
+
+.right-column[.font150[
+
+1. Draw the axes, add tick marks.
+
+2. Draw each bar. Colour by country.
+
+3. Add the axes labels.
+
+4. Add a title.
+
+5. Add a legend.
 
 ]]
 
@@ -92,13 +119,13 @@ __Grammar of Graphics__
 
 .right-column[.font150[
 
-*  A computer uses steps to construct a graphic.
+*  Breaks down graphics into its constituent parts. 
 
-*  Must be told relationship between the **variables** and the *visual properties* of the graph (e.g.*colour* = **country**).
+*  Focus on the relationship between the **variables** and the *visual properties* of the graph (e.g.*colour* = **country**).
 
 * The **grammar of graphics =** rules/steps for plotting.
 
-]
+]]
 
 ---
 
@@ -115,18 +142,18 @@ __Hadley Wickham__
 
 .right-column[.font150[
 
+* **gg**plot2 is the implementation of the **g**rammar of **g**raphics in R with some adaptations.
 
-* The "gg" in **ggplot2** stands for the "**g**rammar of **g**raphics"
+* ..."a powerful way of thinking about visualisation, as a way of **mapping between variables and the visual properties of geometric objects** that you can perceive."
 
-* ggplot2 is the implementation of the grammar of graphics into R with some adaptations.
 
-* it is "a powerful way of thinking about visualisation, as a way of **mapping between variables and the visual properties of geometric objects** that you can perceive. 
+
 ]
 .footnote[<http://disq.us/p/sv640d>]
 ]
 
 
-]
+
 
 
 ---
@@ -149,7 +176,7 @@ layout: true
     
 --
 
-- Once you know the set up it is easy to
+- Once you know the syntax it is easy to
 
 --
 
@@ -157,35 +184,35 @@ layout: true
 
 --
 
-  - .hl[Iterate]
+  - .hl[Iterate] to create multiple visualizations
 
 --
 
-  - Be .hl[consistent]
+  - Be .hl[consistent] in the visualizations you make.
 
 ---
 layout: false
 
 # Learning objectives
 
+.left-column[
+![](images/ggplot2_book.jfif)
+__ggplot2__
+]
 
-* `ggplot2` is a huge package with lots of options. But it's well documented and organized.
+.right-column[.font150[
+* `ggplot2` is a huge package with lots of options, but it's well documented and organized.
 
---
 
 * We'll cover a lot, but won't have time to go into every specific. 
 
---
 
-* But you'll know where and what to look for. 
 
---
+* The aim is to **equip** you with where and what to look for. 
 
-* There'll be examples of not-so-great plots in these slides <br> ... but that's okay.
+]]
 
--- 
 
-* For an even more advanced look at ggplot I highly recommend this online workshop by Thomas Lin Pedersen.
 ---
 layout: true
 # Getting started
@@ -202,7 +229,7 @@ install.packages('tidyverse')
 **Option 2**: install just `ggplot2`
 
 ```r
-install.pacakages('ggplot2')
+install.packages('ggplot2')
 ```
 ---
 
@@ -215,9 +242,8 @@ library(tidyverse)
 ---
 ## Other packages you'll need for this adventure
 
-We'll use an excerpt of the [gapminder](http://www.gapminder.org/data/) dataset provided by the [`gapminder` package](https://github.com/jennybc/gapminder) by Jenny Bryan.
+* [gapminder](http://www.gapminder.org/data/) dataset from the [`gapminder` package](https://github.com/jennybc/gapminder) by Jenny Bryan.
 
-<https://github.com/jennybc/gapminder>
 
 ```{r library-extra, message=FALSE, eval=-1}
 install.packages("gapminder")
@@ -242,7 +268,7 @@ g <- ggplot(df_mpg) +
   aes(x = cty, y = hwy, color = class, shape = manufacturer) +
   geom_point(size = 4) +
   labs(x = NULL, y = NULL, shape = NULL, color = NULL) +
-  theme_minimal() +
+  theme_bw() +
   theme(
     panel.grid = element_blank(),
     plot.background = element_rect(fill = rgb(250, 250, 250, max = 255),
@@ -254,12 +280,23 @@ g <- ggplot(df_mpg) +
 # Every plot starts with data
 
 
+.left-code[
+### MPG Ratings of Cars
+
+- Manufacturer
+- Car Type (Class)
+- City MPG
+- Highway MPG
+
+]
+
+.right-plot[
 ```{r guess-data-from-plot-data, echo=FALSE, results='asis'}
 df_mpg %>% 
   select(manufacturer, class, cty, hwy, model) %>% 
   knitr::kable()
 ```
-
+]
 
 
 ---
@@ -274,12 +311,15 @@ layout: true
 - Car Type (Class)
 - City MPG
 - Highway MPG
+
+#### What variable is represented by point shape?
 ]
 
 
 .right-plot[
 ```{r guess-data-from-plot-2, echo=FALSE}
 g + guides(color = FALSE, shape = FALSE) +
+  theme_bw() +
   theme(axis.text = element_blank())
 ```
 ]
@@ -296,11 +336,14 @@ layout: true
 - Car Type (Class)
 - City MPG
 - Highway MPG
+
+#### What variable is represented by colour?
 ]
 
 .right-plot[
 ```{r guess-data-from-plot-3, echo=FALSE}
 g + guides(color = FALSE) +
+  theme_bw() +
   theme(axis.text = element_blank())
 ```
 ]
@@ -318,10 +361,15 @@ layout: true
 - City MPG
 - Highway MPG
 
+
+#### What variable is represented on the x axis?
+
+
 ]
 .right-plot[
 ```{r guess-data-from-plot-1, echo=FALSE}
 g + 
+  theme_bw() +
   theme(axis.text = element_blank())
 ```
 ]
@@ -338,11 +386,16 @@ layout: true
 - Car Type (Class)
 - **City MPG**
 - Highway MPG
+
+
+#### What variable is on the Y axis?
+
 ]
 
 .right-plot[
 ```{r guess-data-from-plot-5, echo=FALSE}
 g + 
+  theme_bw() +
   labs(x = "City", y = " ", shape = "Manufacturer", color = "Class")
 ```
 ]
@@ -359,11 +412,16 @@ layout: true
 - Car Type (Class)
 - City MPG
 - **Highway MPG**
+
+
+#### What is the title of the plot?
+
 ]
 
 .right-plot[
 ```{r guess-data-from-plot-6, echo=FALSE}
 g + 
+  theme_bw() +
   labs(x = "City", y = "Highway", shape = "Manufacturer", color = "Class")
 ```
 ]
@@ -385,6 +443,7 @@ layout: true
 .right-plot[
 ```{r guess-data-from-plot-7, echo=FALSE}
 g + 
+  theme_bw() +
   ggtitle("MPG Ratings") +
   labs(x = "City", y = "Highway", shape = "Manufacturer", color = "Class")
 ```
@@ -447,11 +506,11 @@ ggplot(data)
 .right-column[
 #### Tidy Data
 
-1. Each variable forms a .hl[column]
+1. Each **variable** forms a .hl[column]
 
-2. Each observation forms a .hl[row]
+2. Each **observation** forms a .hl[row]
 
-3. Each observational unit forms a table
+3. Each **value** is a .hl[cell]
 ]
 
 --
@@ -487,7 +546,9 @@ knitr::kable(messy_pop, format = 'html')
 .right-column[
 ```{r tidy-tidy1, result='asis', echo=-2}
 tidy_pop <- gather(messy_pop, 'year', 'pop', -country)
-as_table(tidy_pop)
+tidy_pop %>%
+  head(4) %>%
+  as_table()
 ```
 ]
 
@@ -515,6 +576,13 @@ Map data to visual elements or parameters
 - pop
 
 - country
+
+```{r tidy-tidy-show, result='asis', echo=F}
+tidy_pop <- gather(messy_pop, 'year', 'pop', -country)
+tidy_pop %>%
+  head(4) %>%
+  as_table()
+```
 ]
 
 ---
@@ -527,6 +595,15 @@ Map data to visual elements or parameters
 - pop → **y**
 
 - country → *shape*, *color*, etc.
+
+
+```{r tidy-tidy-show-2, result='asis', echo=F}
+tidy_pop <- gather(messy_pop, 'year', 'pop', -country)
+tidy_pop %>%
+  head(4) %>%
+  as_table()
+```
+
 ]
 
 ---
@@ -538,7 +615,7 @@ Map data to visual elements or parameters
 aes(
   x = year,
   y = pop,
-  color = country
+  colour = country
 )
 ```
 ]
@@ -788,13 +865,13 @@ layout: true
 
 .right-column[
 ```r
-geom_*(mapping, data, stat, position)
+geom_*(mapping = aes(), data, stat, position)
 ```
 
 - `data` Geoms can have their own data
     - Has to map onto global coordinates
 
-- `map` Geoms can have their own aesthetics
+- `aes` Geoms can have their own aesthetics
     - Inherits global aesthetics
     - Have geom-specific aesthetics
         - `geom_point` needs `x` and `y`, optional `shape`, `color`, `size`, etc.
@@ -879,7 +956,7 @@ layout: true
 
 .right-column[
 ```{r labs-ex, echo=TRUE, out.width="90%", fig.width=6}
-g + labs(x = "Year", y = "Population")
+g <- g + labs(x = "Year", y = "Population (millions)")
 ```
 ]
 
@@ -908,14 +985,6 @@ g + coord_flip()
 ]
 
 ---
-
-.right-column[
-```{r coord-ex2, echo=TRUE, out.width="90%", fig.width=6}
-g + coord_polar()
-```
-]
-
----
 layout: true
 # gg is for Grammar of Graphics
 
@@ -937,14 +1006,27 @@ layout: true
 .right-column[ 
 `scale` + `_` + `<aes>` + `_` + `<type>` + `()`
 
-What parameter do you want to adjust? → `<aes>` <br>
-What type is the parameter? → `<type>`
-
-- I want to change my discrete x-axis<br>`scale_x_discrete()`
-- I want to change range of point sizes from continuous variable<br>`scale_size_continuous()`
-- I want to rescale y-axis as log<br>`scale_y_log10()`
-- I want to use a different color palette<br>`scale_fill_discrete()`<br>`scale_color_manual()`
+`<aes>` = parameter to adjust; `<type>` = Parameter Type
 ]
+--
+
+.right-column[
+- I want to use a different color palette<br>`scale_fill_discrete()`<br>`scale_color_continuous()`
+]
+
+--
+
+.right-column[
+- I want to rescale y-axis as log<br>`scale_y_log10()`
+]
+
+--
+
+.right-column[
+- I want to change my discrete x-axis<br>`scale_x_discrete()`
+]
+
+
 
 ---
 
@@ -1008,6 +1090,15 @@ A few "starter" themes ship with the package
 ---
 
 .right-column[
+
+```{r theme_ex1, out.width="90%", fig.width=6}
+g + theme_bw()
+```
+
+]
+
+---
+.right-column[
 Huge number of parameters, grouped by plot area:
 
 - Global options: `line`, `rect`, `text`, `title`
@@ -1031,17 +1122,9 @@ Theme options are supported by helper functions:
 ---
 
 .right-column[
-```{r, out.width="90%", fig.width=6}
-g + theme_bw()
-```
-]
-
----
-
-.right-column[
 .font80[
 ```{r, out.width="90%", fig.width=6}
-g + theme_minimal() + theme(text = element_text(family = "Palatino"))
+g + theme_bw() + theme(text = element_text(colour = "hotpink", size = 20))
 ```
 ]
 ]
@@ -1068,15 +1151,17 @@ All plots will now use this theme!
 ---
 
 .right-column[
-```{r, out.width="90%", fig.width=6, dependson='theme_set'}
-g
+```{r, out.width="90%", fig.width=6, dependson='theme_set', echo = -1}
+theme_set(my_theme)
+g 
 ```
 ]
 
 ---
 
 .right-column[
-```{r, out.width="90%", fig.width=6, dependson='theme_set'}
+```{r, out.width="90%", fig.width=6, dependson='theme_set', echo = -1}
+theme_set(my_theme)
 g + theme(legend.position = 'bottom')
 ```
 ]
@@ -1085,7 +1170,7 @@ g + theme(legend.position = 'bottom')
 layout: false
 # Save Your Work
 
-To save your plot, use **ggsave**
+To save your plot, use **ggsave**. 
 
 ```{r ggsave, eval=FALSE}
 ggsave(
@@ -1275,7 +1360,7 @@ ggplot(gapminder) +
       y = lifeExp,
       color = continent) +
   geom_line() + #<<
-  geom_point(size = 0.25) +
+  #geom_point(size = 0.25) +
   scale_x_log10() +
   facet_wrap(~ continent) +
   guides(color = FALSE)
@@ -1300,8 +1385,8 @@ ggplot(gapminder) +
       color = continent) +
   geom_line(
     aes(group = country) #<<
-  ) +
-  geom_point(size = 0.25) +
+    ) +
+  #geom_point(size = 0.25) +
   scale_x_log10() +
   facet_wrap(~ continent) +
   guides(color = FALSE)
@@ -1329,7 +1414,7 @@ ggplot(gapminder) +
   geom_line(
     aes(group = country)
   ) +
-  geom_point(size = 0.25) +
+  #geom_point(size = 0.25) +
   scale_y_log10() + #<<
   facet_wrap(~ continent) +
   guides(color = FALSE)
@@ -1355,7 +1440,7 @@ ggplot(gapminder) +
   geom_line(
     aes(group = country)
   ) +
-  geom_point(size = 0.25) +
+  #geom_point(size = 0.25) +
   scale_y_log10() +
   scale_x_continuous(breaks = #<<
     seq(1950, 2000, 25) #<<
@@ -1384,7 +1469,7 @@ ggplot(gapminder) +
   geom_line(
     aes(group = country)
   ) +
-  geom_point(size = 0.25) +
+  #geom_point(size = 0.25) +
   #scale_y_log10() + #<<
   scale_x_continuous(breaks = 
     seq(1950, 2000, 25)
@@ -1413,7 +1498,7 @@ ggplot(gapminder) +
   geom_line(
     aes(group = country)
   ) +
-  geom_point(size = 0.25) +
+  # geom_point(size = 0.25) +
   geom_smooth() + #<<
   scale_x_continuous(breaks = 
     seq(1950, 2000, 25)
@@ -1443,7 +1528,7 @@ ggplot(gapminder) +
     aes(group = country),
     color = "grey75" #<<
   ) +
-  geom_point(size = 0.25) +
+  #geom_point(size = 0.25) +
   geom_smooth() + 
   scale_x_continuous(breaks = 
     seq(1950, 2000, 25)
@@ -1455,36 +1540,6 @@ ggplot(gapminder) +
 
 .right-plot[
 ![](`r knitr::fig_chunk("gapminder-le-year-3", "png")`)
-]
-
---
-
-Points are still in the way
-
----
-
-.left-code[
-```{r gapminder-le-year-4, fig.show="hide"}
-ggplot(gapminder) +
-  aes(x = year, 
-      y = lifeExp,
-      color = continent) +
-  geom_line(
-    aes(group = country),
-    color = "grey75"
-  ) +
-  #geom_point(size = 0.25) + #<<
-  geom_smooth() + 
-  scale_x_continuous(breaks = 
-    seq(1950, 2000, 25)
-  ) +  
-  facet_wrap(~ continent) +
-  guides(color = FALSE)
-```
-]
-
-.right-plot[
-![](`r knitr::fig_chunk("gapminder-le-year-4", "png")`)
 ]
 
 --
@@ -1613,7 +1668,7 @@ americas <-
   gapminder %>% 
   filter(
     country %in% c(
-      "United States",
+      "Brazil",
       "Canada",
       "Mexico",
       "Ecuador"
@@ -1627,7 +1682,8 @@ Let's look at four countries in more detail. How do their populations compare to
 .right-plot[
 <!-- ![](`r knitr::fig_chunk("gapminder-le-year-8", "png")`) -->
 ```{r echo=FALSE}
-americas
+americas %>%
+  head(10)
 ```
 ]
 

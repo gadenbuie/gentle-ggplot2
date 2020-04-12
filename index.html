@@ -17,14 +17,15 @@ class: center, middle, inverse, title-slide
 ## Introduction to ggplot2 and leaflet
 ### Dr. Laurie Baker
 ### Data Science Campus
-### 2020/04/09 (updated: 2020-04-09)
+### 2020/04/09 (updated: 2020-04-11)
 
 ---
 
 
-class: fullscreen, inverse, center, text-black
+layout: false
+class: inverse center middle text-white
 
-.font150[Introduction to ggplot2]
+.font200[Introduction to ggplot2]
 
 
 
@@ -40,17 +41,15 @@ __Grammar of Graphics__
 
 .right-column[.font150[
 
-1. Draw the axes.
+1. Draw the axes, add tick marks.
 
-2. Add the tick marks.
+2. Draw each line. Colour by country.
 
-3. Draw each line. Colour by country.
+3. Add the axes labels.
 
-4. Add the axes labels.
+4. Add a title.
 
-5. Add a title.
-
-6. Add a legend.
+5. Add a legend.
 
 ]]
 
@@ -71,15 +70,13 @@ __Grammar of Graphics__
 
 .right-column[.font150[
 
-*  A computer goes through steps constructing a graphic.
+*  A computer uses steps to construct a graphic.
 
-*  Must be told relationship between the data (**variables**) and the visual properties of the graph.
-    * E.g. Each line is coloured by **country**.
+*  Must be told relationship between the **variables** and the *visual properties* of the graph (e.g.*colour* = **country**).
 
+* The **grammar of graphics =** rules/steps for plotting.
 
-* The **grammar of graphics =** set of rules for plotting.
-
-]
+]]
 
 ---
 
@@ -96,18 +93,18 @@ __Hadley Wickham__
 
 .right-column[.font150[
 
+* **gg**plot2 is the implementation of the **g**rammar of **g**raphics in R with some adaptations.
 
-* The "gg" in **ggplot2** stands for the "**g**rammar of **g**raphics"
+* ..."a powerful way of thinking about visualisation, as a way of **mapping between variables and the visual properties of geometric objects** that you can perceive."
 
-* ggplot2 is the implementation of the grammar of graphics into R with some adaptations.
 
-* it is "a powerful way of thinking about visualisation, as a way of **mapping between variables and the visual properties of geometric objects** that you can perceive. 
+
 ]
 .footnote[&lt;http://disq.us/p/sv640d&gt;]
 ]
 
 
-]
+
 
 
 ---
@@ -130,7 +127,7 @@ layout: true
     
 --
 
-- Once you know the set up it is easy to
+- Once you know the syntax it is easy to
 
 --
 
@@ -138,35 +135,35 @@ layout: true
 
 --
 
-  - .hl[Iterate]
+  - .hl[Iterate] to create multiple visualizations
 
 --
 
-  - Be .hl[consistent]
+  - Be .hl[consistent] in the visualizations you make.
 
 ---
 layout: false
 
 # Learning objectives
 
+.left-column[
+![](images/ggplot2_book.jfif)
+__ggplot2__
+]
 
-* `ggplot2` is a huge package with lots of options. But it's well documented and organized.
+.right-column[.font150[
+* `ggplot2` is a huge package with lots of options, but it's well documented and organized.
 
---
 
 * We'll cover a lot, but won't have time to go into every specific. 
 
---
 
-* But you'll know where and what to look for. 
 
---
+* The aim is to **equip** you with where and what to look for. 
 
-* There'll be examples of not-so-great plots in these slides &lt;br&gt; ... but that's okay.
+]]
 
--- 
 
-* For an even more advanced look at ggplot I highly recommend this online workshop by Thomas Lin Pedersen.
 ---
 layout: true
 # Getting started
@@ -183,7 +180,7 @@ install.packages('tidyverse')
 **Option 2**: install just `ggplot2`
 
 ```r
-install.pacakages('ggplot2')
+install.packages('ggplot2')
 ```
 ---
 
@@ -214,9 +211,8 @@ library(tidyverse)
 ---
 ## Other packages you'll need for this adventure
 
-We'll use an excerpt of the [gapminder](http://www.gapminder.org/data/) dataset provided by the [`gapminder` package](https://github.com/jennybc/gapminder) by Jenny Bryan.
+* [gapminder](http://www.gapminder.org/data/) dataset from the [`gapminder` package](https://github.com/jennybc/gapminder) by Jenny Bryan.
 
-&lt;https://github.com/jennybc/gapminder&gt;
 
 
 ```r
@@ -236,6 +232,17 @@ class: inverse center middle text-white
 # Every plot starts with data
 
 
+.left-code[
+### MPG Ratings of Cars
+
+- Manufacturer
+- Car Type (Class)
+- City MPG
+- Highway MPG
+
+]
+
+.right-plot[
 &lt;table&gt;
  &lt;thead&gt;
   &lt;tr&gt;
@@ -305,7 +312,7 @@ class: inverse center middle text-white
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-
+]
 
 
 ---
@@ -320,6 +327,8 @@ layout: true
 - Car Type (Class)
 - City MPG
 - Highway MPG
+
+#### What variable is represented by point shape?
 ]
 
 
@@ -339,6 +348,8 @@ layout: true
 - Car Type (Class)
 - City MPG
 - Highway MPG
+
+#### What variable is represented by colour?
 ]
 
 .right-plot[
@@ -358,6 +369,10 @@ layout: true
 - City MPG
 - Highway MPG
 
+
+#### What variable is represented on the x axis?
+
+
 ]
 .right-plot[
 &lt;img src="index_files/figure-html/guess-data-from-plot-1-1.png" width="100%" /&gt;
@@ -375,6 +390,10 @@ layout: true
 - Car Type (Class)
 - **City MPG**
 - Highway MPG
+
+
+#### What variable is on the Y axis?
+
 ]
 
 .right-plot[
@@ -393,6 +412,10 @@ layout: true
 - Car Type (Class)
 - City MPG
 - **Highway MPG**
+
+
+#### What is the title of the plot?
+
 ]
 
 .right-plot[
@@ -474,11 +497,11 @@ ggplot(data)
 .right-column[
 #### Tidy Data
 
-1. Each variable forms a .hl[column]
+1. Each **variable** forms a .hl[column]
 
-2. Each observation forms a .hl[row]
+2. Each **observation** forms a .hl[row]
 
-3. Each observational unit forms a table
+3. Each **value** is a .hl[cell]
 ]
 
 --
@@ -563,31 +586,6 @@ tidy_pop &lt;- gather(messy_pop, 'year', 'pop', -country)
    &lt;td style="text-align:left;"&gt; 2002 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 31.902 &lt;/td&gt;
   &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2002 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1280.400 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2002 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 287.676 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2007 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 33.390 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2007 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1318.683 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2007 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 301.140 &lt;/td&gt;
-  &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 ]
@@ -616,6 +614,38 @@ Map data to visual elements or parameters
 - pop
 
 - country
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; country &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; year &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; pop &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30.306 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1230.075 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 272.912 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31.902 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 ]
 
 ---
@@ -628,6 +658,40 @@ Map data to visual elements or parameters
 - pop → **y**
 
 - country → *shape*, *color*, etc.
+
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; country &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; year &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; pop &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30.306 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1230.075 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 272.912 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31.902 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
 ]
 
 ---
@@ -639,7 +703,7 @@ Map data to visual elements or parameters
 aes(
   x = year,
   y = pop,
-  color = country
+  colour = country
 )
 ```
 ]
@@ -870,13 +934,13 @@ layout: true
 
 .right-column[
 ```r
-geom_*(mapping, data, stat, position)
+geom_*(mapping = aes(), data, stat, position)
 ```
 
 - `data` Geoms can have their own data
     - Has to map onto global coordinates
 
-- `map` Geoms can have their own aesthetics
+- `aes` Geoms can have their own aesthetics
     - Inherits global aesthetics
     - Have geom-specific aesthetics
         - `geom_point` needs `x` and `y`, optional `shape`, `color`, `size`, etc.
@@ -959,10 +1023,8 @@ layout: true
 .right-column[
 
 ```r
-g + labs(x = "Year", y = "Population")
+g &lt;- g + labs(x = "Year", y = "Population (millions)")
 ```
-
-&lt;img src="index_files/figure-html/labs-ex-1.png" width="90%" /&gt;
 ]
 
 ---
@@ -993,17 +1055,6 @@ g + coord_flip()
 ]
 
 ---
-
-.right-column[
-
-```r
-g + coord_polar()
-```
-
-&lt;img src="index_files/figure-html/coord-ex2-1.png" width="90%" /&gt;
-]
-
----
 layout: true
 # gg is for Grammar of Graphics
 
@@ -1025,14 +1076,27 @@ layout: true
 .right-column[ 
 `scale` + `_` + `&lt;aes&gt;` + `_` + `&lt;type&gt;` + `()`
 
-What parameter do you want to adjust? → `&lt;aes&gt;` &lt;br&gt;
-What type is the parameter? → `&lt;type&gt;`
-
-- I want to change my discrete x-axis&lt;br&gt;`scale_x_discrete()`
-- I want to change range of point sizes from continuous variable&lt;br&gt;`scale_size_continuous()`
-- I want to rescale y-axis as log&lt;br&gt;`scale_y_log10()`
-- I want to use a different color palette&lt;br&gt;`scale_fill_discrete()`&lt;br&gt;`scale_color_manual()`
+`&lt;aes&gt;` = parameter to adjust; `&lt;type&gt;` = Parameter Type
 ]
+--
+
+.right-column[
+- I want to use a different color palette&lt;br&gt;`scale_fill_discrete()`&lt;br&gt;`scale_color_continuous()`
+]
+
+--
+
+.right-column[
+- I want to rescale y-axis as log&lt;br&gt;`scale_y_log10()`
+]
+
+--
+
+.right-column[
+- I want to change my discrete x-axis&lt;br&gt;`scale_x_discrete()`
+]
+
+
 
 ---
 
@@ -1105,6 +1169,18 @@ A few "starter" themes ship with the package
 ---
 
 .right-column[
+
+
+```r
+g + theme_bw()
+```
+
+&lt;img src="index_files/figure-html/theme_ex1-1.png" width="90%" /&gt;
+
+]
+
+---
+.right-column[
 Huge number of parameters, grouped by plot area:
 
 - Global options: `line`, `rect`, `text`, `title`
@@ -1128,24 +1204,13 @@ Theme options are supported by helper functions:
 ---
 
 .right-column[
-
-```r
-g + theme_bw()
-```
-
-&lt;img src="index_files/figure-html/unnamed-chunk-1-1.png" width="90%" /&gt;
-]
-
----
-
-.right-column[
 .font80[
 
 ```r
-g + theme_minimal() + theme(text = element_text(family = "Palatino"))
+g + theme_bw() + theme(text = element_text(colour = "hotpink", size = 20))
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-2-1.png" width="90%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-1-1.png" width="90%" /&gt;
 ]
 ]
 
@@ -1174,10 +1239,10 @@ All plots will now use this theme!
 .right-column[
 
 ```r
-g
+g 
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-3-1.png" width="90%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-2-1.png" width="90%" /&gt;
 ]
 
 ---
@@ -1188,14 +1253,14 @@ g
 g + theme(legend.position = 'bottom')
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-4-1.png" width="90%" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-3-1.png" width="90%" /&gt;
 ]
 
 ---
 layout: false
 # Save Your Work
 
-To save your plot, use **ggsave**
+To save your plot, use **ggsave**. 
 
 
 ```r
@@ -1463,7 +1528,7 @@ ggplot(gapminder) +
       y = lifeExp,
       color = continent) +
 * geom_line() +
-  geom_point(size = 0.25) +
+  #geom_point(size = 0.25) +
   scale_x_log10() +
   facet_wrap(~ continent) +
   guides(color = FALSE)
@@ -1489,8 +1554,8 @@ ggplot(gapminder) +
       color = continent) +
   geom_line(
 *   aes(group = country)
-  ) +
-  geom_point(size = 0.25) +
+    ) +
+  #geom_point(size = 0.25) +
   scale_x_log10() +
   facet_wrap(~ continent) +
   guides(color = FALSE)
@@ -1519,7 +1584,7 @@ ggplot(gapminder) +
   geom_line(
     aes(group = country)
   ) +
-  geom_point(size = 0.25) +
+  #geom_point(size = 0.25) +
 * scale_y_log10() +
   facet_wrap(~ continent) +
   guides(color = FALSE)
@@ -1546,7 +1611,7 @@ ggplot(gapminder) +
   geom_line(
     aes(group = country)
   ) +
-  geom_point(size = 0.25) +
+  #geom_point(size = 0.25) +
   scale_y_log10() +
 * scale_x_continuous(breaks =
 *   seq(1950, 2000, 25)
@@ -1576,7 +1641,7 @@ ggplot(gapminder) +
   geom_line(
     aes(group = country)
   ) +
-  geom_point(size = 0.25) +
+  #geom_point(size = 0.25) +
 * #scale_y_log10() +
   scale_x_continuous(breaks = 
     seq(1950, 2000, 25)
@@ -1606,7 +1671,7 @@ ggplot(gapminder) +
   geom_line(
     aes(group = country)
   ) +
-  geom_point(size = 0.25) +
+  # geom_point(size = 0.25) +
 * geom_smooth() +
   scale_x_continuous(breaks = 
     seq(1950, 2000, 25)
@@ -1637,7 +1702,7 @@ ggplot(gapminder) +
     aes(group = country),
 *   color = "grey75"
   ) +
-  geom_point(size = 0.25) +
+  #geom_point(size = 0.25) +
   geom_smooth() + 
   scale_x_continuous(breaks = 
     seq(1950, 2000, 25)
@@ -1649,37 +1714,6 @@ ggplot(gapminder) +
 
 .right-plot[
 ![](index_files/figure-html/gapminder-le-year-3-1.png)
-]
-
---
-
-Points are still in the way
-
----
-
-.left-code[
-
-```r
-ggplot(gapminder) +
-  aes(x = year, 
-      y = lifeExp,
-      color = continent) +
-  geom_line(
-    aes(group = country),
-    color = "grey75"
-  ) +
-* #geom_point(size = 0.25) +
-  geom_smooth() + 
-  scale_x_continuous(breaks = 
-    seq(1950, 2000, 25)
-  ) +  
-  facet_wrap(~ continent) +
-  guides(color = FALSE)
-```
-]
-
-.right-plot[
-![](index_files/figure-html/gapminder-le-year-4-1.png)
 ]
 
 --
@@ -1813,7 +1847,7 @@ americas &lt;-
   gapminder %&gt;% 
   filter(
     country %in% c(
-      "United States",
+      "Brazil",
       "Canada",
       "Mexico",
       "Ecuador"
@@ -1841,388 +1875,84 @@ Let's look at four countries in more detail. How do their populations compare to
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Brazil &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 1952 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 68.750 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 14785584 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 11367.161 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.917 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 56602560 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2108.944 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Brazil &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 1957 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 69.960 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 17010154 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 12489.950 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 53.285 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 65551171 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2487.366 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Brazil &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 1962 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 71.300 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 18985849 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 13462.486 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 55.665 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 76039390 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3336.586 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Brazil &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 1967 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 72.130 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 20819767 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 16076.588 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 57.632 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 88049823 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3429.864 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Brazil &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 1972 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 72.880 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 22284500 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 18970.571 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 59.504 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 100840058 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4985.711 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Brazil &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 1977 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 74.210 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 23796400 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 22090.883 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 61.489 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 114313951 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6660.119 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Brazil &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 1982 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 75.760 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 25201900 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 22898.792 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 63.336 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 128962939 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7030.836 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Brazil &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 1987 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 76.860 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 26549700 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 26626.515 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 65.205 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 142938076 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7807.096 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Brazil &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 1992 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 77.950 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 28523502 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 26342.884 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 67.057 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 155975974 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6950.283 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Brazil &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 1997 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 78.610 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 30305843 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 28954.926 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2002 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 79.770 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 31902268 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 33328.965 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 80.653 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 33390141 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 36319.235 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1952 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 48.357 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3548753 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3522.111 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1957 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 51.356 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 4058385 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3780.547 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1962 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 54.640 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 4681707 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 4086.114 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1967 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 56.678 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 5432424 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 4579.074 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1972 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 58.796 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6298651 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 5280.995 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1977 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 61.310 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 7278866 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6679.623 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1982 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 64.342 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 8365850 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 7213.791 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1987 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 67.231 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 9545158 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6481.777 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1992 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 69.613 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 10748394 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 7103.703 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1997 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 72.312 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 11911819 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 7429.456 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2002 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 74.173 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 12921234 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 5773.045 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Ecuador &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 74.994 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 13755680 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6873.262 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1952 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 50.789 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 30144317 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3478.126 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1957 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 55.190 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 35015548 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 4131.547 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1962 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 58.299 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 41121485 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 4581.609 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1967 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 60.110 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 47995559 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 5754.734 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1972 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 62.361 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 55984294 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6809.407 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1977 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 65.032 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 63759976 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 7674.929 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1982 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 67.405 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 71640904 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 9611.148 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1987 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 69.498 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 80122492 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 8688.156 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1992 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 71.455 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 88111030 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 9472.384 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1997 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 73.670 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 95895146 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 9767.298 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2002 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 74.902 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 102479927 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 10742.441 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Mexico &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 76.195 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 108700891 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 11977.575 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1952 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 68.440 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 157553000 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 13990.482 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1957 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 69.490 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 171984000 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 14847.127 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1962 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 70.210 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 186538000 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 16173.146 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1967 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 70.760 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 198712000 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 19530.366 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1972 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 71.340 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 209896000 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 21806.036 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1977 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 73.380 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 220239000 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 24072.632 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1982 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 74.650 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 232187835 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 25009.559 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1987 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 75.020 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 242803533 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 29884.350 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1992 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 76.090 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 256894189 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 32003.932 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1997 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 76.810 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 272911760 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 35767.433 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2002 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 77.310 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 287675526 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 39097.100 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Americas &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 78.242 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 301139947 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 42951.653 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 69.388 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 168546719 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7957.981 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
