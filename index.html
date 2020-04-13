@@ -17,7 +17,7 @@ class: center, middle, inverse, title-slide
 ## Introduction to ggplot2 and leaflet
 ### Dr. Laurie Baker
 ### Data Science Campus
-### 2020/04/09 (updated: 2020-04-11)
+### 2020/04/09 (updated: 2020-04-13)
 
 ---
 
@@ -31,7 +31,15 @@ class: inverse center middle text-white
 
 ---
 layout: true
-# How would you draw a graph by hand?
+# Acknowledgements
+---
+
+- Slides and code adapted from Garrick Aden-Buie "Gentle ggplot2 tutorial" on GitHub: &lt;http://github.com/gadenbuie/gentle-ggplot2&gt;
+
+
+---
+layout: true
+# How would you draw a line graph by hand?
 ---
 
 .left-column[
@@ -44,6 +52,34 @@ __Grammar of Graphics__
 1. Draw the axes, add tick marks.
 
 2. Draw each line. Colour by country.
+
+3. Add the axes labels.
+
+4. Add a title.
+
+5. Add a legend.
+
+]]
+
+
+
+---
+
+---
+layout: true
+# How would you draw a bar graph by hand?
+---
+
+.left-column[
+![](images/grammar_graphics_book.jfif)
+__Grammar of Graphics__
+]
+
+.right-column[.font150[
+
+1. Draw the axes, add tick marks.
+
+2. **Draw each bar.** Colour by country.
 
 3. Add the axes labels.
 
@@ -70,16 +106,30 @@ __Grammar of Graphics__
 
 .right-column[.font150[
 
-*  A computer uses steps to construct a graphic.
+*  Breaks down graphics into its constituent parts. 
 
-*  Must be told relationship between the **variables** and the *visual properties* of the graph (e.g.*colour* = **country**).
+*  Focus on the relationship between the **variables** and the *visual properties* of the graph (e.g.*colour* = **country**).
 
 * The **grammar of graphics =** rules/steps for plotting.
 
 ]]
 
 ---
+layout: true
+# The grammar of graphics
+---
 
+.left-column[
+.font150[Links between variables and visual properties of the graph.
+]]
+
+.right-column[
+
+![](images/ggplot_links_thomas_lin_pedersen.png)
+__Thomas Lin Pedersen: Plot Anything With GGPLOT2__
+
+
+]
 
 ---
 layout: true
@@ -102,10 +152,6 @@ __Hadley Wickham__
 ]
 .footnote[&lt;http://disq.us/p/sv640d&gt;]
 ]
-
-
-
-
 
 ---
 layout: true
@@ -159,7 +205,7 @@ __ggplot2__
 
 
 
-* The aim is to **equip** you with where and what to look for. 
+* The aim is to **equip** you with **where** and **what** to look for. 
 
 ]]
 
@@ -451,12 +497,12 @@ layout: false
 
 --
 .font120[
-- **.hlb[Geom]etric objects** that appear on the plot
+- **.hlb[Aes]thetic mappings** from data to visual component
 ]
 
 --
 .font120[
-- **.hlb[Aes]thetic mappings** from data to visual component
+- **.hlb[Geom]etric objects** that appear on the plot
 ]
 
 --
@@ -477,6 +523,13 @@ layout: false
 --
 .font120[
 - **.hlb[Facet]s** group into subplots
+]
+
+--
+
+--
+.font120[
+- **.hlb[Theme]s** the visual elements of the plot not linked to the data
 ]
 
 
@@ -528,22 +581,22 @@ ggplot(data)
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 30.30584 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 31.90227 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 33.39014 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Chile &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.599929 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.497046 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.284741 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1230.07500 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1280.40000 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1318.68310 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Rwanda &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.212583 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.852401 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.860588 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 272.91176 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 287.67553 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 301.13995 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Syria &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.081016 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.155814 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.314747 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -567,24 +620,24 @@ tidy_pop &lt;- gather(messy_pop, 'year', 'pop', -country)
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Chile &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 1997 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 30.306 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.600 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Rwanda &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 1997 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1230.075 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.213 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Syria &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 1997 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 272.912 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.081 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Chile &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 2002 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 31.902 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.497 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -625,24 +678,24 @@ Map data to visual elements or parameters
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Chile &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 1997 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 30.306 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.600 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Rwanda &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 1997 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1230.075 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.213 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Syria &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 1997 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 272.912 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.081 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Chile &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 2002 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 31.902 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.497 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -670,24 +723,24 @@ Map data to visual elements or parameters
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Chile &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 1997 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 30.306 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.600 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Rwanda &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 1997 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1230.075 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.213 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; United States &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Syria &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 1997 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 272.912 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.081 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Canada &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Chile &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 2002 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 31.902 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.497 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -799,7 +852,7 @@ ggplot(tidy_pop)
 ]
 
 .right-plot[
-&lt;img src="index_files/figure-html/first-plot1a-out-1.png" width="100%" /&gt;
+&lt;img src="index_files/figure-html/first-plot1a-1.png" width="100%" /&gt;
 ]
 
 ---
@@ -807,14 +860,15 @@ ggplot(tidy_pop)
 .left-code[
 
 ```r
-ggplot(tidy_pop) +
+ggplot(tidy_pop,
 * aes(x = year,
 *     y = pop)
+  )
 ```
 ]
 
 .right-plot[
-&lt;img src="index_files/figure-html/first-plot1b-out-1.png" width="100%" /&gt;
+&lt;img src="index_files/figure-html/first-plot1b-1.png" width="100%" /&gt;
 ]
 
 ---
@@ -822,15 +876,16 @@ ggplot(tidy_pop) +
 .left-code[
 
 ```r
-ggplot(tidy_pop) +
+ggplot(tidy_pop,
   aes(x = year,
-      y = pop) +
+      y = pop)
+  ) +
 * geom_point()
 ```
 ]
 
 .right-plot[
-&lt;img src="index_files/figure-html/first-plot1c-out-1.png" width="100%" /&gt;
+&lt;img src="index_files/figure-html/first-plot1c-1.png" width="100%" /&gt;
 ]
 
 ---
@@ -838,16 +893,17 @@ ggplot(tidy_pop) +
 .left-code[
 
 ```r
-ggplot(tidy_pop) +
+ggplot(tidy_pop,
   aes(x = year,
       y = pop,
-*     color = country) +
+*     color = country)
+  ) + 
   geom_point()
 ```
 ]
 
 .right-plot[
-&lt;img src="index_files/figure-html/first-plot1-out-1.png" width="100%" /&gt;
+&lt;img src="index_files/figure-html/first-plot1-1.png" width="100%" /&gt;
 ]
 
 ---
@@ -855,10 +911,11 @@ ggplot(tidy_pop) +
 .left-code[
 
 ```r
-ggplot(tidy_pop) +
+ggplot(tidy_pop,
   aes(x = year,
       y = pop,
-      color = country) +
+      color = country) 
+  ) +
   geom_point() +
 * geom_line()
 ```
@@ -874,17 +931,18 @@ group aesthetic?
 ]
 
 .right-plot[
-&lt;img src="index_files/figure-html/first-plot2-fake-out-1.png" width="100%" /&gt;
+&lt;img src="index_files/figure-html/first-plot2-fake-1.png" width="100%" /&gt;
 ]
 ---
 
 .left-code[
 
 ```r
-ggplot(tidy_pop) +
+ggplot(tidy_pop,
   aes(x = year,
       y = pop,
-      color = country) +
+      color = country) 
+  ) +
   geom_point() +
   geom_line(
 *   aes(group = country))
@@ -892,7 +950,7 @@ ggplot(tidy_pop) +
 ]
 
 .right-plot[
-&lt;img src="index_files/figure-html/first-plot2-out-1.png" width="100%" /&gt;
+&lt;img src="index_files/figure-html/first-plot2-1.png" width="100%" /&gt;
 ]
 
 ---
@@ -901,20 +959,21 @@ ggplot(tidy_pop) +
 .left-code[
 
 ```r
-g &lt;- ggplot(tidy_pop) +
+*g &lt;- ggplot(tidy_pop,
   aes(x = year,
       y = pop,
-      color = country) +
+      color = country) 
+  ) +
   geom_point() +
   geom_line(
     aes(group = country))
 
-g
+*g 
 ```
 ]
 
 .right-plot[
-&lt;img src="index_files/figure-html/first-plot3-out-1.png" width="100%" /&gt;
+&lt;img src="index_files/figure-html/first-plot3-1.png" width="100%" /&gt;
 ]
 
 ---
@@ -945,7 +1004,8 @@ geom_*(mapping = aes(), data, stat, position)
     - Have geom-specific aesthetics
         - `geom_point` needs `x` and `y`, optional `shape`, `color`, `size`, etc.
         - `geom_ribbon` requires `x`, `ymin` and `ymax`, optional `fill`
-    - `?geom_ribbon`
+    - Use `?` to find out the aesthetics required and the ones you can change:
+    `?geom_ribbon`
 ]
 
 ---
@@ -961,6 +1021,64 @@ geom_*(mapping, data, stat, position)
     
 - `position` Some adjust location of objects
     - `'dodge'`, `'stack'`, `'jitter'`
+]
+
+---
+layout: true
+# Our first plot!
+---
+
+.left-code[
+
+```r
+g &lt;- ggplot() +
+  geom_point(
+*   data = tidy_pop,
+*   aes(x = year,
+*     y = pop,
+*     color = country)
+  ) +
+  geom_line(
+*   data = tidy_pop,
+*   aes(x = year,
+*     y = pop,
+*     color = country,
+*     group = country)
+    )
+
+g
+```
+]
+
+.right-plot[
+&lt;img src="index_files/figure-html/first-plot-geom-1-1.png" width="100%" /&gt;
+]
+
+---
+layout: true
+# gg is for Grammar of Graphics
+
+.left-column[
+### Data
+### Aesthetics
+### Geoms
+
+```r
++ geom_*()
+```
+]
+---
+
+.right-column[
+```r
+geom_*(mapping = aes(), data, stat, position)
+```
+
+- `data` Geoms can have their own data
+    - Has to map onto global coordinates
+
+.font150[What would the advantage be for a geom to have their own data?]
+
 ]
 
 ---
@@ -983,7 +1101,7 @@ layout: true
 
 
 
-.right-column[
+.right-plot[
 
 ```r
 g + facet_wrap(~ country)
@@ -1020,11 +1138,16 @@ layout: true
 ]
 ---
 
+
+
+
 .right-column[
 
 ```r
-g &lt;- g + labs(x = "Year", y = "Population (millions)")
+(g &lt;- g + labs(x = "Year", y = "Population (millions)"))
 ```
+
+&lt;img src="index_files/figure-html/labs-ex-1.png" width="90%" /&gt;
 ]
 
 ---
@@ -1044,6 +1167,9 @@ layout: true
 ```
 ]
 ---
+
+
+
 
 .right-column[
 
@@ -1099,6 +1225,8 @@ layout: true
 
 
 ---
+
+
 
 .right-column[
 
@@ -1276,9 +1404,7 @@ ggsave(
 
 ---
 layout: false
-count: hide
-class: fullscreen, inverse, top, left, text-white
-background-image: url(images/super-grover.jpg)
+class: inverse center middle text-white
 
 .font200[You have the power!]
 ---
@@ -1391,9 +1517,9 @@ layout: true
 .left-code[
 
 ```r
-ggplot(gapminder) +
+ggplot(gapminder,
   aes(x = gdpPercap,
-      y = lifeExp)
+      y = lifeExp))
 ```
 ]
 
@@ -1410,9 +1536,9 @@ Add points...
 .left-code[
 
 ```r
-ggplot(gapminder) +
+ggplot(gapminder,
   aes(x = gdpPercap,
-      y = lifeExp) +
+      y = lifeExp)) +
 * geom_point()
 ```
 ]
@@ -1430,10 +1556,10 @@ How can I tell countries apart?
 .left-code[
 
 ```r
-ggplot(gapminder) +
+ggplot(gapminder,
   aes(x = gdpPercap,
       y = lifeExp,
-*     color = continent) +
+*     color = continent)) +
   geom_point()
 ```
 ]
@@ -1451,10 +1577,10 @@ GDP is squished together on the left
 .left-code[
 
 ```r
-ggplot(gapminder) +
+ggplot(gapminder,
   aes(x = gdpPercap,
       y = lifeExp,
-      color = continent) +
+      color = continent)) +
   geom_point() +
 * scale_x_log10()
 ```
@@ -1473,10 +1599,10 @@ Still lots of overlap in the countries...
 .left-code[
 
 ```r
-ggplot(gapminder) +
+ggplot(gapminder,
   aes(x = gdpPercap,
       y = lifeExp,
-      color = continent) +
+      color = continent)) +
   geom_point() +
   scale_x_log10() +
 * facet_wrap(~ continent) +
@@ -1499,10 +1625,10 @@ Lots of overplotting due to point size
 .left-code[
 
 ```r
-ggplot(gapminder) +
+ggplot(gapminder,
   aes(x = gdpPercap,
       y = lifeExp,
-      color = continent) +
+      color = continent)) +
 * geom_point(size = 0.25) +
   scale_x_log10() +
   facet_wrap(~ continent) +
@@ -1523,10 +1649,10 @@ Is there a trend?
 .left-code[
 
 ```r
-ggplot(gapminder) +
+ggplot(gapminder,
   aes(x = gdpPercap,
       y = lifeExp,
-      color = continent) +
+      color = continent)) +
 * geom_line() +
   #geom_point(size = 0.25) +
   scale_x_log10() +
@@ -1548,10 +1674,10 @@ Okay, that line just connected all of the points sequentially...
 .left-code[
 
 ```r
-ggplot(gapminder) +
+ggplot(gapminder,
   aes(x = gdpPercap,
       y = lifeExp,
-      color = continent) +
+      color = continent)) +
   geom_line(
 *   aes(group = country)
     ) +
@@ -1577,13 +1703,12 @@ ggplot(gapminder) +
 .left-code[
 
 ```r
-ggplot(gapminder) +
+ggplot(gapminder,
 * aes(x = year,
 *     y = gdpPercap,
-      color = continent) +
+      color = continent)) +
   geom_line(
-    aes(group = country)
-  ) +
+    aes(group = country)) +
   #geom_point(size = 0.25) +
 * scale_y_log10() +
   facet_wrap(~ continent) +
@@ -1604,13 +1729,12 @@ Can't see x-axis labels, though
 .left-code[
 
 ```r
-ggplot(gapminder) +
+ggplot(gapminder,
   aes(x = year,
       y = gdpPercap,
-      color = continent) +
+      color = continent)) +
   geom_line(
-    aes(group = country)
-  ) +
+    aes(group = country)) +
   #geom_point(size = 0.25) +
   scale_y_log10() +
 * scale_x_continuous(breaks =
@@ -1634,18 +1758,16 @@ What about life expectancy?
 .left-code[
 
 ```r
-ggplot(gapminder) +
+ggplot(gapminder, 
   aes(x = year, 
 *     y = lifeExp,
-      color = continent) +
+      color = continent)) +
   geom_line(
-    aes(group = country)
-  ) +
+    aes(group = country)) +
   #geom_point(size = 0.25) +
 * #scale_y_log10() +
   scale_x_continuous(breaks = 
-    seq(1950, 2000, 25)
-  ) +  
+    seq(1950, 2000, 25)) +  
   facet_wrap(~ continent) +
   guides(color = FALSE)
 ```
@@ -1664,18 +1786,16 @@ Okay, let's add a trend line
 .left-code[
 
 ```r
-ggplot(gapminder) +
+ggplot(gapminder,
   aes(x = year, 
       y = lifeExp,
-      color = continent) +
+      color = continent)) +
   geom_line(
-    aes(group = country)
-  ) +
+    aes(group = country)) +
   # geom_point(size = 0.25) +
 * geom_smooth() +
   scale_x_continuous(breaks = 
-    seq(1950, 2000, 25)
-  ) +  
+    seq(1950, 2000, 25)) +  
   facet_wrap(~ continent) +
   guides(color = FALSE)
 ```
@@ -1694,19 +1814,17 @@ De-emphasize individual countries
 .left-code[
 
 ```r
-ggplot(gapminder) +
+ggplot(gapminder,
   aes(x = year, 
       y = lifeExp,
-      color = continent) +
+      color = continent)) +
   geom_line(
     aes(group = country),
-*   color = "grey75"
-  ) +
+*   alpha = 0.2) +
   #geom_point(size = 0.25) +
   geom_smooth() + 
   scale_x_continuous(breaks = 
-    seq(1950, 2000, 25)
-  ) +  
+    seq(1950, 2000, 25)) +  
   facet_wrap(~ continent) +
   guides(color = FALSE)
 ```
@@ -1725,19 +1843,17 @@ Let's compare continents
 .left-code[
 
 ```r
-ggplot(gapminder) +
+ggplot(gapminder,
   aes(x = year, 
       y = lifeExp,
-      color = continent) +
+      color = continent)) +
   geom_line(
     aes(group = country),
-    color = "grey75"
-  ) +
+    alpha = 0.2) +
   geom_smooth() + 
   # scale_x_continuous(
   #   breaks = 
-  #     seq(1950, 2000, 25)
-  # ) +  
+  #     seq(1950, 2000, 25))+
 * # facet_wrap(~ continent) +
   guides(color = FALSE)
 ```
@@ -1756,18 +1872,16 @@ Wait, what color is each continent?
 .left-code[
 
 ```r
-ggplot(gapminder) +
+ggplot(gapminder, 
   aes(x = year, 
       y = lifeExp,
-      color = continent) +
+      color = continent)) +
   geom_line(
     aes(group = country),
-    color = "grey75"
-  ) +
+    alpha = 0.2) +
   geom_smooth() + 
 * theme(
-* legend.position = "bottom"
-* )
+* legend.position = "bottom")
 ```
 ]
 
@@ -1784,19 +1898,17 @@ Let's try the minimal theme
 .left-code[
 
 ```r
-ggplot(gapminder) +
+ggplot(gapminder, 
   aes(x = year, 
       y = lifeExp,
-      color = continent) +
+      color = continent)) +
   geom_line(
     aes(group = country),
-    color = "grey75"
-  ) +
+    alpha = 0.2) +
   geom_smooth() + 
 * theme_minimal() +
   theme(
-  legend.position = "bottom"
-  )
+  legend.position = "bottom")
 ```
 ]
 
@@ -1813,20 +1925,18 @@ Fonts are kind of big
 .left-code[
 
 ```r
-ggplot(gapminder) +
+ggplot(gapminder, 
   aes(x = year, 
       y = lifeExp,
-      color = continent) +
+      color = continent)) +
   geom_line(
     aes(group = country),
-    color = "grey75"
-  ) +
+    alpha = 0.2) +
   geom_smooth() + 
   theme_minimal( 
-*   base_size = 8) +
+*   base_size = 10) +
   theme(
-  legend.position = "bottom"
-  )
+  legend.position = "bottom")
 ```
 ]
 
@@ -1836,7 +1946,7 @@ ggplot(gapminder) +
 
 --
 
-Cool, let's switch gears
+Great, let's switch gears
 
 ---
 
@@ -1965,10 +2075,9 @@ Let's look at four countries in more detail. How do their populations compare to
 .left-code[
 
 ```r
-ggplot(americas) +
-  aes(
-    x = year,
-    y = pop
+ggplot(americas,
+  aes(x = year,
+      y = pop) 
   ) +
   geom_col()
 ```
@@ -1987,11 +2096,10 @@ Yeah, but how many people are in each country?
 .left-code[
 
 ```r
-ggplot(americas) +
-  aes(
-    x = year,
-    y = pop,
-*   fill = country
+ggplot(americas,
+  aes(x = year,
+      y = pop,
+*     fill = country)
   ) +
   geom_col()
 ```
@@ -2003,6 +2111,61 @@ ggplot(americas) +
 
 --
 
+Can we reorder by population size?
+
+---
+
+.left-code[
+
+Excellent tutorial by Jenny Bryan ["Be the Boss of your factors"](https://stat545.com/factors-boss.html)
+
+
+```r
+ggplot(americas,
+  aes(x = year,
+      y = pop,
+*     fill = fct_reorder(
+*       country, pop)
+      )
+  ) +
+  geom_col()
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-americas-2-1-1.png)
+]
+
+--
+
+Can we change the labels?
+
+---
+
+.left-code[
+
+Excellent tutorial by Jenny Bryan ["Be the Boss of your factors"](https://stat545.com/factors-boss.html)
+
+
+```r
+ggplot(americas,
+  aes(x = year,
+      y = pop,
+*     fill = fct_reorder(
+*       country, pop)
+      )
+  ) +
+  geom_col() +
+* labs(fill = "Country")
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-americas-2-2-1.png)
+]
+
+--
+
 Bars are "stacked", can we separate?
 
 ---
@@ -2010,15 +2173,16 @@ Bars are "stacked", can we separate?
 .left-code[
 
 ```r
-ggplot(americas) +
-  aes(
-    x = year,
-    y = pop,
-    fill = country
+ggplot(americas,
+  aes(x = year,
+      y = pop,
+      fill = fct_reorder(  
+        country, pop) 
+      )
   ) +
   geom_col(
-*   position = "dodge"
-  )
+*   position = "dodge") +
+  labs(fill = "Country") 
 ```
 
 `position = "dodge"` places objects _next to each other_ instead of overlapping
@@ -2037,15 +2201,19 @@ ggplot(americas) +
 .left-code[
 
 ```r
-ggplot(americas) +
-  aes(
-    x = year,
-*   y = pop / 10^6,
-    fill = country
+ggplot(americas,
+  aes(x = year,
+*     y = pop / 10^6,
+      fill = fct_reorder(  
+        country, pop)
+      ) 
   ) +
   geom_col(
     position = "dodge" 
-  )
+  ) +
+  labs(fill = "Country", 
+*      y = "Population (millions)"
+       )  
 ```
 
 ggplot aesthetics can take expressions!
@@ -2064,15 +2232,15 @@ Might be easier to see countries individually
 .left-code[
 
 ```r
-ggplot(americas) +
-  aes(
-    x = year,
-    y = pop / 10^6,
-    fill = country
+ggplot(americas,
+  aes(x = year,
+*     y = pop / 10^6,
+*     fill = country)
   ) +
   geom_col(
     position = "dodge" 
   ) +
+  labs(y = "Population (millions)") + 
 * facet_wrap(~ country) +
 * guides(fill = FALSE)
 ```
@@ -2091,18 +2259,18 @@ Let range of y-axis vary in each plot
 .left-code[
 
 ```r
-ggplot(americas) +
-  aes(
-    x = year,
-    y = pop / 10^6,
-    fill = country
+ggplot(americas,
+  aes(x = year,
+      y = pop / 10^6, 
+      fill = country)
   ) +
   geom_col(
     position = "dodge" 
   ) +
+  labs(y = "Population (millions)") + 
   facet_wrap(~ country,
 *   scales = "free_y") +
-  guides(fill = FALSE)
+  guides(fill = FALSE) 
 ```
 ]
 
@@ -2119,18 +2287,17 @@ What about life expectancy again?
 .left-code[
 
 ```r
-ggplot(americas) +
-  aes(
-    x = year,
-*   y = lifeExp,
-    fill = country
+ggplot(americas,
+  aes(x = year,
+*     y = lifeExp,
+      fill = country)
   ) +
   geom_col(
     position = "dodge" 
   ) +
   facet_wrap(~ country,
-    scales = "free_y") +
-  guides(fill = FALSE)
+             scales = "free_y") +
+  guides(fill = FALSE) 
 ```
 ]
 
@@ -2147,15 +2314,14 @@ This should really be &amp;#x1F4C8; instead of &amp;#x1F4CA;
 .left-code[
 
 ```r
-ggplot(americas) +
-  aes(
-    x = year,
-    y = lifeExp,
-    fill = country
+ggplot(americas,
+  aes(x = year,
+      y = lifeExp, 
+      fill = country)
   ) +
 * geom_line() +
   facet_wrap(~ country,
-    scales = "free_y") +
+             scales = "free_y") +
   guides(fill = FALSE)
 ```
 ]
@@ -2215,6 +2381,32 @@ ggplot(americas) +
 
 --
 
+Let's update the labels
+
+---
+
+.left-code[
+
+```r
+ggplot(americas,
+  aes(x = year,
+      y = lifeExp,
+      color = country)
+  ) +
+  geom_line() +
+  labs(x = "Year",
+       y = "Life expectancy (years)",
+       color = "Country",
+       title = "Life expectancy over time")
+```
+]
+
+.right-plot[
+![](index_files/figure-html/gapminder-americas-11-1.png)
+]
+
+--
+
 Okay, changing gears again. What is range of life expectancy in Americas?
 
 ---
@@ -2226,10 +2418,9 @@ gapminder %&gt;%
   filter(
     continent == "Americas"
 * ) %&gt;%
-* ggplot() +
-  aes(
-    x = year,
-    y = lifeExp
+* ggplot(
+    aes(x = year,
+        y = lifeExp) 
   )
 ```
 
@@ -2253,12 +2444,11 @@ Boxplot for life expectancy range
 gapminder %&gt;% 
   filter(
     continent == "Americas"
-  ) %&gt;%
-  ggplot() +
-  aes(
-    x = year,
-    y = lifeExp
-  ) +
+  ) %&gt;% 
+  ggplot( 
+    aes(x = year, 
+        y = lifeExp) 
+  ) + 
 * geom_boxplot()
 ```
 ]
@@ -2283,11 +2473,10 @@ gapminder %&gt;%
 * mutate(
 *   year = factor(year)
 * ) %&gt;%
-  ggplot() +
-  aes(
-    x = year,
-    y = lifeExp
-  ) +
+  ggplot( 
+    aes(x = year, 
+        y = lifeExp) 
+  ) + 
   geom_boxplot()
 ```
 ]
@@ -2296,28 +2485,24 @@ gapminder %&gt;%
 ![](index_files/figure-html/gapminder-all-americas-3-1.png)
 ]
 
---
-
-OK, what about global life expectancy?
-
 ---
 
 .left-code[
 
 ```r
 gapminder %&gt;% 
-  # filter(
-  #   continent == "Americas"
-  # ) %&gt;%
+  filter(
+    continent == "Americas"
+  ) %&gt;%
   mutate(
-    year = factor(year)
-  ) %&gt;% 
-  ggplot() +
-  aes(
-    x = year,
-    y = lifeExp
-  ) +
-  geom_boxplot()
+    year = factor(year) 
+  ) %&gt;%  
+  ggplot( 
+    aes(x = year, 
+        y = lifeExp) 
+  ) + 
+  geom_boxplot() +
+* coord_flip()
 ```
 ]
 
@@ -2325,301 +2510,78 @@ gapminder %&gt;%
 ![](index_files/figure-html/gapminder-all-americas-4-1.png)
 ]
 
---
-
-Can we have cute little boxplots for each continent?
-
----
-
-.left-code[
-
-```r
-gapminder %&gt;% 
-  mutate(
-    year = factor(year)
-  ) %&gt;% 
-  ggplot() +
-  aes(
-    x = year,
-    y = lifeExp,
-*   fill = continent
-  ) +
-  geom_boxplot()
-```
-]
-
-.right-plot[
-![](index_files/figure-html/gapminder-all-americas-5-1.png)
-]
-
---
-
-Hard to read years, let's rotate &amp;#x1F504;
-
----
-
-.left-code[
-
-```r
-gapminder %&gt;% 
-  mutate(
-    year = factor(year)
-  ) %&gt;% 
-  ggplot() +
-  aes(
-    x = year,
-    y = lifeExp,
-    fill = continent
-  ) +
-  geom_boxplot() +
-* coord_flip()
-```
-]
-
-.right-plot[
-![](index_files/figure-html/gapminder-all-americas-6-1.png)
-]
-
---
-
-Use `dplyr` to group by decade
-
----
-
-.left-code[
-
-```r
-gapminder %&gt;% 
-  mutate(
-*   decade = floor(year / 10),
-*   decade = decade * 10,
-*   decade = factor(decade)
-  ) %&gt;% 
-  ggplot() +
-  aes(
-*   x = decade,
-    y = lifeExp,
-    fill = continent
-  ) +
-  geom_boxplot() +
-  coord_flip()
-```
-]
-
-.right-plot[
-![](index_files/figure-html/gapminder-all-americas-7-1.png)
-]
-
---
-
-Let's hide Oceania, sorry &amp;#x1F1E6;&amp;#x1F1FA;&amp;#x1F1F3;&amp;#x1F1FF;&amp;#x1F1EE;&amp;#x1F1E9;&amp;#x1F1EB;&amp;#x1F1EF;&amp;#x1F1F5;&amp;#x1F1EC;
-
----
-
-.left-code[
-
-```r
-g &lt;- gapminder %&gt;% 
-* filter(
-*   continent != "Oceania"
-* ) %&gt;%
-  mutate(
-    decade = floor(year / 10) * 10, decade = factor(decade)      
-  ) %&gt;% 
-  ggplot() +
-  aes(
-    x = decade,
-    y = lifeExp,
-    fill = continent
-  ) +
-  geom_boxplot() +
-  coord_flip()
-```
-]
-
-.right-plot[
-![](index_files/figure-html/gapminder-all-americas-8-1.png)
-]
-
----
-
-.left-code[
-
-```r
-g +
-  theme_minimal(8) +
-  labs(
-    y = "Life Expectancy",
-    x = "Decade",
-    fill = NULL,
-    title = "Life Expectancy by Continent and Decade",
-    caption = "gapminder.org"
-  )
-```
-
-Note `x` and `y` are _original_ aesthetics, `coord_flip()` happens _after_.  
-
-Remove labels by setting `= NULL`.
-]
-
-.right-plot[
-![](index_files/figure-html/gapminder-all-americas-9-1.png)
-]
-
----
-layout: false
-class: inverse, center, middle
-
-# Level up
-
-```r
-Inspired by "The Best Stats You've Ever Seen" by Hans Rosling
-
-http://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen
-```
-
----
-# Create the initial layout
-
-
-```r
-g_hr &lt;- 
-  ggplot(gapminder) +
-  aes(x = gdpPercap, y = lifeExp, size = pop, color = country) +
-  geom_point() +
-  facet_wrap(~year)
-```
-
-.plot-callout[
-![](index_files/figure-html/hans-rosling-1-1.png)
-]
-
----
-# Hide the guides
-
-
-```r
-g_hr &lt;- 
-  ggplot(gapminder) +
-  aes(x = gdpPercap, y = lifeExp, size = pop, color = country) +
-  geom_point() +
-  facet_wrap(~year) +
-  guides(color = FALSE, size = FALSE)
-```
-
-.plot-callout[
-![](index_files/figure-html/hans-rosling-1a-1.png)
-]
-
----
-# Adjust scales of x-axis, color, and size
-
-
-```r
-g_hr &lt;- 
-  g_hr +
-  scale_x_log10(breaks = c(10^3, 10^4, 10^5), labels = c("1k", "10k", "100k")) +
-  scale_color_manual(values = gapminder::country_colors) +
-  scale_size(range = c(0.5, 12))
-```
-
-.plot-callout[
-![](index_files/figure-html/hans-rosling-2-1.png)
-]
-
----
-# Tweak Anotations
-
-&lt;br&gt;&lt;br&gt;
-
-
-```r
-g_hr &lt;- 
-  g_hr +
-  labs(
-    x = "GDP per capita",
-    y = "Life Expectancy"
-  ) +
-  theme_minimal(base_family = "Fira Sans") +
-  theme(
-    strip.text = element_text(size = 16, face = "bold"),
-    panel.border = element_rect(fill = NA, color = "grey40"),
-    panel.grid.minor = element_blank()
-  )
-```
-
-.plot-callout.top-right[
-![](index_files/figure-html/hans-rosling-3-1.png)
-]
-
----
-# The final code and plot
-
-.font70[
-
-```r
-ggplot(gapminder) +
-  aes(x = gdpPercap, y = lifeExp, size = pop, color = country) +
-  geom_point() +
-  facet_wrap(~year) +
-  guides(color = FALSE, size = FALSE) +
-  scale_x_log10(
-    breaks = c(10^3, 10^4, 10^5), 
-    labels = c("1k", "10k", "100k")) +
-  scale_color_manual(values = gapminder::country_colors) +
-  scale_size(range = c(0.5, 12)) +
-  labs(
-    x = "GDP per capita",
-    y = "Life Expectancy") +
-  theme_minimal(14, base_family = "Fira Sans") +
-  theme(
-    strip.text = element_text(size = 16, face = "bold"),
-    panel.border = element_rect(fill = NA, color = "grey40"),
-    panel.grid.minor = element_blank())
-```
-]
-
----
-class: fullscreen
-background-image: url(index_files/figure-html/hans-rosling-final-1.png)
-background-size: cover
-
----
-# Special Bonus: Animated!
-
-.left-code[
-
-
-.font70[
-
-```r
-# library(devtools)
-# install_github("thomasp85/gganimate")
-library(gganimate)
-
-# Same plot without facet_wrap()
-g_hra + 
-  transition_states(year, 1, 0) + 
-  ggtitle("{closest_state}")
-```
-]
-]
-
---
-
-.right-plot[
-![](images/hans-rosling-esque.gif)
-]
-
-
 ---
 layout: false
 class: inverse, middle, center
 
-# g is for Goodbye
+# Recap and where to go next
 ---
 layout: true
-# Stack Exchange is Awesome
+# Plots are built in layers
+---
+
+.font120[
+- **Data** must be in a "tidy" format.
+]
+
+--
+.font120[
+- **.hlb[Aes]thetic mappings** link variables in the data to graphical properties in the **.hlb[geom]**etric objects.
+
+]
+
+--
+.font120[
+- **.hlb[Geom]etric objects** dictate how the **.hlb[aes]thetics** are interpreted as a graphical representation (points, lines, polygons, etc.)
+]
+
+--
+.font120[
+- **.hlb[Stat]istics** transform the input variables to displayed values. E.g. calculate the summary statistics for a boxplot (quantiles).
+]
+
+--
+.font120[
+- **.hlb[Coord]inates** organize location of geometric objects, i.e. define the physical mapping of the aesthetics.
+]
+
+--
+.font120[
+- **.hlb[Scale]s** define the range of values for aesthetics
+]
+
+--
+.font120[
+- **.hlb[Facet]s** define the number of panels and how to split data among them (e.g. by country).
+]
+
+--
+.font120[
+- **.hlb[Theme]s** control every part of the graphic that is not linked to the data (i.e. font, visual appearance).
+]
+
+---
+layout: true
+# Plots are built in layers
+---
+
+.font120[
+- **.hlb[Scale]s** define the range of values for aesthetics (e.g. categories -&gt; colours).
+]
+
+--
+.font120[
+- **.hlb[Facet]s** define the number of panels and how to split data among them (e.g. by country).
+]
+
+--
+.font120[
+- **.hlb[Theme]s** control every part of the graphic that is not linked to the data (i.e. font, visual appearance).
+]
+
+---
+layout: true
+# Stack Exchange is Great!
 ---
 
 ![](images/stack-exchange-search.png)
@@ -2633,18 +2595,25 @@ layout: false
 
 # ggplot2 Extensions: ggplot2-exts.org
 
-&lt;img src="images/ggplot2-exts-gallery.png" style="max-height: 100%"&gt;
+&lt;img src="images/ggplot2-exts-gallery.png" style="max-height: 90%"&gt;
 
 ---
 # ggplot2 and beyond
 
 ### Learn more
 
+- **Draw anything with ggplot2**: &lt;https://github.com/thomasp85/ggplot2_workshop&gt;
+
+- **Be the boss of your factors and other useful tips:** &lt;https://stat545.com/index.html&gt;
+
 - **ggplot2 docs:** &lt;http://ggplot2.tidyverse.org/&gt;
 
 - **R4DS - Data visualization:** &lt;http://r4ds.had.co.nz/data-visualisation.html&gt;
 
 - **Hadley Wickham's ggplot2 book:** &lt;https://www.amazon.com/dp/0387981403/&gt;
+
+---
+# ggplot2 and beyond
 
 ### Noteworthy RStudio Add-Ins
 
@@ -2670,19 +2639,13 @@ layout: false
 
 - `ggplot2movies`
 
-### Review
-
-- Slides and code on GitHub: &lt;http://github.com/gadenbuie/gentle-ggplot2&gt;
-
 ---
 class: inverse, center, middle
 
 # Thanks!
 
 .font150.text-white[
-@grrrck &lt;br&gt;
-github.com/gadenbuie &lt;br&gt;
-Garrick Aden-Buie
+- Slides and code adapted from Garrick Aden-Buie GitHub: &lt;http://github.com/gadenbuie/gentle-ggplot2&gt;
 ]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
