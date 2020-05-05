@@ -52,8 +52,14 @@ as_table <- function(...) knitr::kable(..., format='html', digits = 3)
 
 ---
 layout: true
-# Acknowledgements
+# What we'll cover today.
 ---
+
+- Brief intro to the theory behind `ggplot2` and the "grammar of graphics".
+
+- Building a plot using `ggplot`.
+
+- Building interactives maps using leaflet. 
 
 - Slides and code adapted from Garrick Aden-Buie "Gentle ggplot2 tutorial" on GitHub: <http://github.com/gadenbuie/gentle-ggplot2>
 
@@ -64,8 +70,17 @@ layout: true
 ---
 
 .left-column[
-![](images/grammar_graphics_book.jfif)
-__Grammar of Graphics__
+```{r example-table, echo = FALSE}
+table_ex <- gapminder %>% 
+  filter(
+    country %in% c("Syria", "Rwanda", "Chile"), 
+    year >= 1997
+  ) %>% 
+  select(country, year, pop) %>% 
+  mutate(pop = signif(pop / 10^6, 3))
+
+knitr::kable(table_ex, format = 'html')
+```
 ]
 
 .right-column[.font150[
@@ -82,18 +97,23 @@ __Grammar of Graphics__
 
 ]]
 
-
-
----
-
 ---
 layout: true
 # How would you draw a bar graph by hand?
 ---
 
 .left-column[
-![](images/grammar_graphics_book.jfif)
-__Grammar of Graphics__
+```{r example-table2, echo = FALSE}
+table_ex <- gapminder %>% 
+  filter(
+    country %in% c("Syria", "Rwanda", "Chile"), 
+    year >= 1997
+  ) %>% 
+  select(country, year, pop) %>% 
+  mutate(pop = signif(pop / 10^6, 3))
+
+knitr::kable(table_ex, format = 'html')
+```
 ]
 
 .right-column[.font150[
@@ -111,9 +131,40 @@ __Grammar of Graphics__
 ]]
 
 
-
+---
+layout: true
+# How would you draw a graph?
 ---
 
+.left-column[
+```{r example-table3, echo = FALSE}
+table_ex <- gapminder %>% 
+  filter(
+    country %in% c("Syria", "Rwanda", "Chile"), 
+    year >= 1997
+  ) %>% 
+  select(country, year, pop) %>% 
+  mutate(pop = signif(pop / 10^6, 3))
+
+knitr::kable(table_ex, format = 'html')
+```
+]
+
+.right-column[.font150[
+
+1. What decisions did you make?
+
+2. How did the data inform them?
+
+3. Did you look at the values to decide the axes and tick marks?
+
+4. How did you decide the labels?
+
+]]
+
+
+
+---
 
 ---
 layout: true
@@ -125,15 +176,22 @@ layout: true
 __Grammar of Graphics__
 ]
 
-.right-column[.font150[
+.right-column[
 
-*  Breaks down graphics into its constituent parts. 
-
-*  Focus on the relationship between the **variables** and the *visual properties* of the graph (e.g.*colour* = **country**).
+* Computers also follow steps.
 
 * The **grammar of graphics =** rules/steps for plotting.
 
-]]
+* First published in 1999.
+
+* Breaks down graphics into its constituent parts. 
+
+*  Focus on the relationship between the **variables** and the *visual properties* of the graph (e.g. *colour* = **country**).
+
+* Foundation for **ggplot2**, **tableau**, **vegalite** etc. 
+
+
+]
 
 ---
 layout: true
@@ -2258,21 +2316,6 @@ layout: true
 - **.hlb[Coord]inates** organize location of geometric objects, i.e. define the physical mapping of the aesthetics.
 ]
 
---
-.font120[
-- **.hlb[Scale]s** define the range of values for aesthetics
-]
-
---
-.font120[
-- **.hlb[Facet]s** define the number of panels and how to split data among them (e.g. by country).
-]
-
---
-.font120[
-- **.hlb[Theme]s** control every part of the graphic that is not linked to the data (i.e. font, visual appearance).
-]
-
 ---
 layout: true
 # Plots are built in layers
@@ -2357,6 +2400,11 @@ class: inverse, center, middle
 
 # Thanks!
 
+Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
+
+The chakra comes from [remark.js](https://remarkjs.com), [**knitr**](http://yihui.org/knitr), and [R Markdown](https://rmarkdown.rstudio.com).
+
 .font150.text-white[
 - Slides and code adapted from Garrick Aden-Buie GitHub: <http://github.com/gadenbuie/gentle-ggplot2>
 ]
+

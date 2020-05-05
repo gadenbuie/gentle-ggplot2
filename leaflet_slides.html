@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Data Visualisation in R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dr. Laurie Baker" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="gentle-ggplot2.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Data Visualisation in R
+## Introduction to ggplot2 and leaflet
+### Dr. Laurie Baker
+### Data Science Campus
+### 2020/04/09 (updated: 2020-05-04)
+
+---
+
+
+layout: false
+class: inverse center middle text-white
+
+.font200[Introduction to leaflet]
+
+
+
+---
+layout: true
+# What we'll cover today.
+---
+
+- Quick recap on building a plot using `ggplot2`
+
+--
+
+- Intro to the `sp` and `sf` packages
+
+--
+
+- Building a map using `ggplot2`
+
+--
+
+- Coordinate Systems and geospatial objects in R
+
+--
+
+- Building interactives maps using `leaflet`. 
+
+---
+layout: true
+# Packages for today's adventure
+---
+
+
+```r
+library(tidyverse)
+
+library(leaflet)
+
+library(sf)
+
+library(sp)
+```
+
+
+
+---
+
+layout: false
+class: inverse center middle text-white
+
+.font200[Recap on building a plot using ggplot2]
+
+---
+layout: true
+# ggplot2 plots are built in layers
+---
+
+.font120[
+- **Data** must be in a "tidy" format.
+]
+
+--
+.font120[
+- **.hlb[Aes]thetic mappings** link variables in the data to graphical properties in the **.hlb[geom]**etric objects.
+
+]
+
+--
+.font120[
+- **.hlb[Geom]etric objects** dictate how the **.hlb[aes]thetics** are interpreted as a graphical representation (points, lines, polygons, etc.)
+]
+
+--
+.font120[
+- **.hlb[Stat]istics** transform the input variables to displayed values. E.g. calculate the summary statistics for a boxplot (quantiles).
+]
+
+--
+.font120[
+- **.hlb[Coord]inates** organize location of geometric objects, i.e. define the physical mapping of the aesthetics.
+]
+
+---
+layout: true
+# ggplot2 plots are built in layers
+---
+
+.font120[
+- **.hlb[Scale]s** define the range of values for aesthetics (e.g. categories -&gt; colours).
+]
+
+--
+.font120[
+- **.hlb[Facet]s** define the number of panels and how to split data among them (e.g. by country).
+]
+
+--
+.font120[
+- **.hlb[Theme]s** control every part of the graphic that is not linked to the data (i.e. font, visual appearance).
+]
+
+
+
+---
+layout: false
+
+# Making a map
+
+* `sf` is a package for geospatial data manipulation and analysis.
+
+* It works with features:
+  * **points** (POINT, MULTIPOINT)
+  * **lines** (LINESTRING, MULTILINESTRING)
+  * **polygons** (POLYGON, MULTIPOLYGON)
+
+
+
+---
+layout: false
+class: inverse center middle text-white
+
+.font200[Plotting a map with ggplot2]
+
+---
+
+---
+layout: true
+# Birth Rates in North Carolina
+
+* We will use the North Carolina (nc) data from the sf package.
+--
+* Number of births for counties in North Carolina in 1974 
+
+---
+
+---
+layout: true
+# Load in the data for North Carolina
+
+* Let's load in the data for North Carolina and rename our columns to country, births, and geometry.
+
+
+
+```r
+nc &lt;- st_read(system.file("shape/nc.shp", package="sf"))
+```
+
+```
+## Reading layer `nc' from data source `C:\Users\l-baker\Documents\R\win-library\3.6\sf\shape\nc.shp' using driver `ESRI Shapefile'
+## Simple feature collection with 100 features and 14 fields
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965
+## epsg (SRID):    4267
+## proj4string:    +proj=longlat +datum=NAD27 +no_defs
+```
+
+```r
+nc &lt;- nc %&gt;%
+        select("NAME", "BIR74", "geometry") %&gt;%
+        rename("county" = "NAME", "births" = "BIR74")
+```
+
+---
+
+
+---
+layout: true
+# Let's View() the data
+
+* Let's load in the data for North Carolina (nc)
+
+
+```r
+head(nc)
+```
+
+&lt;div class="kable-table"&gt;
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; county &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; births &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; geometry &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ashe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1091 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; list(list(c(-81.4727554321289, -81.5408401489258, -81.5619812011719, -81.6330642700195, -81.7410736083984, -81.6982803344727, -81.7027969360352, -81.6699981689453, -81.3452987670898, -81.347541809082, -81.3247756958008, -81.3133239746094, -81.2662353515625, -81.2628402709961, -81.2406921386719, -81.2398910522461, -81.2642440795898, -81.3289947509766, -81.3613739013672, -81.3656921386719, -81.354133605957, -81.3674545288086, -81.4063873291016, -81.4123306274414, -81.431037902832, -81.4528884887695, 
+-81.4727554321289, 36.2343559265137, 36.2725067138672, 36.2735939025879, 36.3406867980957, 36.3917846679688, 36.4717788696289, 36.5193405151367, 36.5896492004395, 36.5728645324707, 36.537914276123, 36.5136795043945, 36.4806976318359, 36.4372062683105, 36.4050407409668, 36.3794174194336, 36.365364074707, 36.3524131774902, 36.3635025024414, 36.3531608581543, 36.3390502929688, 36.2997169494629, 36.2786979675293, 36.2850532531738, 36.2672920227051, 36.2607192993164, 36.2395858764648, 36.2343559265137
+))) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Alleghany &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 487 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; list(list(c(-81.2398910522461, -81.2406921386719, -81.2628402709961, -81.2662353515625, -81.3133239746094, -81.3247756958008, -81.347541809082, -81.3452987670898, -80.9034423828125, -80.9335479736328, -80.9657745361328, -80.9496688842773, -80.9563903808594, -80.9779510498047, -80.9828414916992, -81.0027770996094, -81.0246429443359, -81.0428009033203, -81.0842514038086, -81.0985641479492, -81.1133117675781, -81.1293792724609, -81.1383972167969, -81.1533660888672, -81.1766738891602, -81.2398910522461, 
+36.365364074707, 36.3794174194336, 36.4050407409668, 36.4372062683105, 36.4806976318359, 36.5136795043945, 36.537914276123, 36.5728645324707, 36.5652122497559, 36.4983139038086, 36.4672203063965, 36.4147338867188, 36.4037971496582, 36.3913764953613, 36.3718338012695, 36.3666801452637, 36.3778343200684, 36.4103355407715, 36.4299201965332, 36.43115234375, 36.4228515625, 36.4263305664062, 36.4176254272461, 36.4247398376465, 36.4154434204102, 36.365364074707))) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Surry &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3188 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; list(list(c(-80.4563446044922, -80.4763870239258, -80.5368804931641, -80.5450134277344, -80.5541534423828, -80.5905990600586, -80.6243133544922, -80.6674423217773, -80.6966552734375, -80.7240371704102, -80.7343673706055, -80.7525634765625, -80.7662963867188, -80.7826995849609, -80.874382019043, -80.8708648681641, -80.8889236450195, -80.9245681762695, -80.9563903808594, -80.9496688842773, -80.9657745361328, -80.9335479736328, -80.9034423828125, -80.8381576538086, -80.6110534667969, -80.4353103637695, 
+-80.453010559082, -80.4563446044922, 36.2425575256348, 36.2547264099121, 36.2567367553711, 36.2766571044922, 36.2784309387207, 36.2682762145996, 36.2730979919434, 36.2461013793945, 36.259090423584, 36.258472442627, 36.2647590637207, 36.2582969665527, 36.2618370056152, 36.2485771179199, 36.2338829040527, 36.3246231079102, 36.3544273376465, 36.3727531433105, 36.4037971496582, 36.4147338867188, 36.4672203063965, 36.4983139038086, 36.5652122497559, 36.5634384155273, 36.5572967529297, 36.5510444641113, 
+36.2570877075195, 36.2425575256348))) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Currituck &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 508 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; list(list(c(-76.0089721679688, -76.0173492431641, -76.0328750610352, -76.0439529418945, -76.095085144043, -76.1609268188477, -76.1581497192383, -76.1682891845703, -76.3302536010742, -76.1273956298828, -76.0459594726562, -76.0332107543945, -76.091064453125, -75.97607421875, -75.9697647094727, -76.0016098022461, -75.9512557983398, -75.9281234741211, -75.9245910644531, -75.8000564575195, -75.7988510131836, -75.8551635742188, -75.9137649536133, -75.9575119018555, -75.9419326782227, -76.0089721679688, 
+36.3195953369141, 36.3377304077148, 36.3359756469727, 36.3535919189453, 36.3489151000977, 36.3918991088867, 36.4126892089844, 36.4270858764648, 36.5560569763184, 36.5571632385254, 36.5569534301758, 36.5143737792969, 36.5035667419434, 36.4362144470215, 36.4151191711426, 36.4189147949219, 36.3654708862305, 36.4232444763184, 36.3509483337402, 36.1128158569336, 36.0728187561035, 36.1056671142578, 36.244800567627, 36.2594528198242, 36.2943382263184, 36.3195953369141)), list(c(-76.0271682739258, -75.998664855957, 
+-75.9119186401367, -75.9248046875, -75.9772796630859, -75.9762878417969, -76.0271682739258, 36.5567169189453, 36.5566520690918, 36.5425300598145, 36.4739761352539, 36.4780158996582, 36.5179252624512, 36.5567169189453)), list(c(-75.901985168457, -75.8781661987305, -75.7731552124023, -75.7831726074219, -75.901985168457, 36.5561981201172, 36.5558738708496, 36.2292556762695, 36.2251930236816, 36.5561981201172))) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Northampton &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1421 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; list(list(c(-77.2176666259766, -77.2346115112305, -77.2986145019531, -77.2935104370117, -77.3094787597656, -77.3349914550781, -77.389030456543, -77.3786239624023, -77.4134674072266, -77.4188537597656, -77.4541168212891, -77.5380783081055, -77.5574340820312, -77.5719528198242, -77.580078125, -77.559684753418, -77.560417175293, -77.6359710693359, -77.650993347168, -77.6988754272461, -77.7494049072266, -77.9012069702148, -77.8988571166992, -77.7639312744141, -77.3200531005859, -77.1773529052734, -77.1544189453125, 
+-77.0921325683594, -77.075309753418, -77.0832748413086, -77.127326965332, -77.1393203735352, -77.141960144043, -77.2176666259766, 36.2409820556641, 36.214599609375, 36.2115287780762, 36.1628608703613, 36.1627655029297, 36.1828498840332, 36.2031021118164, 36.2400856018066, 36.2558174133301, 36.281795501709, 36.3197555541992, 36.3024597167969, 36.3042144775391, 36.3144950866699, 36.3282699584961, 36.3759460449219, 36.4063568115234, 36.4405364990234, 36.4725875854492, 36.4789581298828, 36.4735717773438, 
+36.5098876953125, 36.5529441833496, 36.5534400939941, 36.5539169311523, 36.5562858581543, 36.526252746582, 36.5075187683105, 36.4835166931152, 36.4700965881348, 36.4707107543945, 36.4564781188965, 36.417064666748, 36.2409820556641))) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Hertford &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1452 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; list(list(c(-76.7450637817383, -76.9806900024414, -76.9947509765625, -77.1300735473633, -77.2176666259766, -77.141960144043, -77.1393203735352, -77.127326965332, -77.0832748413086, -77.075309753418, -77.0921325683594, -77.1544189453125, -77.1773529052734, -76.9241333007812, -76.9084243774414, -76.9457702636719, -76.9536743164062, -76.9435119628906, -76.9240798950195, -76.7413482666016, -76.7074966430664, -76.7450637817383, 36.2339172363281, 36.2302360534668, 36.2355804443359, 36.2334632873535, 36.2409820556641, 
+36.417064666748, 36.4564781188965, 36.4707107543945, 36.4700965881348, 36.4835166931152, 36.5075187683105, 36.526252746582, 36.5562858581543, 36.5541458129883, 36.5042839050293, 36.4589614868164, 36.4192314147949, 36.4017295837402, 36.3924446105957, 36.3151664733887, 36.2661323547363, 36.2339172363281))) &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;/div&gt;
+
+---
+layout: true
+# And inspect the structure
+
+
+
+```r
+str(nc)
+```
+
+```
+## Classes 'sf' and 'data.frame':	100 obs. of  3 variables:
+##  $ county  : Factor w/ 100 levels "Alamance","Alexander",..: 5 3 86 27 66 46 15 37 93 85 ...
+##  $ births  : num  1091 487 3188 508 1421 ...
+##  $ geometry:sfc_MULTIPOLYGON of length 100; first list element: List of 1
+##   ..$ :List of 1
+##   .. ..$ : num [1:27, 1:2] -81.5 -81.5 -81.6 -81.6 -81.7 ...
+##   ..- attr(*, "class")= chr  "XY" "MULTIPOLYGON" "sfg"
+##  - attr(*, "sf_column")= chr "geometry"
+##  - attr(*, "agr")= Factor w/ 3 levels "constant","aggregate",..: NA NA
+##   ..- attr(*, "names")= chr  "county" "births"
+```
+
+
+---
+layout: true
+# Our first map
+---
+
+.left-code[
+
+* Data
+* Geom
+
+
+```r
+ggplot(nc) +
+* geom_sf()
+```
+]
+
+.right-plot[
+&lt;img src="leaflet_slides_files/figure-html/first-map1a-1.png" width="100%" /&gt;
+]
+
+---
+
+.left-code[
+
+
+```r
+ggplot(nc) +
+* geom_sf(aes(fill = births))
+```
+]
+
+.right-plot[
+&lt;img src="leaflet_slides_files/figure-html/first-map1b-1.png" width="100%" /&gt;
+]
+
+---
+
+.left-code[
+
+
+```r
+ggplot(nc) +
+  geom_sf(aes(fill = "births")) +
+* labs(title = "Births per county")
+```
+]
+
+.right-plot[
+&lt;img src="leaflet_slides_files/figure-html/first-map1c-1.png" width="100%" /&gt;
+]
+
+---
+
+.left-code[
+
+
+```r
+ggplot(nc) +
+  geom_sf(aes(fill = "births")) +
+  labs(title = "Births per county",
+*      x = "Longitude",
+*      y = "Latitude")
+```
+]
+
+.right-plot[
+&lt;img src="leaflet_slides_files/figure-html/first-map1d-1.png" width="100%" /&gt;
+]
+
+---
+
+.left-code[
+
+
+```r
+ggplot(nc) +
+  geom_sf(aes(fill = "births")) +
+  labs(title = "Births per county",
+       x = "Longitude",
+       y = "Latitude") +
+* scale_y_continuous(breaks = 34:36)
+```
+]
+
+.right-plot[
+&lt;img src="leaflet_slides_files/figure-html/first-map1e-1.png" width="100%" /&gt;
+]
+
+---
+
+
+
+```r
+library(gapminder)
+tidy_pop &lt;- gapminder
+
+ggplot(tidy_pop,
+* aes(x = year,
+*     y = pop)
+  )
+```
+]
+
+.right-plot[
+&lt;img src="leaflet_slides_files/figure-html/first-plot1b-1.png" width="100%" /&gt;
+]
+
+---
+
+.left-code[
+
+```r
+ggplot(tidy_pop,
+  aes(x = year,
+      y = pop)
+  ) +
+* geom_point()
+```
+]
+
+.right-plot[
+&lt;img src="leaflet_slides_files/figure-html/first-plot1c-1.png" width="100%" /&gt;
+]
+
+---
+
+.left-code[
+
+```r
+ggplot(tidy_pop,
+  aes(x = year,
+      y = pop,
+*     color = country)
+  ) + 
+  geom_point()
+```
+]
+
+.right-plot[
+&lt;img src="leaflet_slides_files/figure-html/first-plot1-1.png" width="100%" /&gt;
+]
+
+---
+
+.left-code[
+
+```r
+ggplot(tidy_pop,
+  aes(x = year,
+      y = pop,
+      color = country) 
+  ) +
+  geom_point() +
+* geom_line()
+```
+
+.font80[
+```r
+geom_path: Each group consists
+of only one observation. 
+Do you need to adjust the 
+group aesthetic?
+```
+]
+]
+
+.right-plot[
+&lt;img src="leaflet_slides_files/figure-html/first-plot2-fake-1.png" width="100%" /&gt;
+]
+---
+
+.left-code[
+
+```r
+ggplot(tidy_pop,
+  aes(x = year,
+      y = pop,
+      color = country) 
+  ) +
+  geom_point() +
+  geom_line(
+*   aes(group = country))
+```
+]
+
+.right-plot[
+&lt;img src="leaflet_slides_files/figure-html/first-plot2-1.png" width="100%" /&gt;
+]
+
+---
+
+
+.left-code[
+
+```r
+*g &lt;- ggplot(tidy_pop,
+  aes(x = year,
+      y = pop,
+      color = country) 
+  ) +
+  geom_point() +
+  geom_line(
+    aes(group = country))
+
+*g 
+```
+]
+
+.right-plot[
+&lt;img src="leaflet_slides_files/figure-html/first-plot3-1.png" width="100%" /&gt;
+]
+
+---
+layout: true
+# gg is for Grammar of Graphics
+
+.left-column[
+### Data
+### Aesthetics
+### Geoms
+
+```r
++ geom_*()
+```
+]
+---
+
+.right-column[
+```r
+geom_*(mapping = aes(), data, stat, position)
+```
+
+- `data` Geoms can have their own data
+    - Has to map onto global coordinates
+
+- `aes` Geoms can have their own aesthetics
+    - Inherits global aesthetics
+    - Have geom-specific aesthetics
+        - `geom_point` needs `x` and `y`, optional `shape`, `color`, `size`, etc.
+        - `geom_ribbon` requires `x`, `ymin` and `ymax`, optional `fill`
+    - Use `?` to find out the aesthetics required and the ones you can change:
+    `?geom_ribbon`
+]
+
+---
+
+.right-column[
+```r
+geom_*(mapping, data, stat, position)
+```
+
+- `stat` Some geoms apply further transformations to the data
+    - All respect `stat = 'identity'`
+    - Ex: `geom_histogram` uses `stat_bin()` to group observations
+    
+- `position` Some adjust location of objects
+    - `'dodge'`, `'stack'`, `'jitter'`
+]
+
+---
+layout: true
+# Our first plot!
+---
+
+.left-code[
+
+```r
+g &lt;- ggplot() +
+  geom_point(
+*   data = tidy_pop,
+*   aes(x = year,
+*     y = pop,
+*     color = country)
+  ) +
+  geom_line(
+*   data = tidy_pop,
+*   aes(x = year,
+*     y = pop,
+*     color = country,
+*     group = country)
+    )
+
+g
+```
+]
+
+.right-plot[
+&lt;img src="leaflet_slides_files/figure-html/first-plot-geom-1-1.png" width="100%" /&gt;
+]
+
+---
+layout: true
+# gg is for Grammar of Graphics
+
+.left-column[
+### Data
+### Aesthetics
+### Geoms
+
+```r
++ geom_*()
+```
+]
+---
+
+.right-column[
+```r
+geom_*(mapping = aes(), data, stat, position)
+```
+
+- `data` Geoms can have their own data
+    - Has to map onto global coordinates
+
+.font150[What would the advantage be for a geom to have their own data?]
+
+]
+
+---
+layout: true
+# gg is for Grammar of Graphics
+
+.left-column[
+### Data
+### Aesthetics
+### Geoms
+### Facet
+
+```r
++facet_wrap() 
+
++facet_grid()
+```
+]
+---
+
+
+
+.right-plot[
+
+```r
+g + facet_wrap(~ country)
+```
+
+&lt;img src="leaflet_slides_files/figure-html/geom_facet-1.png" width="90%" /&gt;
+]
+
+---
+
+.right-column[
+
+```r
+g + facet_grid(continent ~ country)
+```
+
+&lt;img src="leaflet_slides_files/figure-html/geom_grid-1.png" width="90%" /&gt;
+]
+
+---
+layout: true
+# gg is for Grammar of Graphics
+
+.left-column[
+### Data
+### Aesthetics
+### Geoms
+### Facet
+### Labels
+
+```r
++ labs()
+```
+]
+---
+
+
+
+
+.right-column[
+
+```r
+(g &lt;- g + labs(x = "Year", y = "Population (millions)"))
+```
+
+&lt;img src="leaflet_slides_files/figure-html/labs-ex-1.png" width="90%" /&gt;
+]
+
+---
+layout: true
+# gg is for Grammar of Graphics
+
+.left-column[
+### Data
+### Aesthetics
+### Geoms
+### Facet
+### Labels
+### Coords
+
+```r
++ coord_*()
+```
+]
+---
+
+
+
+
+.right-column[
+
+```r
+g + coord_flip()
+```
+
+&lt;img src="leaflet_slides_files/figure-html/coord-ex-1.png" width="90%" /&gt;
+]
+
+---
+layout: true
+# gg is for Grammar of Graphics
+
+.left-column[
+### Data
+### Aesthetics
+### Geoms
+### Facet
+### Labels
+### Coords
+### Scales
+
+```r
++ scale_*_*()
+```
+]
+---
+
+.right-column[ 
+`scale` + `_` + `&lt;aes&gt;` + `_` + `&lt;type&gt;` + `()`
+
+`&lt;aes&gt;` = parameter to adjust; `&lt;type&gt;` = Parameter Type
+]
+--
+
+.right-column[
+- I want to use a different color palette&lt;br&gt;`scale_fill_discrete()`&lt;br&gt;`scale_color_continuous()`
+]
+
+--
+
+.right-column[
+- I want to rescale y-axis as log&lt;br&gt;`scale_y_log10()`
+]
+
+--
+
+.right-column[
+- I want to change my discrete x-axis&lt;br&gt;`scale_x_discrete()`
+]
+
+
+
+---
+
+
+
+.right-column[
+
+```r
+#g + scale_color_manual(values = c("peru", "pink", "plum"))
+```
+]
+
+---
+
+.right-column[
+
+```r
+g + scale_y_log10()
+```
+
+&lt;img src="leaflet_slides_files/figure-html/scale_ex2-1.png" width="90%" /&gt;
+]
+
+---
+
+.right-column[
+
+```r
+g + scale_x_discrete(labels = c("MCMXCVII", "MMII", "MMVII"))
+```
+
+&lt;img src="leaflet_slides_files/figure-html/scale_ex4-1.png" width="90%" /&gt;
+]
+
+---
+layout: true
+# gg is for Grammar of Graphics
+
+.left-column[
+### Data
+### Aesthetics
+### Geoms
+### Facet
+### Labels
+### Coords
+### Scales
+### Theme
+
+```r
++ theme()
+```
+]
+
+---
+
+.right-column[
+Change the appearance of plot decorations&lt;br&gt;
+i.e. things that aren't mapped to data
+
+A few "starter" themes ship with the package
+
+- `g + theme_bw()`
+- `g + theme_dark()`
+- `g + theme_gray()`
+- `g + theme_light()`
+- `g + theme_minimal()`
+
+]
+
+---
+
+.right-column[
+
+
+```r
+g + theme_bw()
+```
+
+&lt;img src="leaflet_slides_files/figure-html/theme_ex1-1.png" width="90%" /&gt;
+
+]
+
+---
+.right-column[
+Huge number of parameters, grouped by plot area:
+
+- Global options: `line`, `rect`, `text`, `title`
+- `axis`: x-, y- or other axis title, ticks, lines
+- `legend`: Plot legends
+- `panel`: Actual plot area
+- `plot`: Whole image
+- `strip`: Facet labels
+]
+---
+
+.right-column[
+Theme options are supported by helper functions:
+
+- `element_blank()` removes the element
+- `element_line()`
+- `element_rect()`
+- `element_text()`
+]
+
+---
+
+.right-column[
+.font80[
+
+```r
+g + theme_bw() + theme(text = element_text(colour = "hotpink", size = 20))
+```
+
+&lt;img src="leaflet_slides_files/figure-html/unnamed-chunk-2-1.png" width="90%" /&gt;
+]
+]
+
+---
+
+.right-column[
+You can also set the theme globally with `theme_set()`
+
+
+```r
+my_theme &lt;- theme_bw() +
+  theme(
+    text = element_text(family = "Palatino", size = 12),
+    panel.border = element_rect(colour = 'grey80'), 
+    panel.grid.minor = element_blank()
+  )
+
+theme_set(my_theme)
+```
+
+All plots will now use this theme!
+]
+
+---
+
+.right-column[
+
+```r
+g 
+```
+
+&lt;img src="leaflet_slides_files/figure-html/unnamed-chunk-3-1.png" width="90%" /&gt;
+]
+
+---
+
+.right-column[
+
+```r
+g + theme(legend.position = 'bottom')
+```
+
+&lt;img src="leaflet_slides_files/figure-html/unnamed-chunk-4-1.png" width="90%" /&gt;
+]
+
+---
+layout: false
+# Save Your Work
+
+To save your plot, use **ggsave**. 
+
+
+```r
+ggsave(
+  filename = "my_plot.png",
+  plot = my_plot,
+  width = 10,
+  height = 8,
+  dpi = 100,
+  device = "png"
+)
+```
+
+---
+layout: false
+class: inverse center middle text-white
+
+.font200[You have the power!]
+---
+
+class: inverse, center, middle
+
+# "Live" Coding
+
+
+```r
+library(gapminder)
+```
+
+
+
+---
+# head(gapminder)
+
+&lt;div class="kable-table"&gt;
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; country &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; continent &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; year &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; lifeExp &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; pop &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; gdpPercap &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Afghanistan &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Asia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1952 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 28.801 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8425333 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 779.4453 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Afghanistan &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Asia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1957 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30.332 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9240934 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 820.8530 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Afghanistan &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Asia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1962 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31.997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10267083 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 853.1007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Afghanistan &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Asia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1967 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 34.020 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11537966 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 836.1971 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Afghanistan &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Asia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1972 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.088 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13079460 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 739.9811 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Afghanistan &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Asia &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1977 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.438 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14880372 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 786.1134 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;/div&gt;
+
+---
+# glimpse(gapminder)
+
+
+```
+Observations: 1,704
+Variables: 6
+$ country   &lt;fct&gt; Afghanistan, Afghanistan, Afghanistan, Afghanistan, Afghanistan, Af...
+$ continent &lt;fct&gt; Asia, Asia, Asia, Asia, Asia, Asia, Asia, Asia, Asia, Asia, Asia, A...
+$ year      &lt;int&gt; 1952, 1957, 1962, 1967, 1972, 1977, 1982, 1987, 1992, 1997, 2002, 2...
+$ lifeExp   &lt;dbl&gt; 28.801, 30.332, 31.997, 34.020, 36.088, 38.438, 39.854, 40.822, 41....
+$ pop       &lt;int&gt; 8425333, 9240934, 10267083, 11537966, 13079460, 14880372, 12881816,...
+$ gdpPercap &lt;dbl&gt; 779.4453, 820.8530, 853.1007, 836.1971, 739.9811, 786.1134, 978.011...
+```
+
+--
+
+Let's start with `lifeExp` vs `gdpPercap`
+
+---
+class: fullscreen
+layout: true
+---
+
+.left-code[
+
+```r
+ggplot(gapminder,
+  aes(x = gdpPercap,
+      y = lifeExp))
+```
+]
+
+.right-plot[
+![](leaflet_slides_files/figure-html/gapminder-le-gdp-1-1.png)
+]
+
+--
+
+Add points...
+
+---
+---
+class: inverse, center, middle
+
+# Thanks!
+
+Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
+
+The chakra comes from [remark.js](https://remarkjs.com), [**knitr**](http://yihui.org/knitr), and [R Markdown](https://rmarkdown.rstudio.com).
+
+.font150.text-white[
+- Slides and code adapted from Garrick Aden-Buie GitHub: &lt;http://github.com/gadenbuie/gentle-ggplot2&gt;
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "foundation",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"slideNumberFormat": "%current%"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

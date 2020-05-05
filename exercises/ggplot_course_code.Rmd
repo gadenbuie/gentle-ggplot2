@@ -1,0 +1,916 @@
+---
+title: "Introduction to ggplot: course code"
+author: "Dr. Laurie Baker"
+date: "28/04/2020"
+output: 
+  html_document:
+    number_sections: true
+    toc: yes
+    toc_depth: '1'
+    toc_float: yes
+---
+
+# Getting started
+
+## Installing and loading packages
+
+```{r libraries, echo=TRUE, message=TRUE, warning=TRUE}
+# install.packages("tidyverse")
+# install.packages("gapminder")
+
+library(tidyverse)
+library(gapminder)
+
+```
+
+## Cleaning and prepping the data
+
+### This is messy data
+
+```{r tidy-messy1, results='asis', echo=FALSE}
+
+pop_simple <- gapminder %>% 
+  filter(
+    country %in% c("Syria", "Rwanda", "Chile"), 
+    year >= 1997
+  ) %>% 
+  select(country, year, pop) %>% 
+  mutate(pop = pop / 10^6)
+
+messy_pop <- pop_simple %>% spread(year, pop)
+
+knitr::kable(messy_pop, format = 'html')
+
+```
+
+### This is clean data
+
+```{r tidy-tidy1, result='asis'}
+
+tidy_pop <- gather(messy_pop, 'year', 'pop', -country)
+tidy_pop %>%
+  head(4) 
+
+```
+
+
+## Building a plot
+
+### Calling `ggplot()`
+
+```{r first-plot1a, ref.label='first-plot1a', out.width="100%"}
+
+ggplot(tidy_pop)
+
+```
+
+### Adding aesthetics
+
+```{r first-plot1b, ref.label='first-plot1b', out.width="100%"}
+
+ggplot(tidy_pop,
+  aes(x = year, #<<
+      y = pop) #<<
+  )
+```
+
+### Choosing the geometry (geom)
+
+```{r first-plot1c, ref.label='first-plot1c', out.width="100%"}
+
+ggplot(tidy_pop,
+  aes(x = year,
+      y = pop)
+  ) +
+  geom_point() 
+
+```
+
+### Adding a third variable, country, as a colour.
+
+```{r first-plot1d, out.width = "100%"}
+
+ggplot(tidy_pop,
+  aes(x = year,
+      y = pop,
+      color = country) 
+  ) + 
+  geom_point()
+
+```
+
+### Adding a line to the plot
+
+```{r first-plot1e, out.width = "100%"}
+
+ggplot(tidy_pop,
+  aes(x = year,
+      y = pop,
+      color = country) 
+  ) +
+  geom_point() +
+  geom_line()
+
+```
+
+### Adding a line to the plot, group by country.
+
+```{r first-plot1f, out.width = "100%"}
+
+ggplot(tidy_pop,
+  aes(x = year,
+      y = pop,
+      color = country) 
+  ) +
+  geom_point() +
+  geom_line(
+    aes(group = country)) 
+
+```
+
+### Storing a plot
+
+```{r first-plot1g, out.width = "100%"}
+
+g <- ggplot(tidy_pop, 
+  aes(x = year,
+      y = pop,
+      color = country) 
+  ) +
+  geom_point() +
+  geom_line(
+    aes(group = country))
+
+g 
+
+
+```
+
+### Specifying the aesthetics for each geometry.
+
+```{r}
+
+g <- ggplot() +
+  geom_point(
+    data = tidy_pop, 
+    aes(x = year, 
+      y = pop, 
+      color = country) 
+  ) +
+  geom_line(
+    data = tidy_pop, 
+    aes(x = year, 
+      y = pop, 
+      color = country, 
+      group = country) 
+    )
+
+g
+
+```
+
+### Adding more data. Creating `tidy_pop2`
+
+```{r}
+
+tidy_pop2 <- left_join(tidy_pop, select(gapminder, country, continent))
+
+g <- ggplot(tidy_pop2) +
+  aes(x = year,
+      y = pop,
+      color = country) +
+  geom_point() +
+  geom_line(aes(group = country))
+
+```
+
+### Using Facets
+
+```{r geom_facet}
+
+g + facet_wrap(~ country)
+
+```
+
+### Using facet_grid, two variables.
+
+```{r geom_grid}
+g + facet_grid(continent ~ country)
+```
+
+### Adding labels
+
+```{r labs-ex}
+
+(g <- g + labs(x = "Year", y = "Population (millions)"))
+
+```
+
+### Showing coordinates
+
+```{r adding coordinates}
+
+g + coord_flip()
+
+```
+
+### Changing the color scale
+
+```{r}
+
+g + scale_color_manual(values = c("peru", "pink", "plum"))
+
+```
+
+### Changing the scale of the y
+
+```{r}
+
+g + scale_y_log10()
+
+```
+
+### Changing the scale of the x
+
+```{r}
+
+g + scale_x_discrete(labels = c("MCMXCVII", "MMII", "MMVII"))
+
+```
+
+### Changing the theme
+
+```{r theme ex1}
+
+g + theme_bw()
+
+```
+
+### Changing the theme (fonts and colours) 
+
+```{r theme ex2}
+
+g + theme_bw() + theme(text = element_text(colour = "hotpink", size = 20))
+
+```
+
+### Setting an overall theme:
+
+```{r Setting a theme}
+
+my_theme <- theme_bw() +
+  theme(
+    text = element_text(size = 12),
+    panel.border = element_rect(colour = 'grey80'), 
+    panel.grid.minor = element_blank()
+  )
+
+theme_set(my_theme)
+
+```
+
+
+### Making the plot with the new theme
+
+```{r}
+
+theme_set(my_theme)
+g 
+
+```
+
+### Changing the position of the legend
+
+```{r}
+
+theme_set(my_theme)
+g + theme(legend.position = 'bottom')
+
+```
+
+
+# Live coding, examples using the gapminder data set
+
+
+# "Live" Coding
+
+Resetting the plot theme
+
+```{r reset_theme, include=FALSE}
+theme_set(theme_gray())
+```
+
+## head(gapminder)
+
+```{r head-gapminder, echo=FALSE}
+head(gapminder)
+```
+
+## glimpse(gapminder)
+
+```{r summary-gapminder, echo=FALSE, comment=""}
+glimpse(gapminder)
+```
+
+## Let's start by plotting `lifeExp` vs `gdpPercap`
+
+
+```{r gapminder-le-gdp-1}
+ggplot(gapminder,
+  aes(x = gdpPercap,
+      y = lifeExp))
+```
+
+
+### Add points...
+
+```{r gapminder-le-gdp-2}
+ggplot(gapminder,
+  aes(x = gdpPercap,
+      y = lifeExp)) +
+  geom_point() #<<
+```
+
+
+### How can I tell countries apart?
+
+Color by continent
+
+```{r gapminder-le-gdp-3}
+ggplot(gapminder,
+  aes(x = gdpPercap,
+      y = lifeExp,
+      color = continent)) +  #<<
+  geom_point()
+```
+
+### GDP is squished together on the left, let's change the axes.
+
+
+```{r gapminder-le-gdp-4}
+ggplot(gapminder,
+  aes(x = gdpPercap,
+      y = lifeExp,
+      color = continent)) +
+  geom_point() +
+  scale_x_log10() #<<
+```
+
+
+### Still lots of overlap in the countries...
+
+
+```{r gapminder-le-gdp-5}
+ggplot(gapminder,
+  aes(x = gdpPercap,
+      y = lifeExp,
+      color = continent)) +
+  geom_point() +
+  scale_x_log10() +
+  facet_wrap(~ continent) + #<<
+  guides(color = FALSE)     #<<
+```
+
+No need for color legend thanks to facet titles
+
+
+### Lots of overplotting due to point size, let's make the points smaller
+
+
+```{r gapminder-le-gdp-6}
+ggplot(gapminder,
+  aes(x = gdpPercap,
+      y = lifeExp,
+      color = continent)) +
+  geom_point(size = 0.25) + #<<
+  scale_x_log10() +
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
+```
+
+
+Is there a trend?
+
+
+```{r gapminder-le-gdp-7}
+ggplot(gapminder,
+  aes(x = gdpPercap,
+      y = lifeExp,
+      color = continent)) +
+  geom_line() + #<<
+  #geom_point(size = 0.25) +
+  scale_x_log10() +
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
+```
+
+Okay, that line just connected all of the points sequentially...
+
+### Let's add the group as an aesthetic to `geom_line()`
+
+```{r gapminder-le-gdp-8}
+ggplot(gapminder,
+  aes(x = gdpPercap,
+      y = lifeExp,
+      color = continent)) +
+  geom_line(
+    aes(group = country) #<<
+    ) +
+  #geom_point(size = 0.25) +
+  scale_x_log10() +
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
+```
+
+### Let's put year on the x-axis to look at the time series.
+
+
+```{r gapminder-gdp-year-1}
+ggplot(gapminder,
+  aes(x = year, #<<
+      y = gdpPercap, #<<
+      color = continent)) +
+  geom_line(
+    aes(group = country)) +
+  #geom_point(size = 0.25) +
+  scale_y_log10() + #<<
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
+```
+
+
+### Can't see x-axis labels, let's change the x axis
+
+
+```{r gapminder-gdp-year-2}
+ggplot(gapminder,
+  aes(x = year,
+      y = gdpPercap,
+      color = continent)) +
+  geom_line(
+    aes(group = country)) +
+  #geom_point(size = 0.25) +
+  scale_y_log10() +
+  scale_x_continuous(breaks = #<<
+    seq(1950, 2000, 25) #<<
+  ) +                            #<<
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
+```
+
+
+### What about life expectancy?
+
+
+```{r gapminder-le-year-1}
+ggplot(gapminder, 
+  aes(x = year, 
+      y = lifeExp, #<<
+      color = continent)) +
+  geom_line(
+    aes(group = country)) +
+  #geom_point(size = 0.25) +
+  #scale_y_log10() + #<<
+  scale_x_continuous(breaks = 
+    seq(1950, 2000, 25)) +  
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
+```
+
+
+Okay, let's add a trend line
+
+### Adding a trendline with geom_smooth()
+
+```{r gapminder-le-year-2}
+ggplot(gapminder,
+  aes(x = year, 
+      y = lifeExp,
+      color = continent)) +
+  geom_line(
+    aes(group = country)) +
+  # geom_point(size = 0.25) +
+  geom_smooth() + #<<
+  scale_x_continuous(breaks = 
+    seq(1950, 2000, 25)) +  
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
+```
+
+
+### De-emphasize individual countries using alpha
+
+
+```{r gapminder-le-year-3}
+ggplot(gapminder,
+  aes(x = year, 
+      y = lifeExp,
+      color = continent)) +
+  geom_line(
+    aes(group = country),
+    alpha = 0.2) + #<<
+  #geom_point(size = 0.25) +
+  geom_smooth() + 
+  scale_x_continuous(breaks = 
+    seq(1950, 2000, 25)) +  
+  facet_wrap(~ continent) +
+  guides(color = FALSE)
+```
+
+
+### Let's compare continents
+
+```{r gapminder-le-year-5}
+ggplot(gapminder,
+  aes(x = year, 
+      y = lifeExp,
+      color = continent)) +
+  geom_line(
+    aes(group = country),
+    alpha = 0.2) +
+  geom_smooth() + 
+  # scale_x_continuous(
+  #   breaks = 
+  #     seq(1950, 2000, 25))+
+  # facet_wrap(~ continent) + #<<
+  guides(color = FALSE)
+```
+]
+
+Wait, what color is each continent?
+
+### Adding a legend
+
+```{r gapminder-le-year-6}
+ggplot(gapminder, 
+  aes(x = year, 
+      y = lifeExp,
+      color = continent)) +
+  geom_line(
+    aes(group = country),
+    alpha = 0.2) +
+  geom_smooth() + 
+  theme( #<<
+  legend.position = "bottom") #<<
+```
+
+
+### Let's try adding the minimal theme
+
+
+```{r gapminder-le-year-7}
+ggplot(gapminder, 
+  aes(x = year, 
+      y = lifeExp,
+      color = continent)) +
+  geom_line(
+    aes(group = country),
+    alpha = 0.2) +
+  geom_smooth() + 
+  theme_minimal() + #<<
+  theme(
+  legend.position = "bottom")
+```
+
+Fonts are kind of big
+
+### Can we make the font smaller?
+
+```{r gapminder-le-year-8}
+ggplot(gapminder, 
+  aes(x = year, 
+      y = lifeExp,
+      color = continent)) +
+  geom_line(
+    aes(group = country),
+    alpha = 0.2) +
+  geom_smooth() + 
+  theme_minimal( 
+    base_size = 10) + #<<
+  theme(
+  legend.position = "bottom")
+```
+
+Great, let's switch gears
+
+### Let's explore a few countries in more detail
+
+```{r gapminder-americas-data}
+americas <- 
+  gapminder %>% 
+  filter(
+    country %in% c(
+      "Brazil",
+      "Canada",
+      "Mexico",
+      "Ecuador"
+    )
+  )
+```
+
+### Let's look at four countries in more detail. How do their populations compare to each other?
+
+
+```{r echo=FALSE}
+americas %>%
+  head(10)
+```
+
+### Making a bar chart
+
+```{r gapminder-americas-1}
+ggplot(americas,
+  aes(x = year,
+      y = pop) 
+  ) +
+  geom_col()
+```
+
+
+
+Yeah, but how many people are in each country?
+
+### Color the bars by country
+
+```{r gapminder-americas-2}
+ggplot(americas,
+  aes(x = year,
+      y = pop,
+      fill = country) #<<
+  ) +
+  geom_col()
+```
+
+Can we reorder by population size?
+
+### Using fct_reorder() from the forcats package
+
+Excellent tutorial by Jenny Bryan ["Be the Boss of your factors"](https://stat545.com/factors-boss.html)
+
+```{r gapminder-americas-2-1}
+
+ggplot(americas,
+  aes(x = year,
+      y = pop,
+      fill = fct_reorder( #<< 
+        country, pop) #<< 
+      )
+  ) +
+  geom_col()
+```
+
+Can we change the labels?
+
+
+### Add a label for country.
+
+```{r gapminder-americas-2-2}
+
+ggplot(americas,
+  aes(x = year,
+      y = pop,
+      fill = fct_reorder( #<< 
+        country, pop) #<< 
+      )
+  ) +
+  geom_col() +
+  labs(fill = "Country") #<< 
+```
+
+Bars are "stacked", can we separate?
+
+### Changing the position using "dodge"
+
+```{r gapminder-americas-3}
+ggplot(americas,
+  aes(x = year,
+      y = pop,
+      fill = fct_reorder(  
+        country, pop) 
+      )
+  ) +
+  geom_col(
+    position = "dodge") + #<<
+  labs(fill = "Country") 
+```
+
+`position = "dodge"` places objects *next to each other* instead of overlapping
+
+What is scientific notation anyway?
+
+
+### Dividing population to be smaller
+
+```{r gapminder-americas-4}
+ggplot(americas,
+  aes(x = year,
+      y = pop / 10^6, #<<
+      fill = fct_reorder(  
+        country, pop)
+      ) 
+  ) +
+  geom_col(
+    position = "dodge" 
+  ) +
+  labs(fill = "Country", 
+       y = "Population (millions)"#<<
+       )  
+```
+
+ggplot aesthetics can take expressions! Still, it might be easier to see countries individually
+
+
+
+### Using facet_wrap() to create individual plots
+
+
+```{r gapminder-americas-5}
+ggplot(americas,
+  aes(x = year,
+      y = pop / 10^6, #<<
+      fill = country) #<<
+  ) +
+  geom_col(
+    position = "dodge" 
+  ) +
+  labs(y = "Population (millions)") + 
+  facet_wrap(~ country) + #<<
+  guides(fill = FALSE) #<<
+```
+
+Let range of y-axis vary in each plot
+
+
+### Changing the scales
+
+```{r gapminder-americas-6}
+ggplot(americas,
+  aes(x = year,
+      y = pop / 10^6, 
+      fill = country)
+  ) +
+  geom_col(
+    position = "dodge" 
+  ) +
+  labs(y = "Population (millions)") + 
+  facet_wrap(~ country,
+    scales = "free_y") + #<<
+  guides(fill = FALSE) 
+```
+
+What about life expectancy again?
+
+
+### Making a barchart with life expectancy
+
+```{r gapminder-americas-7}
+ggplot(americas,
+  aes(x = year,
+      y = lifeExp, #<<
+      fill = country)
+  ) +
+  geom_col(
+    position = "dodge" 
+  ) +
+  facet_wrap(~ country,
+             scales = "free_y") +
+  guides(fill = FALSE) 
+```
+
+This should really be a line instead of a bar
+
+### Changing the plot to a line plot
+
+```{r gapminder-americas-8}
+ggplot(americas,
+  aes(x = year,
+      y = lifeExp, 
+      fill = country)
+  ) +
+  geom_line() + #<<
+  facet_wrap(~ country,
+             scales = "free_y") +
+  guides(fill = FALSE)
+```
+
+
+### Coloring each line by country. No need to show in the legend as each country has it's own plot.
+
+```{r gapminder-americas-9}
+ggplot(americas) +
+  aes(
+    x = year,
+    y = lifeExp,
+    color = country #<<
+  ) +
+  geom_line() +
+  facet_wrap(~ country,
+    scales = "free_y") +
+  guides(color = FALSE) #<<
+```
+
+Altogether now!
+
+### Putting all the plots back together again
+
+```{r gapminder-americas-10}
+ggplot(americas) +
+  aes(
+    x = year,
+    y = lifeExp,
+    color = country
+  ) +
+  geom_line()
+```
+
+Let's update the labels
+
+### Adding labels to the plots
+
+```{r gapminder-americas-11}
+ggplot(americas,
+  aes(x = year,
+      y = lifeExp,
+      color = country)
+  ) +
+  geom_line() +
+  labs(x = "Year",
+       y = "Life expectancy (years)",
+       color = "Country",
+       title = "Life expectancy over time")
+```
+
+Okay, changing gears again. What is range of life expectancy in Americas?
+
+
+### Combining dplyr and ggplot code!
+
+```{r gapminder-all-americas-1}
+gapminder %>% 
+  filter(
+    continent == "Americas"
+  ) %>% #<<
+  ggplot( #<<
+    aes(x = year,
+        y = lifeExp) 
+  )
+```
+
+You can pipe into `ggplot()`!  
+Just watch for `%>%` changing to `+`
+
+
+## Creating a box plot
+
+Boxplot for life expectancy range
+
+```{r gapminder-all-americas-2}
+gapminder %>% 
+  filter(
+    continent == "Americas"
+  ) %>% 
+  ggplot( 
+    aes(x = year, 
+        y = lifeExp) 
+  ) + 
+  geom_boxplot() #<<
+```
+
+
+Why not boxplots by year?
+
+### Creating the box plots by year
+
+```{r gapminder-all-americas-3}
+gapminder %>% 
+  filter(
+    continent == "Americas"
+  ) %>%
+  mutate( #<<
+    year = factor(year) #<<
+  ) %>%  #<<
+  ggplot( 
+    aes(x = year, 
+        y = lifeExp) 
+  ) + 
+  geom_boxplot()
+```
+
+
+### Changing the coordinates using coord_flip()
+
+```{r gapminder-all-americas-4}
+gapminder %>% 
+  filter(
+    continent == "Americas"
+  ) %>%
+  mutate(
+    year = factor(year) 
+  ) %>%  
+  ggplot( 
+    aes(x = year, 
+        y = lifeExp) 
+  ) + 
+  geom_boxplot() +
+  coord_flip() #<<
+```

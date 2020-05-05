@@ -17,7 +17,7 @@ class: center, middle, inverse, title-slide
 ## Introduction to ggplot2 and leaflet
 ### Dr. Laurie Baker
 ### Data Science Campus
-### 2020/04/09 (updated: 2020-04-13)
+### 2020/04/09 (updated: 2020-04-17)
 
 ---
 
@@ -31,8 +31,14 @@ class: inverse center middle text-white
 
 ---
 layout: true
-# Acknowledgements
+# What we'll cover today.
 ---
+
+- Brief intro to the theory behind `ggplot2` and the "grammar of graphics".
+
+- Building a plot using `ggplot`.
+
+- Building interactives maps using leaflet. 
 
 - Slides and code adapted from Garrick Aden-Buie "Gentle ggplot2 tutorial" on GitHub: &lt;http://github.com/gadenbuie/gentle-ggplot2&gt;
 
@@ -43,8 +49,62 @@ layout: true
 ---
 
 .left-column[
-![](images/grammar_graphics_book.jfif)
-__Grammar of Graphics__
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; country &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; year &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; pop &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chile &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.60 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chile &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.50 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chile &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.30 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Rwanda &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.21 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Rwanda &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.85 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Rwanda &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.86 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Syria &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.10 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Syria &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.20 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Syria &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.30 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 ]
 
 .right-column[.font150[
@@ -61,18 +121,68 @@ __Grammar of Graphics__
 
 ]]
 
-
-
----
-
 ---
 layout: true
 # How would you draw a bar graph by hand?
 ---
 
 .left-column[
-![](images/grammar_graphics_book.jfif)
-__Grammar of Graphics__
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; country &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; year &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; pop &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chile &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.60 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chile &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.50 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chile &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.30 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Rwanda &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.21 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Rwanda &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.85 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Rwanda &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.86 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Syria &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.10 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Syria &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.20 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Syria &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.30 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 ]
 
 .right-column[.font150[
@@ -90,9 +200,85 @@ __Grammar of Graphics__
 ]]
 
 
-
+---
+layout: true
+# How would you draw a graph?
 ---
 
+.left-column[
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; country &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; year &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; pop &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chile &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.60 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chile &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.50 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chile &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.30 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Rwanda &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.21 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Rwanda &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.85 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Rwanda &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.86 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Syria &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.10 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Syria &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.20 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Syria &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.30 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+.right-column[.font150[
+
+1. What decisions did you make?
+
+2. How did the data inform them?
+
+3. Did you look at the values to decide the axes and tick marks?
+
+4. How did you decide the labels?
+
+]]
+
+
+
+---
 
 ---
 layout: true
@@ -104,15 +290,22 @@ layout: true
 __Grammar of Graphics__
 ]
 
-.right-column[.font150[
+.right-column[
 
-*  Breaks down graphics into its constituent parts. 
-
-*  Focus on the relationship between the **variables** and the *visual properties* of the graph (e.g.*colour* = **country**).
+* Computers also follow steps.
 
 * The **grammar of graphics =** rules/steps for plotting.
 
-]]
+* First published in 1999.
+
+* Breaks down graphics into its constituent parts. 
+
+*  Focus on the relationship between the **variables** and the *visual properties* of the graph (e.g. *colour* = **country**).
+
+* Foundation for **ggplot2**, **tableau**, **vegalite** etc. 
+
+
+]
 
 ---
 layout: true
@@ -2543,21 +2736,6 @@ layout: true
 --
 .font120[
 - **.hlb[Coord]inates** organize location of geometric objects, i.e. define the physical mapping of the aesthetics.
-]
-
---
-.font120[
-- **.hlb[Scale]s** define the range of values for aesthetics
-]
-
---
-.font120[
-- **.hlb[Facet]s** define the number of panels and how to split data among them (e.g. by country).
-]
-
---
-.font120[
-- **.hlb[Theme]s** control every part of the graphic that is not linked to the data (i.e. font, visual appearance).
 ]
 
 ---

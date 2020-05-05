@@ -1,0 +1,75 @@
+first-map1a	geom_sf	ggplot	nc
+unnamed-chunk-1	library
+nc-data	%>%	rename	select	st_read	system.file
+nc-data-output	st_read	str	system.file
+first-plot1b	aes	gapminder	ggplot	library	pop	year
+unnamed-chunk-2	element_text	g	theme	theme_bw
+first-plot1c	aes	geom_point	ggplot	pop	tidy_pop	year
+first-plot1	aes	country	geom_point	ggplot	pop	tidy_pop	year
+first-plot2-fake	aes	country	geom_line	geom_point	ggplot	pop	tidy_pop	year
+first-plot2	aes	country	geom_line	geom_point	ggplot	pop	tidy_pop	year
+first-plot3	aes	country	geom_line	geom_point	ggplot	pop	tidy_pop	year
+first-plot-geom-1	aes	country	geom_line	geom_point	ggplot	pop	tidy_pop	year
+geom_facet_setup	aes	continent	country	gapminder	geom_line	geom_point	ggplot	left_join	pop	select	tidy_pop	year
+geom_facet	~	facet_wrap	g
+geom_grid	~	facet_grid	g
+geom_label_setup	aes	continent	country	gapminder	geom_line	geom_point	ggplot	left_join	pop	select	tidy_pop	year
+labs-ex	labs
+geom_coord_setup	aes	continent	country	gapminder	geom_line	geom_point	ggplot	labs	left_join	pop	select	tidy_pop	year
+coord-ex	coord_flip	g
+geom_scale_setup	aes	continent	country	gapminder	geom_line	geom_point	ggplot	labs	left_join	pop	select	tidy_pop	year
+scale_ex1	
+scale_ex2	g	scale_y_log10
+scale_ex4	c	g	scale_x_discrete
+theme_ex1	g	theme_bw
+unnamed-chunk-3	g	my_theme	theme_set
+theme_set	element_blank	element_rect	element_text	theme	theme_bw	theme_set
+unnamed-chunk-4	g	my_theme	theme	theme_set
+unnamed-chunk-5	library
+ggsave	ggsave	my_plot
+unnamed-chunk-6	library
+reset_theme	theme_gray	theme_set
+head-gapminder	gapminder	head
+summary-gapminder	gapminder	glimpse
+gapminder-le-gdp-1	aes	gapminder	gdpPercap	ggplot	lifeExp
+gapminder-le-gdp-2	aes	gapminder	gdpPercap	geom_point	ggplot	lifeExp
+gapminder-le-gdp-3	aes	continent	gapminder	gdpPercap	geom_point	ggplot	lifeExp
+gapminder-le-gdp-4	aes	continent	gapminder	gdpPercap	geom_point	ggplot	lifeExp	scale_x_log10
+gapminder-le-gdp-5	~	aes	continent	facet_wrap	gapminder	gdpPercap	geom_point	ggplot	guides	lifeExp	scale_x_log10
+gapminder-le-gdp-6	~	aes	continent	facet_wrap	gapminder	gdpPercap	geom_point	ggplot	guides	lifeExp	scale_x_log10
+gapminder-le-gdp-7	~	aes	continent	facet_wrap	gapminder	gdpPercap	geom_line	ggplot	guides	lifeExp	scale_x_log10
+gapminder-le-gdp-8	~	aes	continent	country	facet_wrap	gapminder	gdpPercap	geom_line	ggplot	guides	lifeExp	scale_x_log10
+gapminder-gdp-year-1	~	aes	continent	country	facet_wrap	gapminder	gdpPercap	geom_line	ggplot	guides	scale_y_log10	year
+gapminder-gdp-year-2	~	aes	continent	country	facet_wrap	gapminder	gdpPercap	geom_line	ggplot	guides	scale_x_continuous	scale_y_log10	seq	year
+gapminder-le-year-1	~	aes	continent	country	facet_wrap	gapminder	geom_line	ggplot	guides	lifeExp	scale_x_continuous	seq	year
+gapminder-le-year-2	~	aes	continent	country	facet_wrap	gapminder	geom_line	geom_smooth	ggplot	guides	lifeExp	scale_x_continuous	seq	year
+gapminder-le-year-3	~	aes	continent	country	facet_wrap	gapminder	geom_line	geom_smooth	ggplot	guides	lifeExp	scale_x_continuous	seq	year
+gapminder-le-year-5	aes	continent	country	gapminder	geom_line	geom_smooth	ggplot	guides	lifeExp	year
+gapminder-le-year-6	aes	continent	country	gapminder	geom_line	geom_smooth	ggplot	lifeExp	theme	year
+gapminder-le-year-7	aes	continent	country	gapminder	geom_line	geom_smooth	ggplot	lifeExp	theme	theme_minimal	year
+gapminder-le-year-8	aes	continent	country	gapminder	geom_line	geom_smooth	ggplot	lifeExp	theme	theme_minimal	year
+gapminder-americas-data	%>%	c	country	filter	gapminder
+unnamed-chunk-7	%>%	americas	head
+gapminder-americas-1	aes	americas	geom_col	ggplot	pop	year
+gapminder-americas-2	aes	americas	country	geom_col	ggplot	pop	year
+gapminder-americas-2-1	aes	americas	country	fct_reorder	geom_col	ggplot	pop	year
+gapminder-americas-2-2	aes	americas	country	fct_reorder	geom_col	ggplot	labs	pop	year
+gapminder-americas-3	aes	americas	country	fct_reorder	geom_col	ggplot	labs	pop	year
+gapminder-americas-4	^	aes	americas	country	fct_reorder	geom_col	ggplot	labs	pop	year
+gapminder-americas-5	^	~	aes	americas	country	facet_wrap	geom_col	ggplot	guides	labs	pop	year
+gapminder-americas-6	^	~	aes	americas	country	facet_wrap	geom_col	ggplot	guides	labs	pop	year
+gapminder-americas-7	~	aes	americas	country	facet_wrap	geom_col	ggplot	guides	lifeExp	year
+gapminder-americas-8	~	aes	americas	country	facet_wrap	geom_line	ggplot	guides	lifeExp	year
+gapminder-americas-9	~	aes	americas	country	facet_wrap	geom_line	ggplot	guides	lifeExp	year
+gapminder-americas-10	aes	americas	country	geom_line	ggplot	lifeExp	year
+gapminder-americas-11	aes	americas	country	geom_line	ggplot	labs	lifeExp	year
+gapminder-all-americas-1	%>%	==	aes	continent	filter	gapminder	ggplot	lifeExp	year
+gapminder-all-americas-2	%>%	==	aes	continent	filter	gapminder	geom_boxplot	ggplot	lifeExp	year
+gapminder-all-americas-3	%>%	==	aes	continent	factor	filter	gapminder	geom_boxplot	ggplot	lifeExp	mutate	year
+gapminder-all-americas-4	%>%	==	aes	continent	coord_flip	factor	filter	gapminder	geom_boxplot	ggplot	lifeExp	mutate	year
+nc-str	nc	str
+nc-view	head	nc
+first-map1b	aes	births	geom_sf	ggplot	nc
+first-map1c	aes	geom_sf	ggplot	labs	nc
+first-map1d	aes	geom_sf	ggplot	labs	nc
+first-map1e	aes	geom_sf	ggplot	labs	nc	scale_y_continuous

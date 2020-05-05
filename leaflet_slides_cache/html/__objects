@@ -1,0 +1,75 @@
+first-map1a	
+unnamed-chunk-1	.Random.seed
+nc-data	nc
+nc-data-output	nc
+first-plot1b	tidy_pop
+unnamed-chunk-2	
+first-plot1c	
+first-plot1	
+first-plot2-fake	
+first-plot2	
+first-plot3	
+first-plot-geom-1	g
+geom_facet_setup	g	tidy_pop2
+geom_facet	
+geom_grid	
+geom_label_setup	g	tidy_pop2
+labs-ex	g
+geom_coord_setup	g	tidy_pop2
+coord-ex	
+geom_scale_setup	g	tidy_pop2
+scale_ex1	
+scale_ex2	
+scale_ex4	
+theme_ex1	
+unnamed-chunk-3	
+theme_set	my_theme
+unnamed-chunk-4	
+unnamed-chunk-5	
+ggsave	
+unnamed-chunk-6	
+reset_theme	
+head-gapminder	
+summary-gapminder	
+gapminder-le-gdp-1	
+gapminder-le-gdp-2	
+gapminder-le-gdp-3	
+gapminder-le-gdp-4	
+gapminder-le-gdp-5	
+gapminder-le-gdp-6	
+gapminder-le-gdp-7	
+gapminder-le-gdp-8	
+gapminder-gdp-year-1	
+gapminder-gdp-year-2	
+gapminder-le-year-1	
+gapminder-le-year-2	
+gapminder-le-year-3	
+gapminder-le-year-5	
+gapminder-le-year-6	
+gapminder-le-year-7	
+gapminder-le-year-8	
+gapminder-americas-data	americas
+unnamed-chunk-7	
+gapminder-americas-1	
+gapminder-americas-2	
+gapminder-americas-2-1	
+gapminder-americas-2-2	
+gapminder-americas-3	
+gapminder-americas-4	
+gapminder-americas-5	
+gapminder-americas-6	
+gapminder-americas-7	
+gapminder-americas-8	
+gapminder-americas-9	
+gapminder-americas-10	
+gapminder-americas-11	
+gapminder-all-americas-1	
+gapminder-all-americas-2	
+gapminder-all-americas-3	
+gapminder-all-americas-4	
+nc-str	
+nc-view	
+first-map1b	
+first-map1c	
+first-map1d	
+first-map1e	

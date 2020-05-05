@@ -1,0 +1,967 @@
+---
+title: "Data Visualisation in R"
+subtitle: "Introduction to ggplot2 and leaflet"
+author: "Dr. Laurie Baker"
+institute: "Data Science Campus"
+date: "2020/04/09 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "metropolis", "metropolis-fonts", "gentle-ggplot2.css"]
+    df_print: kable
+    nature:
+      ratio: 16:9
+      highlightStyle: "foundation"
+      highlightLines: true
+      countIncrementalSlides: false
+      slideNumberFormat: "%current%"
+editor_options: 
+  chunk_output_type: console
+---
+
+layout: false
+class: inverse center middle text-white
+
+.font200[Introduction to leaflet]
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.width=4.25, fig.height=3.5, fig.retina=3,
+                      out.width = "100%",
+                      message=FALSE, warning=FALSE, cache = TRUE, 
+                      autodep = TRUE, hiline=TRUE)
+
+knitr::opts_hooks$set(fig.callout = function(options) {
+  if (options$fig.callout) {
+    options$echo <- FALSE
+    options$out.height <- "99%"
+    options$fig.width <- 16
+    options$fig.height <- 8
+  }
+  options
+})
+
+options(
+  htmltools.dir.version = FALSE, 
+  width = 90,
+  max.print = 9999,
+  knitr.table.format = "html"
+)
+
+as_table <- function(...) knitr::kable(..., format='html', digits = 3)
+```
+
+---
+layout: true
+# What we'll cover today.
+---
+
+- Quick recap on building a plot using `ggplot2`
+
+--
+
+- Intro to the `sp` and `sf` packages
+
+--
+
+- Building a map using `ggplot2`
+
+--
+
+- Coordinate Systems and geospatial objects in R
+
+--
+
+- Building interactives maps using `leaflet`. 
+
+---
+layout: true
+# Packages for today's adventure
+---
+
+```{r}
+library(tidyverse)
+
+library(leaflet)
+
+library(sf)
+
+library(sp)
+
+```
+
+
+
+---
+
+layout: false
+class: inverse center middle text-white
+
+.font200[Recap on building a plot using ggplot2]
+
+---
+layout: true
+# ggplot2 plots are built in layers
+---
+
+.font120[
+- **Data** must be in a "tidy" format.
+]
+
+--
+.font120[
+- **.hlb[Aes]thetic mappings** link variables in the data to graphical properties in the **.hlb[geom]**etric objects.
+
+]
+
+--
+.font120[
+- **.hlb[Geom]etric objects** dictate how the **.hlb[aes]thetics** are interpreted as a graphical representation (points, lines, polygons, etc.)
+]
+
+--
+.font120[
+- **.hlb[Stat]istics** transform the input variables to displayed values. E.g. calculate the summary statistics for a boxplot (quantiles).
+]
+
+--
+.font120[
+- **.hlb[Coord]inates** organize location of geometric objects, i.e. define the physical mapping of the aesthetics.
+]
+
+---
+layout: true
+# ggplot2 plots are built in layers
+---
+
+.font120[
+- **.hlb[Scale]s** define the range of values for aesthetics (e.g. categories -> colours).
+]
+
+--
+.font120[
+- **.hlb[Facet]s** define the number of panels and how to split data among them (e.g. by country).
+]
+
+--
+.font120[
+- **.hlb[Theme]s** control every part of the graphic that is not linked to the data (i.e. font, visual appearance).
+]
+
+
+
+---
+layout: false
+
+# Making a map
+
+* `sf` is a package for geospatial data manipulation and analysis.
+
+* It works with features:
+  * **points** (POINT, MULTIPOINT)
+  * **lines** (LINESTRING, MULTILINESTRING)
+  * **polygons** (POLYGON, MULTIPOLYGON)
+
+
+
+---
+layout: false
+class: inverse center middle text-white
+
+.font200[Plotting a map with ggplot2]
+
+---
+layout: true
+# Birth Rates in North Carolina
+---
+
+* We will use the North Carolina (nc) data from the sf package.
+--
+* Number of births for counties in North Carolina in 1974 
+
+---
+
+---
+layout: true
+# Load in the data for North Carolina
+
+* Let's load in the data for North Carolina.
+
+* The function `st_read`, **st** = spatial type. 
+
+
+```{r nc-data, eval = TRUE, messages = FALSE}
+
+nc <- st_read(system.file("shape/nc.shp", package="sf"))
+
+nc <- nc %>%
+        select("NAME", "BIR74", "geometry") %>%
+        rename("county" = "NAME", "births" = "BIR74")
+              
+```
+--
+
+*  Rename our columns to country, births, and geometry.
+
+```{r nc-data2, eval = TRUE, messages = FALSE}
+
+nc <- nc %>%
+        select("NAME", "BIR74", "geometry") %>%
+        rename("county" = "NAME", "births" = "BIR74")
+              
+```
+
+---
+
+
+---
+layout: true
+# Let's View() the data
+
+* Let's load in the data for North Carolina (nc)
+
+```{r nc-view, eval = TRUE}
+
+head(nc)
+
+
+```
+
+---
+layout: true
+# And inspect the structure
+
+
+```{r nc-str, eval = TRUE}
+
+str(nc)
+
+```
+
+
+---
+layout: true
+# Our first map
+---
+
+.left-code[
+
+* Data
+* Geom
+
+```{r first-map1a, eval=FALSE}
+ggplot(nc) +
+  geom_sf() #<<
+```
+]
+
+.right-plot[
+```{r first-map1a, ref.label='first-map1a', echo=FALSE, out.width="100%"}
+```
+]
+
+---
+
+.left-code[
+
+```{r first-map1b, eval=FALSE}
+ggplot(nc) +
+  geom_sf(aes(fill = births)) #<<
+```
+]
+
+.right-plot[
+```{r first-map1b, ref.label='first-map1b', echo=FALSE, out.width="100%"}
+```
+]
+
+---
+
+.left-code[
+
+```{r first-map1c, eval=FALSE}
+ggplot(nc) +
+  geom_sf(aes(fill = "births")) +
+  labs(title = "Births per county") #<<
+```
+]
+
+.right-plot[
+```{r first-map1c, ref.label='first-map1c', echo=FALSE, out.width="100%"}
+```
+]
+
+---
+
+.left-code[
+
+```{r first-map1d, eval=FALSE}
+ggplot(nc) +
+  geom_sf(aes(fill = "births")) +
+  labs(title = "Births per county",
+       x = "Longitude", #<<
+       y = "Latitude") #<<
+```
+]
+
+.right-plot[
+```{r first-map1d, ref.label='first-map1d', echo=FALSE, out.width="100%"}
+```
+]
+
+---
+
+.left-code[
+
+```{r first-map1e, eval=FALSE}
+ggplot(nc) +
+  geom_sf(aes(fill = "births")) +
+  labs(title = "Births per county",
+       x = "Longitude",
+       y = "Latitude") +
+  scale_y_continuous(breaks = 34:36) #<<
+```
+]
+
+.right-plot[
+```{r first-map1e, ref.label='first-map1e', echo=FALSE, out.width="100%"}
+```
+]
+
+---
+layout: true
+# Coordinate reference system
+---
+
+* Every location on earth is specified by a longitude and latitude. 
+
+--
+
+* The Coordinate Reference system used will determine how the data is shown. 
+---
+
+```{r first-plot1b, eval=FALSE}
+library(gapminder)
+tidy_pop <- gapminder
+
+ggplot(tidy_pop,
+  aes(x = year, #<<
+      y = pop) #<<
+  )
+```
+]
+
+.right-plot[
+```{r first-plot1b, ref.label='first-plot1b', echo=FALSE, out.width="100%"}
+```
+]
+
+---
+
+.left-code[
+```{r first-plot1c, eval=FALSE}
+ggplot(tidy_pop,
+  aes(x = year,
+      y = pop)
+  ) +
+  geom_point() #<<
+```
+]
+
+.right-plot[
+```{r first-plot1c, ref.label='first-plot1c', echo=FALSE, out.width="100%"}
+```
+]
+
+---
+
+.left-code[
+```{r first-plot1, eval=FALSE}
+ggplot(tidy_pop,
+  aes(x = year,
+      y = pop,
+      color = country) #<<
+  ) + 
+  geom_point()
+```
+]
+
+.right-plot[
+```{r first-plot1, ref.label='first-plot1', echo=FALSE, out.width="100%"}
+```
+]
+
+---
+
+.left-code[
+```{r first-plot2-fake, eval=FALSE}
+ggplot(tidy_pop,
+  aes(x = year,
+      y = pop,
+      color = country) 
+  ) +
+  geom_point() +
+  geom_line() #<<
+```
+
+.font80[
+```r
+geom_path: Each group consists
+of only one observation. 
+Do you need to adjust the 
+group aesthetic?
+```
+]
+]
+
+.right-plot[
+```{r first-plot2-fake, ref.label='first-plot2-fake', echo=FALSE, out.width="100%"}
+```
+]
+---
+
+.left-code[
+```{r first-plot2, eval=FALSE}
+ggplot(tidy_pop,
+  aes(x = year,
+      y = pop,
+      color = country) 
+  ) +
+  geom_point() +
+  geom_line(
+    aes(group = country)) #<<
+```
+]
+
+.right-plot[
+```{r first-plot2, ref.label='first-plot2', echo=FALSE, out.width="100%"}
+```
+]
+
+---
+
+
+.left-code[
+```{r first-plot3, eval=FALSE}
+g <- ggplot(tidy_pop, #<<
+  aes(x = year,
+      y = pop,
+      color = country) 
+  ) +
+  geom_point() +
+  geom_line(
+    aes(group = country))
+
+g #<<
+```
+]
+
+.right-plot[
+```{r first-plot3, ref.label='first-plot2', echo=FALSE, out.width="100%"}
+```
+]
+
+---
+layout: true
+# gg is for Grammar of Graphics
+
+.left-column[
+### Data
+### Aesthetics
+### Geoms
+
+```r
++ geom_*()
+```
+]
+---
+
+.right-column[
+```r
+geom_*(mapping = aes(), data, stat, position)
+```
+
+- `data` Geoms can have their own data
+    - Has to map onto global coordinates
+
+- `aes` Geoms can have their own aesthetics
+    - Inherits global aesthetics
+    - Have geom-specific aesthetics
+        - `geom_point` needs `x` and `y`, optional `shape`, `color`, `size`, etc.
+        - `geom_ribbon` requires `x`, `ymin` and `ymax`, optional `fill`
+    - Use `?` to find out the aesthetics required and the ones you can change:
+    `?geom_ribbon`
+]
+
+---
+
+.right-column[
+```r
+geom_*(mapping, data, stat, position)
+```
+
+- `stat` Some geoms apply further transformations to the data
+    - All respect `stat = 'identity'`
+    - Ex: `geom_histogram` uses `stat_bin()` to group observations
+    
+- `position` Some adjust location of objects
+    - `'dodge'`, `'stack'`, `'jitter'`
+]
+
+---
+layout: true
+# Our first plot!
+---
+
+.left-code[
+```{r first-plot-geom-1, eval=FALSE}
+g <- ggplot() +
+  geom_point(
+    data = tidy_pop, #<<
+    aes(x = year, #<<
+      y = pop, #<<
+      color = country) #<<
+  ) +
+  geom_line(
+    data = tidy_pop, #<<
+    aes(x = year, #<<
+      y = pop, #<<
+      color = country, #<<
+      group = country) #<<
+    )
+
+g
+```
+]
+
+.right-plot[
+```{r first-plot-geom-1, ref.label='first-plot-geom-1', echo=FALSE, out.width="100%"}
+```
+]
+
+---
+layout: true
+# gg is for Grammar of Graphics
+
+.left-column[
+### Data
+### Aesthetics
+### Geoms
+
+```r
++ geom_*()
+```
+]
+---
+
+.right-column[
+```r
+geom_*(mapping = aes(), data, stat, position)
+```
+
+- `data` Geoms can have their own data
+    - Has to map onto global coordinates
+
+.font150[What would the advantage be for a geom to have their own data?]
+
+]
+
+---
+layout: true
+# gg is for Grammar of Graphics
+
+.left-column[
+### Data
+### Aesthetics
+### Geoms
+### Facet
+
+```r
++facet_wrap() 
+
++facet_grid()
+```
+]
+---
+
+```{r geom_facet_setup, include=FALSE, eval = TRUE}
+tidy_pop2 <- left_join(tidy_pop, select(gapminder, country, continent))
+
+g <- ggplot(tidy_pop2) +
+  aes(x = year,
+      y = pop,
+      color = country) +
+  geom_point() +
+  geom_line(aes(group = country))
+```
+
+.right-plot[
+```{r geom_facet, eval = TRUE, echo=TRUE, out.width="90%", fig.width=6}
+g + facet_wrap(~ country)
+```
+]
+
+---
+
+.right-column[
+```{r geom_grid, eval = TRUE, echo=TRUE, out.width="90%", fig.width=6}
+g + facet_grid(continent ~ country)
+```
+]
+
+---
+layout: true
+# gg is for Grammar of Graphics
+
+.left-column[
+### Data
+### Aesthetics
+### Geoms
+### Facet
+### Labels
+
+```r
++ labs()
+```
+]
+---
+
+```{r geom_label_setup, include=FALSE, eval = TRUE}
+tidy_pop2 <- left_join(tidy_pop, select(gapminder, country, continent))
+
+g <- ggplot(tidy_pop2) +
+  aes(x = year,
+      y = pop,
+      color = country) +
+  geom_point() +
+  geom_line(aes(group = country))
+```
+
+
+.right-column[
+```{r labs-ex, eval = TRUE, echo=TRUE, out.width="90%", fig.width=6}
+(g <- g + labs(x = "Year", y = "Population (millions)"))
+```
+]
+
+---
+layout: true
+# gg is for Grammar of Graphics
+
+.left-column[
+### Data
+### Aesthetics
+### Geoms
+### Facet
+### Labels
+### Coords
+
+```r
++ coord_*()
+```
+]
+---
+
+```{r geom_coord_setup, include=FALSE, eval = TRUE}
+tidy_pop2 <- left_join(tidy_pop, select(gapminder, country, continent))
+
+g <- ggplot(tidy_pop2) +
+  aes(x = year,
+      y = pop,
+      color = country) +
+  geom_point() +
+  geom_line(aes(group = country))
+
+g <- g + labs(x = "Year", y = "Population (millions)")
+```
+
+
+.right-column[
+```{r coord-ex, eval = TRUE, echo=TRUE, out.width="90%", fig.width=6}
+g + coord_flip()
+```
+]
+
+---
+layout: true
+# gg is for Grammar of Graphics
+
+.left-column[
+### Data
+### Aesthetics
+### Geoms
+### Facet
+### Labels
+### Coords
+### Scales
+
+```r
++ scale_*_*()
+```
+]
+---
+
+.right-column[ 
+`scale` + `_` + `<aes>` + `_` + `<type>` + `()`
+
+`<aes>` = parameter to adjust; `<type>` = Parameter Type
+]
+--
+
+.right-column[
+- I want to use a different color palette<br>`scale_fill_discrete()`<br>`scale_color_continuous()`
+]
+
+--
+
+.right-column[
+- I want to rescale y-axis as log<br>`scale_y_log10()`
+]
+
+--
+
+.right-column[
+- I want to change my discrete x-axis<br>`scale_x_discrete()`
+]
+
+
+
+---
+
+```{r geom_scale_setup, include=FALSE, eval = TRUE}
+tidy_pop2 <- left_join(tidy_pop, select(gapminder, country, continent))
+
+g <- ggplot(tidy_pop2) +
+  aes(x = year,
+      y = pop,
+      color = country) +
+  geom_point() +
+  geom_line(aes(group = country))
+
+g <- g + labs(x = "Year", y = "Population (millions)")
+```
+
+.right-column[
+```{r scale_ex1, eval = TRUE, out.width="90%", fig.width=6}
+#g + scale_color_manual(values = c("peru", "pink", "plum"))
+```
+]
+
+---
+
+.right-column[
+```{r scale_ex2, eval = TRUE, out.width="90%", fig.width=6}
+g + scale_y_log10()
+```
+]
+
+---
+
+.right-column[
+```{r scale_ex4, eval = TRUE, out.width="90%", fig.width=6}
+g + scale_x_discrete(labels = c("MCMXCVII", "MMII", "MMVII"))
+```
+]
+
+---
+layout: true
+# gg is for Grammar of Graphics
+
+.left-column[
+### Data
+### Aesthetics
+### Geoms
+### Facet
+### Labels
+### Coords
+### Scales
+### Theme
+
+```r
++ theme()
+```
+]
+
+---
+
+.right-column[
+Change the appearance of plot decorations<br>
+i.e. things that aren't mapped to data
+
+A few "starter" themes ship with the package
+
+- `g + theme_bw()`
+- `g + theme_dark()`
+- `g + theme_gray()`
+- `g + theme_light()`
+- `g + theme_minimal()`
+
+]
+
+---
+
+.right-column[
+
+```{r theme_ex1, eval = TRUE, out.width="90%", fig.width=6}
+g + theme_bw()
+```
+
+]
+
+---
+.right-column[
+Huge number of parameters, grouped by plot area:
+
+- Global options: `line`, `rect`, `text`, `title`
+- `axis`: x-, y- or other axis title, ticks, lines
+- `legend`: Plot legends
+- `panel`: Actual plot area
+- `plot`: Whole image
+- `strip`: Facet labels
+]
+---
+
+.right-column[
+Theme options are supported by helper functions:
+
+- `element_blank()` removes the element
+- `element_line()`
+- `element_rect()`
+- `element_text()`
+]
+
+---
+
+.right-column[
+.font80[
+```{r, eval = TRUE, out.width="90%", fig.width=6}
+g + theme_bw() + theme(text = element_text(colour = "hotpink", size = 20))
+```
+]
+]
+
+---
+
+.right-column[
+You can also set the theme globally with `theme_set()`
+
+```{r theme_set}
+my_theme <- theme_bw() +
+  theme(
+    text = element_text(family = "Palatino", size = 12),
+    panel.border = element_rect(colour = 'grey80'), 
+    panel.grid.minor = element_blank()
+  )
+
+theme_set(my_theme)
+```
+
+All plots will now use this theme!
+]
+
+---
+
+.right-column[
+```{r, eval = TRUE, out.width="90%", fig.width=6, dependson='theme_set', echo = -1}
+theme_set(my_theme)
+g 
+```
+]
+
+---
+
+.right-column[
+```{r, eval = TRUE, out.width="90%", fig.width=6, dependson='theme_set', echo = -1}
+theme_set(my_theme)
+g + theme(legend.position = 'bottom')
+```
+]
+
+---
+layout: false
+# Save Your Work
+
+To save your plot, use **ggsave**. 
+
+```{r ggsave, eval=FALSE}
+ggsave(
+  filename = "my_plot.png",
+  plot = my_plot,
+  width = 10,
+  height = 8,
+  dpi = 100,
+  device = "png"
+)
+```
+
+---
+layout: false
+class: inverse center middle text-white
+
+.font200[You have the power!]
+---
+
+class: inverse, center, middle
+
+# "Live" Coding
+
+```{r}
+library(gapminder)
+```
+
+```{r reset_theme, include=FALSE}
+theme_set(theme_gray())
+```
+
+---
+# head(gapminder)
+
+```{r head-gapminder, echo=FALSE}
+head(gapminder)
+```
+
+---
+# glimpse(gapminder)
+
+```{r summary-gapminder, echo=FALSE, comment=""}
+glimpse(gapminder)
+```
+
+--
+
+Let's start with `lifeExp` vs `gdpPercap`
+
+---
+class: fullscreen
+layout: true
+---
+
+.left-code[
+```{r gapminder-le-gdp-1, fig.show="hide"}
+ggplot(gapminder,
+  aes(x = gdpPercap,
+      y = lifeExp))
+```
+]
+
+.right-plot[
+![](`r knitr::fig_chunk("gapminder-le-gdp-1", "png")`)
+]
+
+--
+
+Add points...
+
+---
+---
+class: inverse, center, middle
+
+# Thanks!
+
+Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
+
+The chakra comes from [remark.js](https://remarkjs.com), [**knitr**](http://yihui.org/knitr), and [R Markdown](https://rmarkdown.rstudio.com).
+
+.font150.text-white[
+- Slides and code adapted from Garrick Aden-Buie GitHub: <http://github.com/gadenbuie/gentle-ggplot2>
+]
+
