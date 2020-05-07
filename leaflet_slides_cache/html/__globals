@@ -1,9 +1,9 @@
-first-map1a	geom_sf	ggplot	nc
+first-map1a	ggplot	nc
 unnamed-chunk-1	library
-nc-data	%>%	rename	select	st_read	system.file
+nc-data	st_read	system.file
 nc-data-output	st_read	str	system.file
 first-plot1b	aes	gapminder	ggplot	library	pop	year
-unnamed-chunk-2	element_text	g	theme	theme_bw
+unnamed-chunk-2	$	%>%	~	addPolygons	addProviderTiles	highlightOptions	labels79	leaflet	nc	providers	setView
 first-plot1c	aes	geom_point	ggplot	pop	tidy_pop	year
 first-plot1	aes	country	geom_point	ggplot	pop	tidy_pop	year
 first-plot2-fake	aes	country	geom_line	geom_point	ggplot	pop	tidy_pop	year
@@ -22,7 +22,7 @@ scale_ex1
 scale_ex2	g	scale_y_log10
 scale_ex4	c	g	scale_x_discrete
 theme_ex1	g	theme_bw
-unnamed-chunk-3	g	my_theme	theme_set
+unnamed-chunk-3	m2
 theme_set	element_blank	element_rect	element_text	theme	theme_bw	theme_set
 unnamed-chunk-4	g	my_theme	theme	theme_set
 unnamed-chunk-5	library
@@ -69,7 +69,37 @@ gapminder-all-americas-3	%>%	==	aes	continent	factor	filter	gapminder	geom_boxpl
 gapminder-all-americas-4	%>%	==	aes	continent	coord_flip	factor	filter	gapminder	geom_boxplot	ggplot	lifeExp	mutate	year
 nc-str	nc	str
 nc-view	head	nc
-first-map1b	aes	births	geom_sf	ggplot	nc
-first-map1c	aes	geom_sf	ggplot	labs	nc
-first-map1d	aes	geom_sf	ggplot	labs	nc
-first-map1e	aes	geom_sf	ggplot	labs	nc	scale_y_continuous
+first-map1b	geom_sf	ggplot	nc
+first-map1c	aes	births1974	geom_sf	ggplot	nc
+first-map1d	aes	births1974	geom_sf	ggplot	labs	nc
+first-map1e	aes	births1974	geom_sf	ggplot	labs	nc	scale_y_continuous
+nc-data2	%>%	nc_df	rename	select
+first-map1f	aes	births	geom_sf	ggplot	labs	nc	scale_y_continuous
+checking the CRS	nc	st_crs
+changing the CRS using st_transform	st_crs	st_transform
+first-leaflet-map1a	leaflet	nc
+first-leaflet-map1b	%>%	addTiles	leaflet	nc
+first-leaflet-map1c	%>%	addTiles	leaflet	nc	setView
+first-leaflet-map1d	$	%>%	addProviderTiles	leaflet	nc	providers	setView
+first-leaflet-map1e	$	%>%	addPolygons	addProviderTiles	leaflet	nc	providers	setView
+sequential	display.brewer.all
+Defining colour bins and palette	$	c	colorBin	nc	range	seq
+first-leaflet-map1f	$	%>%	~	addPolygons	addProviderTiles	leaflet	nc	providers	setView
+diverging	display.brewer.all
+first-leaflet-map1g	$	%>%	~	addPolygons	addProviderTiles	leaflet	nc	providers	setView
+what can you customise with addPolygons	?	addPolygons
+first-leaflet-map1h	$	%>%	~	addPolygons	addProviderTiles	leaflet	nc	providers	setView
+first-leaflet-map1j	%>%	~	addPolygons	highlightOptions	m1	nc
+Make our labels	$	%>%	::	head	lapply	nc	sprintf
+first-leaflet-map1i	%>%	~	addPolygons	highlightOptions	labels	m1	nc
+Defining colour bins	$	c	head	nc	seq
+Defining the palette	$	bins	colorBin	nc
+pal-sequential	display.brewer.all
+pal-diverging	display.brewer.all
+first-leaflet-map1k	%>%	~	addPolygons	highlightOptions	labels	nc
+first-leaflet-map1l	%>%	~	addLegend	pal74
+labels for second map	$	%>%	::	lapply	nc	sprintf
+first-leaflet-map2a	$	%>%	~	addLegend	addPolygons	addProviderTiles	highlightOptions	labels79	leaflet	nc	pal79	providers	setView
+leaflet-map2a	%>%	~	addLegend	pal79
+first-leaflet-map1-k	%>%	~	addPolygons	highlightOptions	labels	m1
+leaflet-map3	::	m1	m2

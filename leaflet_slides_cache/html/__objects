@@ -1,9 +1,9 @@
 first-map1a	
-unnamed-chunk-1	.Random.seed
-nc-data	nc
+unnamed-chunk-1	
+nc-data	nc_df
 nc-data-output	nc
 first-plot1b	tidy_pop
-unnamed-chunk-2	
+unnamed-chunk-2	m2
 first-plot1c	
 first-plot1	
 first-plot2-fake	
@@ -22,7 +22,7 @@ scale_ex1
 scale_ex2	
 scale_ex4	
 theme_ex1	
-unnamed-chunk-3	
+unnamed-chunk-3	.leaflet_slides_cache/html/unnamed-chunk-3_7205ebc332ed3d23ea0a8234ae13c0f9_meta
 theme_set	my_theme
 unnamed-chunk-4	
 unnamed-chunk-5	
@@ -73,3 +73,33 @@ first-map1b
 first-map1c	
 first-map1d	
 first-map1e	
+nc-data2	nc
+first-map1f	
+checking the CRS	
+changing the CRS using st_transform	nc
+first-leaflet-map1a	.leaflet_slides_cache/html/first-leaflet-map1a_101252e1448df3b103489c9e1e5b9957_meta
+first-leaflet-map1b	.leaflet_slides_cache/html/first-leaflet-map1b_e2e18b0c0f120db943df8a7e229de17b_meta
+first-leaflet-map1c	.leaflet_slides_cache/html/first-leaflet-map1c_f490610ce7d658c1cb82557f9ad9bd83_meta
+first-leaflet-map1d	.leaflet_slides_cache/html/first-leaflet-map1d_859d21e94280f9c05c76540f0eaf35f0_meta
+first-leaflet-map1e	.leaflet_slides_cache/html/first-leaflet-map1e_3f1e0b81e38016159464391d51b9746f_meta
+sequential	
+Defining colour bins and palette	bins	pal
+first-leaflet-map1f	.leaflet_slides_cache/html/first-leaflet-map1f_a9720347d2c0db6270538659098f9edb_meta
+diverging	
+first-leaflet-map1g	.leaflet_slides_cache/html/first-leaflet-map1g_54a22dda7cabfd443318cf4a60d573d0_meta
+what can you customise with addPolygons	
+first-leaflet-map1h	m1	.leaflet_slides_cache/html/first-leaflet-map1h_0028520db7b0ecd4dcdaea44ede47cd5_meta
+first-leaflet-map1j	.leaflet_slides_cache/html/first-leaflet-map1j_0c276b5dce5fc9e688a0a46d876ffa4e_meta
+Make our labels	labels
+first-leaflet-map1i	.leaflet_slides_cache/html/first-leaflet-map1i_3fe8b38ffcdad902657ff5760079e3cd_meta
+Defining colour bins	bins
+Defining the palette	pal74	pal79
+pal-sequential	
+pal-diverging	
+first-leaflet-map1k	m1	.leaflet_slides_cache/html/first-leaflet-map1k_e94e706f740fda9d27f08cc84dbeac44_meta
+first-leaflet-map1l	m1	.leaflet_slides_cache/html/first-leaflet-map1l_bd687f86be5df635ea4119e5732c81f7_meta
+labels for second map	labels79
+first-leaflet-map2a	
+leaflet-map2a	
+first-leaflet-map1-k	
+leaflet-map3	.leaflet_slides_cache/html/leaflet-map3_6f5da33afe3468bef626acff244d676c_meta

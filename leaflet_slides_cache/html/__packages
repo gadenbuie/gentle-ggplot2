@@ -12,3 +12,6 @@ leaflet
 sf
 sp
 gapminder
+RColorBrewer
+htmltools
+leafsync

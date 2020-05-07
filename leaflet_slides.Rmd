@@ -25,7 +25,7 @@ class: inverse center middle text-white
 .font200[Introduction to leaflet]
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(fig.width=4.25, fig.height=3.5, fig.retina=3,
+knitr::opts_chunk$set(fig.width=5, fig.height=6, fig.retina=3,
                       out.width = "100%",
                       message=FALSE, warning=FALSE, cache = TRUE, 
                       autodep = TRUE, hiline=TRUE)
@@ -34,8 +34,8 @@ knitr::opts_hooks$set(fig.callout = function(options) {
   if (options$fig.callout) {
     options$echo <- FALSE
     options$out.height <- "99%"
-    options$fig.width <- 16
-    options$fig.height <- 8
+    options$fig.width <- 14
+    options$fig.height <- 16
   }
   options
 })
@@ -59,7 +59,7 @@ layout: true
 
 --
 
-- Intro to the `sp` and `sf` packages
+- Intro to the `sf` packages
 
 --
 
@@ -79,13 +79,17 @@ layout: true
 ---
 
 ```{r}
-library(tidyverse)
+library(tidyverse) ## For plotting and data wrangling.
 
-library(leaflet)
+library(leaflet) ## For leaflet interactive maps
 
-library(sf)
+library(sf) ## For spatial data
 
-library(sp)
+library(RColorBrewer) ## For colour palettes
+
+library(htmltools) ## For html
+
+library(leafsync) ## For placing plots side by side
 
 ```
 
@@ -174,43 +178,42 @@ layout: true
 # Birth Rates in North Carolina
 ---
 
-* We will use the North Carolina (nc) data from the sf package.
+* We will use the North Carolina (`nc`) data from the `sf` package.
+
 --
-* Number of births for counties in North Carolina in 1974 
 
----
+* Let's load in the data for North Carolina using the function `st_read`.
 
----
-layout: true
-# Load in the data for North Carolina
-
-* Let's load in the data for North Carolina.
-
-* The function `st_read`, **st** = spatial type. 
-
+--
 
 ```{r nc-data, eval = TRUE, messages = FALSE}
 
-nc <- st_read(system.file("shape/nc.shp", package="sf"))
+nc_df <- st_read(system.file("shape/nc.shp", package="sf"))
 
-nc <- nc %>%
-        select("NAME", "BIR74", "geometry") %>%
-        rename("county" = "NAME", "births" = "BIR74")
-              
 ```
+
+* `st` = spatial type and `.shp` is a common shape file format (e.g. GIS). 
+
 --
+
+---
+layout: true
+# Rename the columns and view the data North Carolina
+---
+
+* Number of births for counties in North Carolina in 1974 
+
 
 *  Rename our columns to country, births, and geometry.
 
 ```{r nc-data2, eval = TRUE, messages = FALSE}
 
-nc <- nc %>%
-        select("NAME", "BIR74", "geometry") %>%
-        rename("county" = "NAME", "births" = "BIR74")
-              
+nc <- nc_df %>%
+        select("NAME", "BIR74", "BIR79", "geometry") %>%
+        rename("county" = "NAME", "births1974" = "BIR74", "births1979" = "BIR79")
+
 ```
 
----
 
 
 ---
@@ -245,17 +248,21 @@ layout: true
 
 .left-code[
 
-* Data
-* Geom
-
 ```{r first-map1a, eval=FALSE}
-ggplot(nc) +
-  geom_sf() #<<
+ggplot(nc) #<<
+
 ```
+
+* .hlb[Data]
+* Geom
+* Aesthetics
+* Labels
+* Scales
+
 ]
 
 .right-plot[
-```{r first-map1a, ref.label='first-map1a', echo=FALSE, out.width="100%"}
+```{r first-map1a, ref.label='first-map1a', echo=FALSE, out.width="95%"}
 ```
 ]
 
@@ -265,12 +272,19 @@ ggplot(nc) +
 
 ```{r first-map1b, eval=FALSE}
 ggplot(nc) +
-  geom_sf(aes(fill = births)) #<<
+  geom_sf() #<<
 ```
+
+* Data
+* .hlb[Geom]
+* Aesthetics
+* Labels
+* Scales
+
 ]
 
 .right-plot[
-```{r first-map1b, ref.label='first-map1b', echo=FALSE, out.width="100%"}
+```{r first-map1b, ref.label='first-map1b', echo=FALSE, out.width="95%"}
 ```
 ]
 
@@ -278,15 +292,22 @@ ggplot(nc) +
 
 .left-code[
 
+
 ```{r first-map1c, eval=FALSE}
 ggplot(nc) +
-  geom_sf(aes(fill = "births")) +
-  labs(title = "Births per county") #<<
+  geom_sf(aes(fill = births1974)) #<<
 ```
+
+* Data
+* Geom
+* .hlb[Aesthetics]
+* Labels
+* Scales
+
 ]
 
 .right-plot[
-```{r first-map1c, ref.label='first-map1c', echo=FALSE, out.width="100%"}
+```{r first-map1c, ref.label='first-map1c', echo=FALSE, out.width="95%"}
 ```
 ]
 
@@ -296,15 +317,23 @@ ggplot(nc) +
 
 ```{r first-map1d, eval=FALSE}
 ggplot(nc) +
-  geom_sf(aes(fill = "births")) +
-  labs(title = "Births per county",
+  geom_sf(aes(fill = births1974)) +
+  labs(title = "Births per county in 1974", #<<
        x = "Longitude", #<<
-       y = "Latitude") #<<
+       y = "Latitude", #<<
+       fill = "Births") #<<
 ```
+
+* Data
+* Geom
+* Aesthetics
+* .hlb[Labels]
+* Scales
+
 ]
 
 .right-plot[
-```{r first-map1d, ref.label='first-map1d', echo=FALSE, out.width="100%"}
+```{r first-map1d, ref.label='first-map1d', echo=FALSE, out.width="95%"}
 ```
 ]
 
@@ -314,16 +343,23 @@ ggplot(nc) +
 
 ```{r first-map1e, eval=FALSE}
 ggplot(nc) +
-  geom_sf(aes(fill = "births")) +
-  labs(title = "Births per county",
+  geom_sf(aes(fill = births1974)) +
+  labs(title = "Births per county in 1974",
        x = "Longitude",
-       y = "Latitude") +
+       y = "Latitude", 
+       fill = "Births") +
   scale_y_continuous(breaks = 34:36) #<<
 ```
+
+* Data
+* Geom
+* Aesthetics
+* Labels
+* .hlb[Scales]
 ]
 
 .right-plot[
-```{r first-map1e, ref.label='first-map1e', echo=FALSE, out.width="100%"}
+```{r first-map1e, ref.label='first-map1e', echo=FALSE, out.width="95%"}
 ```
 ]
 
@@ -336,622 +372,525 @@ layout: true
 
 --
 
-* The Coordinate Reference system used will determine how the data is shown. 
----
-
-```{r first-plot1b, eval=FALSE}
-library(gapminder)
-tidy_pop <- gapminder
-
-ggplot(tidy_pop,
-  aes(x = year, #<<
-      y = pop) #<<
-  )
-```
-]
-
-.right-plot[
-```{r first-plot1b, ref.label='first-plot1b', echo=FALSE, out.width="100%"}
-```
-]
-
----
-
-.left-code[
-```{r first-plot1c, eval=FALSE}
-ggplot(tidy_pop,
-  aes(x = year,
-      y = pop)
-  ) +
-  geom_point() #<<
-```
-]
-
-.right-plot[
-```{r first-plot1c, ref.label='first-plot1c', echo=FALSE, out.width="100%"}
-```
-]
-
----
-
-.left-code[
-```{r first-plot1, eval=FALSE}
-ggplot(tidy_pop,
-  aes(x = year,
-      y = pop,
-      color = country) #<<
-  ) + 
-  geom_point()
-```
-]
-
-.right-plot[
-```{r first-plot1, ref.label='first-plot1', echo=FALSE, out.width="100%"}
-```
-]
-
----
-
-.left-code[
-```{r first-plot2-fake, eval=FALSE}
-ggplot(tidy_pop,
-  aes(x = year,
-      y = pop,
-      color = country) 
-  ) +
-  geom_point() +
-  geom_line() #<<
-```
-
-.font80[
-```r
-geom_path: Each group consists
-of only one observation. 
-Do you need to adjust the 
-group aesthetic?
-```
-]
-]
-
-.right-plot[
-```{r first-plot2-fake, ref.label='first-plot2-fake', echo=FALSE, out.width="100%"}
-```
-]
----
-
-.left-code[
-```{r first-plot2, eval=FALSE}
-ggplot(tidy_pop,
-  aes(x = year,
-      y = pop,
-      color = country) 
-  ) +
-  geom_point() +
-  geom_line(
-    aes(group = country)) #<<
-```
-]
-
-.right-plot[
-```{r first-plot2, ref.label='first-plot2', echo=FALSE, out.width="100%"}
-```
-]
-
----
-
-
-.left-code[
-```{r first-plot3, eval=FALSE}
-g <- ggplot(tidy_pop, #<<
-  aes(x = year,
-      y = pop,
-      color = country) 
-  ) +
-  geom_point() +
-  geom_line(
-    aes(group = country))
-
-g #<<
-```
-]
-
-.right-plot[
-```{r first-plot3, ref.label='first-plot2', echo=FALSE, out.width="100%"}
-```
-]
-
----
-layout: true
-# gg is for Grammar of Graphics
-
-.left-column[
-### Data
-### Aesthetics
-### Geoms
-
-```r
-+ geom_*()
-```
-]
----
-
-.right-column[
-```r
-geom_*(mapping = aes(), data, stat, position)
-```
-
-- `data` Geoms can have their own data
-    - Has to map onto global coordinates
-
-- `aes` Geoms can have their own aesthetics
-    - Inherits global aesthetics
-    - Have geom-specific aesthetics
-        - `geom_point` needs `x` and `y`, optional `shape`, `color`, `size`, etc.
-        - `geom_ribbon` requires `x`, `ymin` and `ymax`, optional `fill`
-    - Use `?` to find out the aesthetics required and the ones you can change:
-    `?geom_ribbon`
-]
-
----
-
-.right-column[
-```r
-geom_*(mapping, data, stat, position)
-```
-
-- `stat` Some geoms apply further transformations to the data
-    - All respect `stat = 'identity'`
-    - Ex: `geom_histogram` uses `stat_bin()` to group observations
-    
-- `position` Some adjust location of objects
-    - `'dodge'`, `'stack'`, `'jitter'`
-]
-
----
-layout: true
-# Our first plot!
----
-
-.left-code[
-```{r first-plot-geom-1, eval=FALSE}
-g <- ggplot() +
-  geom_point(
-    data = tidy_pop, #<<
-    aes(x = year, #<<
-      y = pop, #<<
-      color = country) #<<
-  ) +
-  geom_line(
-    data = tidy_pop, #<<
-    aes(x = year, #<<
-      y = pop, #<<
-      color = country, #<<
-      group = country) #<<
-    )
-
-g
-```
-]
-
-.right-plot[
-```{r first-plot-geom-1, ref.label='first-plot-geom-1', echo=FALSE, out.width="100%"}
-```
-]
-
----
-layout: true
-# gg is for Grammar of Graphics
-
-.left-column[
-### Data
-### Aesthetics
-### Geoms
-
-```r
-+ geom_*()
-```
-]
----
-
-.right-column[
-```r
-geom_*(mapping = aes(), data, stat, position)
-```
-
-- `data` Geoms can have their own data
-    - Has to map onto global coordinates
-
-.font150[What would the advantage be for a geom to have their own data?]
-
-]
-
----
-layout: true
-# gg is for Grammar of Graphics
-
-.left-column[
-### Data
-### Aesthetics
-### Geoms
-### Facet
-
-```r
-+facet_wrap() 
-
-+facet_grid()
-```
-]
----
-
-```{r geom_facet_setup, include=FALSE, eval = TRUE}
-tidy_pop2 <- left_join(tidy_pop, select(gapminder, country, continent))
-
-g <- ggplot(tidy_pop2) +
-  aes(x = year,
-      y = pop,
-      color = country) +
-  geom_point() +
-  geom_line(aes(group = country))
-```
-
-.right-plot[
-```{r geom_facet, eval = TRUE, echo=TRUE, out.width="90%", fig.width=6}
-g + facet_wrap(~ country)
-```
-]
-
----
-
-.right-column[
-```{r geom_grid, eval = TRUE, echo=TRUE, out.width="90%", fig.width=6}
-g + facet_grid(continent ~ country)
-```
-]
-
----
-layout: true
-# gg is for Grammar of Graphics
-
-.left-column[
-### Data
-### Aesthetics
-### Geoms
-### Facet
-### Labels
-
-```r
-+ labs()
-```
-]
----
-
-```{r geom_label_setup, include=FALSE, eval = TRUE}
-tidy_pop2 <- left_join(tidy_pop, select(gapminder, country, continent))
-
-g <- ggplot(tidy_pop2) +
-  aes(x = year,
-      y = pop,
-      color = country) +
-  geom_point() +
-  geom_line(aes(group = country))
-```
-
-
-.right-column[
-```{r labs-ex, eval = TRUE, echo=TRUE, out.width="90%", fig.width=6}
-(g <- g + labs(x = "Year", y = "Population (millions)"))
-```
-]
-
----
-layout: true
-# gg is for Grammar of Graphics
-
-.left-column[
-### Data
-### Aesthetics
-### Geoms
-### Facet
-### Labels
-### Coords
-
-```r
-+ coord_*()
-```
-]
----
-
-```{r geom_coord_setup, include=FALSE, eval = TRUE}
-tidy_pop2 <- left_join(tidy_pop, select(gapminder, country, continent))
-
-g <- ggplot(tidy_pop2) +
-  aes(x = year,
-      y = pop,
-      color = country) +
-  geom_point() +
-  geom_line(aes(group = country))
-
-g <- g + labs(x = "Year", y = "Population (millions)")
-```
-
-
-.right-column[
-```{r coord-ex, eval = TRUE, echo=TRUE, out.width="90%", fig.width=6}
-g + coord_flip()
-```
-]
-
----
-layout: true
-# gg is for Grammar of Graphics
-
-.left-column[
-### Data
-### Aesthetics
-### Geoms
-### Facet
-### Labels
-### Coords
-### Scales
-
-```r
-+ scale_*_*()
-```
-]
----
-
-.right-column[ 
-`scale` + `_` + `<aes>` + `_` + `<type>` + `()`
-
-`<aes>` = parameter to adjust; `<type>` = Parameter Type
-]
+* The Coordinate Reference system (CRS) determines how the data will be projected onto a map. 
 --
 
-.right-column[
-- I want to use a different color palette<br>`scale_fill_discrete()`<br>`scale_color_continuous()`
+*
+---
+layout: true
+# Coordinate reference system
+---
+
+
+* We can check the CRS using `st_crs`:
+
+```{r checking the CRS}
+
+st_crs(nc)
+
+```
+
+* The CRS is specified in the attributes `epsg` and `proj4string`. 
+
+--
+
+* What is the [epsg](epsg.io)? 
+
+--
+
+* What is the proj4string?
+
+---
+layout: true
+# Transforming coordinate reference system
+---
+
+* You can transform a coordinate reference system using the `st_transform()`. 
+
+--
+
+* But what is a sensible coordinate reference system to assign? 
+
+--
+
+* Well, a good place to start is with the one that leaflet uses for plotting the world:  EPSG 4326.
+
+```{r changing the CRS using st_transform}
+
+nc <- st_transform(nc, "+init=epsg:4326")
+
+st_crs(nc)
+
+```
+
+
+---
+layout: true
+# Our first leaflet map
+---
+
+.left-code[
+
+* Every plot starts with `leaflet()`
+
+```{r first-leaflet-map1a, eval=FALSE}
+
+leaflet(data = nc) 
+
+```
+]
+
+.right-plot[
+```{r first-leaflet-map1a, ref.label='first-leaflet-map1a', echo=FALSE, out.width="100%"}
+```
+]
+
+---
+
+.left-code[
+
+* Layers are added using `%>%`
+
+```{r first-leaflet-map1b, eval=FALSE}
+leaflet(data = nc) %>%
+  addTiles() #<<
+```
+]
+
+.right-plot[
+```{r first-leaflet-map1b, ref.label='first-leaflet-map1b', echo=FALSE, out.width="100%"}
+```
 ]
 
 --
 
-.right-column[
-- I want to rescale y-axis as log<br>`scale_y_log10()`
-]
 
---
-
-.right-column[
-- I want to change my discrete x-axis<br>`scale_x_discrete()`
-]
-
+N.B. Layers are added with `%>%` in `leaflet` and `+` in `ggplot`
 
 
 ---
 
-```{r geom_scale_setup, include=FALSE, eval = TRUE}
-tidy_pop2 <- left_join(tidy_pop, select(gapminder, country, continent))
+.left-code[
 
-g <- ggplot(tidy_pop2) +
-  aes(x = year,
-      y = pop,
-      color = country) +
-  geom_point() +
-  geom_line(aes(group = country))
+* We can set the view using `setView()`
 
-g <- g + labs(x = "Year", y = "Population (millions)")
+```{r first-leaflet-map1c, eval=FALSE}
+leaflet(data = nc) %>%
+  addTiles() %>%
+  setView(lng = -80, #<<
+          lat = 34.5, #<<
+          zoom = 5) #<<
 ```
+]
 
-.right-column[
-```{r scale_ex1, eval = TRUE, out.width="90%", fig.width=6}
-#g + scale_color_manual(values = c("peru", "pink", "plum"))
+.right-plot[
+```{r first-leaflet-map1c, ref.label='first-leaflet-map1c', echo=FALSE, out.width="100%"}
 ```
 ]
 
 ---
 
-.right-column[
-```{r scale_ex2, eval = TRUE, out.width="90%", fig.width=6}
-g + scale_y_log10()
+.left-code[
+
+* Add different background map using addProviderTiles
+
+```{r first-leaflet-map1d, eval=FALSE}
+leaflet(data = nc) %>%
+  addProviderTiles(providers$Stamen.Terrain) %>%
+  setView(lng = -80, 
+          lat = 34.5, 
+          zoom = 5)
 ```
 ]
 
+.right-plot[
+```{r first-leaflet-map1d, ref.label='first-leaflet-map1d', echo=FALSE, out.width="100%"}
+```
+]
+
+
 ---
 
-.right-column[
-```{r scale_ex4, eval = TRUE, out.width="90%", fig.width=6}
-g + scale_x_discrete(labels = c("MCMXCVII", "MMII", "MMVII"))
+.left-code[
+
+* Add polygons using `addPolygons()`
+
+```{r first-leaflet-map1e, eval=FALSE}
+leaflet(data = nc) %>%
+  addProviderTiles(providers$Stamen.Terrain) %>%
+  setView(lng = -80, 
+          lat = 34.5, 
+          zoom = 5) %>%
+  addPolygons() #<<
+```
+]
+
+.right-plot[
+```{r first-leaflet-map1e, ref.label='first-leaflet-map1e', echo=FALSE, out.width="100%", out.height = "100%"}
 ```
 ]
 
 ---
 layout: true
-# gg is for Grammar of Graphics
 
-.left-column[
-### Data
-### Aesthetics
-### Geoms
-### Facet
-### Labels
-### Coords
-### Scales
-### Theme
+# Creating a colour palette
+---
 
-```r
-+ theme()
+* `RColorBrewer` includes **sequential** colour palettes (e.g. number of people).
+
+.left-code[
+```{r pal-sequential, eval = FALSE}
+display.brewer.all(type = "seq")
 ```
 ]
 
----
-
-.right-column[
-Change the appearance of plot decorations<br>
-i.e. things that aren't mapped to data
-
-A few "starter" themes ship with the package
-
-- `g + theme_bw()`
-- `g + theme_dark()`
-- `g + theme_gray()`
-- `g + theme_light()`
-- `g + theme_minimal()`
+.right-plot[
+```{r pal-sequential, ref.label='pal-sequential', echo=FALSE, out.width="80%"}
+```
 
 ]
-
+---
+layout: true
+# Creating a colour palette
 ---
 
-.right-column[
+* `RColorBrewer` includes **diverging** colour palettes (e.g. to show distinct categories).
 
-```{r theme_ex1, eval = TRUE, out.width="90%", fig.width=6}
-g + theme_bw()
+.left-code[
+```{r pal-diverging, eval = FALSE}
+display.brewer.all(type = "div")
+```
+]
+
+.right-plot[
+```{r pal-diverging, ref.label='pal-diverging', echo=FALSE, out.width="80%"}
 ```
 
 ]
 
 ---
-.right-column[
-Huge number of parameters, grouped by plot area:
+layout: true
 
-- Global options: `line`, `rect`, `text`, `title`
-- `axis`: x-, y- or other axis title, ticks, lines
-- `legend`: Plot legends
-- `panel`: Actual plot area
-- `plot`: Whole image
-- `strip`: Facet labels
-]
+# Creating a colour palette
 ---
 
-.right-column[
-Theme options are supported by helper functions:
+* First we will define the colour palette and bins for the plot.
 
-- `element_blank()` removes the element
-- `element_line()`
-- `element_rect()`
-- `element_text()`
-]
+```{r Defining colour bins, eval = TRUE}
 
----
+head(nc$births1974); head(nc$births1979)
 
-.right-column[
-.font80[
-```{r, eval = TRUE, out.width="90%", fig.width=6}
-g + theme_bw() + theme(text = element_text(colour = "hotpink", size = 20))
-```
-]
-]
-
----
-
-.right-column[
-You can also set the theme globally with `theme_set()`
-
-```{r theme_set}
-my_theme <- theme_bw() +
-  theme(
-    text = element_text(family = "Palatino", size = 12),
-    panel.border = element_rect(colour = 'grey80'), 
-    panel.grid.minor = element_blank()
-  )
-
-theme_set(my_theme)
+bins <- c(seq(0, 35000, 5000)) 
 ```
 
-All plots will now use this theme!
-]
+--
+
+* Then we can define the colours for the palette:
+
+
+```{r Defining the palette, eval = TRUE}
+pal74 <- colorBin("OrRd", domain = nc$births1974, bins = bins) 
+
+pal79 <- colorBin("OrRd", domain = nc$births1979, bins = bins)
+```
+
 
 ---
 
-.right-column[
-```{r, eval = TRUE, out.width="90%", fig.width=6, dependson='theme_set', echo = -1}
-theme_set(my_theme)
-g 
+.left-code[
+
+* Customising `addPolygons()`
+
+```{r first-leaflet-map1f, eval=FALSE}
+leaflet(data = nc) %>%
+  addProviderTiles(providers$Stamen.Terrain) %>%
+  setView(lng = -80, 
+          lat = 34.5, 
+          zoom = 6) %>%
+  addPolygons(data = nc,
+    fillColor = ~pal74(nc$births1974),
+    fillOpacity = 0.7, #<<
+    color = "white", #<<
+    opacity = 1, #<<
+    weight = 2 #<<
+  ) 
+```
+]
+
+.right-plot[
+```{r first-leaflet-map1f, ref.label='first-leaflet-map1f', echo=FALSE, out.width="100%"}
 ```
 ]
 
 ---
 
-.right-column[
-```{r, eval = TRUE, out.width="90%", fig.width=6, dependson='theme_set', echo = -1}
-theme_set(my_theme)
-g + theme(legend.position = 'bottom')
+.left-code[
+
+* Customising `addPolygons()`
+
+```{r first-leaflet-map1g, eval=FALSE}
+leaflet(data = nc) %>%
+  addProviderTiles(providers$Stamen.Terrain) %>%
+  setView(lng = -80, 
+          lat = 34.5, 
+          zoom = 6) %>%
+  addPolygons(data = nc,
+    fillColor = ~pal74(nc$births1974), #<<
+    fillOpacity = 1, #<<
+    color = "blue", #<<
+    opacity = 0.7, #<<
+    weight = 1 #<<
+  ) 
+```
+]
+
+.right-plot[
+```{r first-leaflet-map1g, ref.label='first-leaflet-map1g', echo=FALSE, out.width="100%"}
 ```
 ]
 
 ---
-layout: false
-# Save Your Work
+layout: true
+# What can you customise in addPolygons()
+---
 
-To save your plot, use **ggsave**. 
+```{r what can you customise with addPolygons, eval = FALSE}
 
-```{r ggsave, eval=FALSE}
-ggsave(
-  filename = "my_plot.png",
-  plot = my_plot,
-  width = 10,
-  height = 8,
-  dpi = 100,
-  device = "png"
-)
+?addPolygons()
+
+```
+
+* `color:` stroke color
+* `weight:` stroke width in pixels
+* `opacity:` stroke opacity
+* `fillColor:` fill color
+* `fillOpacity:` fill opacity
+
+--
+
+* `highlightOptions:` Options for highlighting the shape on mouse over. 
+
+
+---
+
+.left-code[
+
+* Let's assign our plot to an object.
+
+```{r first-leaflet-map1h, eval=FALSE}
+m1 <- leaflet(data = nc) %>% #<<
+  addProviderTiles(providers$Stamen.Terrain) %>%
+  setView(lng = -80, 
+          lat = 34.5, 
+          zoom = 6)
+
+m1 %>%
+  addPolygons(data = nc,
+    fillColor = ~pal74(nc$births1974), 
+    fillOpacity = 0.7,
+    opacity = 1,
+    color = "white", 
+    weight = 2) 
+
+
+```
+]
+
+.right-plot[
+```{r first-leaflet-map1h, ref.label='first-leaflet-map1h', echo=FALSE, out.width="100%"}
+```
+]
+
+---
+
+.left-code[
+
+* Let's add some `highlightOptions`
+
+```{r first-leaflet-map1j, eval=FALSE}
+m1 %>%
+  addPolygons(data = nc,
+      fillColor = ~pal74(nc$births1974), 
+      fillOpacity = 0.7, 
+      color = "white", 
+      opacity = 1,
+      weight = 2,
+    highlight = highlightOptions( #<<
+        weight = 3, #<<
+        color = "blue", #<<
+        fillOpacity = 1, #<<
+        bringToFront = TRUE)) #<< 
+```
+]
+
+.right-plot[
+```{r first-leaflet-map1j, ref.label='first-leaflet-map1j', echo=FALSE, out.width="100%"}
+```
+]
+
+---
+layout: true
+# Let's add some labels!
+---
+
+`sprintf`: returns a character vector containing a formatted combination of text and variable values.
+
+
+```{r Make our labels}
+labels <- sprintf(
+  "<strong>%s</strong><br/>%g births",
+  nc$county, nc$births1974
+) %>% lapply(htmltools::HTML)
+
+head(labels)
+```
+
+--
+
+html - markup language for the web
+* `<strong>` = bold; `<br/>` = new line
+
+--
+
+PHP - Hypertext Preprocessor
+* `%s` = place holder for a character string; `%g` = general format place holder for a number
+
+---
+
+.left-code[
+
+* Let's add some labels
+
+```{r first-leaflet-map1k, eval=FALSE}
+m1 <- m1 %>%
+  addPolygons(data = nc,
+      fillColor = ~pal74(nc$births1974),
+      fillOpacity = 0.7,
+      color = "white",
+      opacity = 1,
+      weight = 2,
+    highlight = highlightOptions(
+        weight = 3,
+        color = "blue",
+        fillOpacity = 1,
+        bringToFront = TRUE),
+    label = labels) #<< 
+
+m1
+
+```
+]
+
+.right-plot[
+```{r first-leaflet-map1k, ref.label='first-leaflet-map1k', echo=FALSE, out.width="100%"}
+```
+]
+
+---
+
+.left-code[
+
+* Let's add a legend
+
+```{r first-leaflet-map1l, eval=FALSE}
+m1 <- m1 %>%
+  addLegend( #<<
+    position = "bottomright", #<<
+    pal = pal74, #<<
+    values = ~nc$births1974, #<<
+    title = "Births by country in 1974", #<<
+    opacity = 1) #<<
+
+m1
+```
+]
+
+.right-plot[
+```{r first-leaflet-map1l, ref.label='first-leaflet-map1l', echo=FALSE, out.width="100%"}
+```
+]
+
+---
+layout: true
+# Let's create a second map
+---
+
+* Let's create a second map of births in 1979.
+
+* First we'll need to create a new set of labels
+
+```{r labels for second map}
+
+labels79 <- sprintf(
+  "<strong>%s</strong><br/>%g births",
+  nc$county, nc$births1979
+) %>% lapply(htmltools::HTML)
+
+
 ```
 
 ---
-layout: false
-class: inverse center middle text-white
-
-.font200[You have the power!]
+layout: true
+# Let's create a second map
 ---
-
-class: inverse, center, middle
-
-# "Live" Coding
 
 ```{r}
-library(gapminder)
-```
 
-```{r reset_theme, include=FALSE}
-theme_set(theme_gray())
+m2 <- leaflet(data = nc) %>%
+  addProviderTiles(providers$Stamen.Terrain) %>%
+  setView(lng = -80, 
+          lat = 34.5, 
+          zoom = 6) %>%
+  addPolygons(data = nc,
+      fillColor = ~pal79(nc$births1979),
+      fillOpacity = 0.7,
+      color = "white",
+      opacity = 1,
+      weight = 2,
+    highlight = highlightOptions(
+        weight = 3,
+        color = "blue",
+        fillOpacity = 1,
+        bringToFront = TRUE),
+    label = labels79)
+
 ```
 
 ---
-# head(gapminder)
 
-```{r head-gapminder, echo=FALSE}
-head(gapminder)
+
+```{r leaflet-map2a, eval=FALSE}
+m2 <- m2 %>%
+  addLegend(
+    position = "bottomright",
+    pal = pal79,
+    values = ~nc$births1979,
+    title = "Births by country in 1979",
+    opacity = 1)
+
 ```
 
 ---
-# glimpse(gapminder)
 
-```{r summary-gapminder, echo=FALSE, comment=""}
-glimpse(gapminder)
+```{r}
+m2
 ```
 
---
-
-Let's start with `lifeExp` vs `gdpPercap`
 
 ---
-class: fullscreen
 layout: true
+# Placing two maps side by side
 ---
 
-.left-code[
-```{r gapminder-le-gdp-1, fig.show="hide"}
-ggplot(gapminder,
-  aes(x = gdpPercap,
-      y = lifeExp))
+```{r leaflet-map3}
+
+leafsync::sync(m1, m2, ncol = 2, sync = "all")
 ```
-]
 
-.right-plot[
-![](`r knitr::fig_chunk("gapminder-le-gdp-1", "png")`)
-]
-
---
-
-Add points...
 
 ---
+
+
 ---
 class: inverse, center, middle
 
@@ -962,6 +901,6 @@ Slides created via the R package [**xaringan**](https://github.com/yihui/xaringa
 The chakra comes from [remark.js](https://remarkjs.com), [**knitr**](http://yihui.org/knitr), and [R Markdown](https://rmarkdown.rstudio.com).
 
 .font150.text-white[
-- Slides and code adapted from Garrick Aden-Buie GitHub: <http://github.com/gadenbuie/gentle-ggplot2>
+- Slides template adapted from Garrick Aden-Buie GitHub: <http://github.com/gadenbuie/gentle-ggplot2>
 ]
 
