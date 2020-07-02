@@ -6,7 +6,7 @@ output:
   html_document:
     number_sections: true
     toc: yes
-    toc_depth: '1'
+    toc_depth: '2'
     toc_float: yes
 ---
 

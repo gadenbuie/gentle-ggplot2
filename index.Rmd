@@ -1,6 +1,6 @@
 ---
 title: "Data Visualisation in R"
-subtitle: "Introduction to ggplot2 and leaflet"
+subtitle: "Introduction to ggplot2"
 author: "Dr. Laurie Baker"
 institute: "Data Science Campus"
 date: "2020/04/09 (updated: `r Sys.Date()`)"
@@ -54,14 +54,15 @@ as_table <- function(...) knitr::kable(..., format='html', digits = 3)
 layout: true
 # What we'll cover today.
 ---
-
+]
 - Brief intro to the theory behind `ggplot2` and the "grammar of graphics".
 
 - Building a plot using `ggplot`.
 
-- Building interactives maps using leaflet. 
+]
+.footnote[Slides and code adapted from Garrick Aden-Buie "Gentle ggplot2 tutorial" on GitHub: <http://github.com/gadenbuie/gentle-ggplot2>]
+]
 
-- Slides and code adapted from Garrick Aden-Buie "Gentle ggplot2 tutorial" on GitHub: <http://github.com/gadenbuie/gentle-ggplot2>
 
 
 ---
@@ -193,22 +194,23 @@ __Grammar of Graphics__
 
 ]
 
----
-layout: true
-# The grammar of graphics
----
 
-.left-column[
-.font150[Links between variables and visual properties of the graph.
-]]
+<!-- layout: true -->
+<!-- # The grammar of graphics -->
+<!-- --- -->
 
-.right-column[
+<!-- .left-column[ -->
+<!-- .font150[Links between variables and visual properties of the graph. -->
+<!-- ]] -->
 
-![](images/ggplot_links_thomas_lin_pedersen.png)
-__Thomas Lin Pedersen: Plot Anything With GGPLOT2__
+<!-- .right-column[ -->
+
+<!-- ![](images/ggplot_links_thomas_lin_pedersen.png) -->
+<!-- __Thomas Lin Pedersen: Plot Anything With GGPLOT2__ -->
 
 
-]
+<!-- ] -->
+
 
 ---
 layout: true
@@ -2394,6 +2396,7 @@ layout: false
 - `nycflights`
 
 - `ggplot2movies`
+
 
 ---
 class: inverse, center, middle

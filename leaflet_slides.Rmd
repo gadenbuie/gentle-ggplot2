@@ -1,6 +1,6 @@
 ---
 title: "Data Visualisation in R"
-subtitle: "Introduction to ggplot2 and leaflet"
+subtitle: "Introduction to leaflet"
 author: "Dr. Laurie Baker"
 institute: "Data Science Campus"
 date: "2020/04/09 (updated: `r Sys.Date()`)"
@@ -55,10 +55,6 @@ layout: true
 # What we'll cover today.
 ---
 
-- Quick recap on building a plot using `ggplot2`
-
---
-
 - Intro to the `sf` packages
 
 --
@@ -100,78 +96,20 @@ library(leafsync) ## For placing plots side by side
 layout: false
 class: inverse center middle text-white
 
-.font200[Recap on building a plot using ggplot2]
-
----
-layout: true
-# ggplot2 plots are built in layers
----
-
-.font120[
-- **Data** must be in a "tidy" format.
-]
-
---
-.font120[
-- **.hlb[Aes]thetic mappings** link variables in the data to graphical properties in the **.hlb[geom]**etric objects.
-
-]
-
---
-.font120[
-- **.hlb[Geom]etric objects** dictate how the **.hlb[aes]thetics** are interpreted as a graphical representation (points, lines, polygons, etc.)
-]
-
---
-.font120[
-- **.hlb[Stat]istics** transform the input variables to displayed values. E.g. calculate the summary statistics for a boxplot (quantiles).
-]
-
---
-.font120[
-- **.hlb[Coord]inates** organize location of geometric objects, i.e. define the physical mapping of the aesthetics.
-]
-
----
-layout: true
-# ggplot2 plots are built in layers
----
-
-.font120[
-- **.hlb[Scale]s** define the range of values for aesthetics (e.g. categories -> colours).
-]
-
---
-.font120[
-- **.hlb[Facet]s** define the number of panels and how to split data among them (e.g. by country).
-]
-
---
-.font120[
-- **.hlb[Theme]s** control every part of the graphic that is not linked to the data (i.e. font, visual appearance).
-]
-
-
+.font200[Introduction to the sf package]
 
 ---
 layout: false
 
-# Making a map
+# The sf package
 
-* `sf` is a package for geospatial data manipulation and analysis.
-
-* It works with features:
+* Package for geospatial data manipulation and analysis that works with features
   * **points** (POINT, MULTIPOINT)
   * **lines** (LINESTRING, MULTILINESTRING)
   * **polygons** (POLYGON, MULTIPOLYGON)
+  
+![](images/spatial_data_types.jpg)
 
-
-
----
-layout: false
-class: inverse center middle text-white
-
-.font200[Plotting a map with ggplot2]
 
 ---
 layout: true
@@ -240,10 +178,16 @@ str(nc)
 
 ```
 
+---
+layout: false
+class: inverse center middle text-white
+
+.font200[Plotting a map with ggplot2]
+
 
 ---
 layout: true
-# Our first map
+# Building a map in ggplot2
 ---
 
 .left-code[
@@ -374,8 +318,12 @@ layout: true
 
 * The Coordinate Reference system (CRS) determines how the data will be projected onto a map. 
 --
+<figure>
+  <img src="images/map_projections.gif" width="850px">
+  <figcaption>[Projection Transitions](https://bl.ocks.org/mbostock/raw/3711652/) by Mick Bostock 
+  </figcaption>
+</figure>
 
-*
 ---
 layout: true
 # Coordinate reference system
@@ -399,6 +347,10 @@ st_crs(nc)
 --
 
 * What is the proj4string?
+
+--
+
+* What is WT
 
 ---
 layout: true
@@ -465,7 +417,7 @@ leaflet(data = nc) %>%
 --
 
 
-N.B. Layers are added with `%>%` in `leaflet` and `+` in `ggplot`
+N.B. Layers are added with `%>%` in `leaflet` and `+` in `ggplot`. `%>%` also is used in the `tidyverse` packages. 
 
 
 ---
@@ -506,6 +458,8 @@ leaflet(data = nc) %>%
 .right-plot[
 ```{r first-leaflet-map1d, ref.label='first-leaflet-map1d', echo=FALSE, out.width="100%"}
 ```
+
+N.B. The different provider tiles come with different licensing.
 ]
 
 
@@ -529,6 +483,33 @@ leaflet(data = nc) %>%
 ```{r first-leaflet-map1e, ref.label='first-leaflet-map1e', echo=FALSE, out.width="100%", out.height = "100%"}
 ```
 ]
+
+---
+layout: true
+
+# Creating a colour palette
+---
+
+![](images/ColorBrewer_Ex.PNG)
+
+--
+
+* What type of data are we showing? 
+
+--
+
+* Who is our audience? 
+
+--
+
+* Tools
+
+  * [ColorBrewer2.org](https://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3)
+  * https://www.colorcodepicker.com/ 
+
+
+
+
 
 ---
 layout: true
@@ -568,12 +549,12 @@ display.brewer.all(type = "div")
 
 ]
 
+
 ---
 layout: true
 
 # Creating a colour palette
 ---
-
 * First we will define the colour palette and bins for the plot.
 
 ```{r Defining colour bins, eval = TRUE}
@@ -889,6 +870,10 @@ leafsync::sync(m1, m2, ncol = 2, sync = "all")
 
 
 ---
+layout: true
+# Useful resources:
+---
+
 
 
 ---
