@@ -704,15 +704,15 @@ ggplot(gapminder) +
 # ** Extending ggplot2
 #
 # - Check out theggplot2 extensions gallery: 
-#   http://www.ggplot2-exts.org/gallery/
+#   https://exts.ggplot2.tidyverse.org/gallery/
 #
 # ** Learn more
 # 
 # - ggplot2 docs: 
-#   http://ggplot2.tidyverse.org/
+#   https://ggplot2.tidyverse.org/
 # 
 # - R4DS - Data visualization: 
-#   http://r4ds.had.co.nz/data-visualisation.html
+#   https://r4ds.had.co.nz/data-visualisation.html
 # 
 # - Hadley Wickham's ggplot2 book: 
 #   https://www.amazon.com/dp/0387981403/

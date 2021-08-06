@@ -2204,7 +2204,7 @@ layout: true
 ---
 layout: false
 
-# ggplot2 Extensions: ggplot2-exts.org
+# ggplot2 Extensions: exts.ggplot2.tidyverse.org/gallery
 
 <img src="images/ggplot2-exts-gallery.png" style="max-height: 100%">
 
