@@ -704,7 +704,7 @@ ggplot(gapminder) +
 # ** Extending ggplot2
 #
 # - Check out theggplot2 extensions gallery: 
-#   http://www.ggplot2-exts.org/gallery/
+#   http://www.ggplot2.tidyverse.org/gallery/
 #
 # ** Learn more
 # 
