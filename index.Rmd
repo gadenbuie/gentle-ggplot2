@@ -127,7 +127,7 @@ install.packages('tidyverse')
 **Medium**: install just `ggplot2`
 
 ```r
-install.pacakages('ggplot2')
+install.packages('ggplot2')
 ```
 
 **Expert**: install from GitHub
